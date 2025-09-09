@@ -5,11 +5,11 @@ import './styles/tailwind.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from './contexts/AuthContext';
-import { BrowserRouter } from 'react-router-dom'; // ✅ Import this
+import { BrowserRouter } from 'react-router-dom'; 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <BrowserRouter> {/* ✅ Wrap everything inside this */}
+  <BrowserRouter> 
     <AuthProvider>
       <React.StrictMode>
         <App />
