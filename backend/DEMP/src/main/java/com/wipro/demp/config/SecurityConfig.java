@@ -3,6 +3,7 @@ package com.wipro.demp.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -30,6 +31,16 @@ public class SecurityConfig {
                     "/api/auth/**",
                     "/error"
                 ).permitAll()
+                .requestMatchers("/api/user/**").authenticated()
+                                .requestMatchers("/api/user/events/**").hasRole("ORGANIZER")
+                                .requestMatchers(HttpMethod.GET, "/api/admin/**").permitAll()
+                                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/api/speakers/**").permitAll()
+                                .requestMatchers("/api/speakers/**").hasRole("ADMIN")
+                                .requestMatchers("/api/events/**").permitAll()
+                                .requestMatchers(HttpMethod.POST,"/api/registrations/**").hasRole("USER")
+                                .requestMatchers("/api/registrations/event/{eventId}").hasRole("ORGANIZER")
+                                .requestMatchers("/api/registrations/**").permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -43,12 +43,12 @@ public class Event {
     @ManyToOne
     @JoinColumn(name = "address_id")
     private Address address;
- 
- 
     
  
-    @ManyToMany
-    @JoinTable(name = "event_speaker", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "speaker_id"))
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(name = "event_speaker",
+        joinColumns = @JoinColumn(name = "event_id"),
+        inverseJoinColumns = @JoinColumn(name = "speaker_id"))
     private List<Speaker> speakers;
  
     @ManyToOne
