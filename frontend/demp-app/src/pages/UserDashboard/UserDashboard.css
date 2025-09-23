@@ -1,0 +1,156 @@
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  background: #f4f6fa;
+}
+
+.sidebar {
+  width: 220px;
+  background: #232b39;
+  color: #fff;
+  padding: 20px 0;
+}
+
+.sidebar-header {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  padding-left: 20px;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0 20px;
+}
+
+.sidebar-menu li {
+  margin: 20px 0;
+  cursor: pointer;
+}
+
+.dashboard-main {
+  flex: 1;
+  padding: 30px;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+.user-name {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.user-email {
+  font-size: 0.95rem;
+  color: #888;
+}
+
+.profile-btn {
+  background: #232b39;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background 0.2s;
+}
+.profile-btn:hover {
+  background: #37405a;
+}
+
+.dashboard-content {
+  margin-top: 10px;
+}
+
+.dashboard-cards {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.dashboard-card {
+  flex: 1;
+  background: #e6e9f0;
+  border-radius: 8px;
+  padding: 40px 0;
+  text-align: center;
+  font-weight: bold;
+  color: #444;
+  font-size: 1.1rem;
+}
+
+.recent-activities {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+.recent-activities h4 {
+  margin-bottom: 15px;
+}
+
+.recent-activities ul {
+  list-style: none;
+  padding: 0;
+}
+
+.recent-activities li {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  font-size: 0.98rem;
+}
+
+.activity-icon {
+  margin-right: 10px;
+}
+
+.activity-date {
+  color: #888;
+  font-size: 0.9rem;
+  margin-left: 10px;
+}
+
+/* Modal styles */
+.profile-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.profile-modal-content {
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 10px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.15);
+  min-width: 300px;
+  text-align: left;
+}
+
+.close-btn {
+  margin-top: 20px;
+  background: #232b39;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 5px;
+  cursor: pointer;
+}
