@@ -17,7 +17,7 @@ import com.wipro.demp.service.UserService;
  
 @RestController
 @RequestMapping("/api")
-//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
  
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);

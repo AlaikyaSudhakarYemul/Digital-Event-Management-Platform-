@@ -3,9 +3,7 @@ package com.wipro.demp.entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
- 
-// import com.eventmanagement.event.model.Event;
-// import com.eventmanagement.event.model.Registrations;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
  
 import jakarta.persistence.*;
@@ -52,8 +50,8 @@ public class Users {
         //@JsonIgnore
         //private List<Registrations> registrations;
  
-        //@OneToMany(mappedBy = "user")
-        //@JsonIgnore
-        //private List<Event> events;
+        @OneToMany(mappedBy = "user")
+        @JsonIgnore
+        private List<Event> events;
  
     }
