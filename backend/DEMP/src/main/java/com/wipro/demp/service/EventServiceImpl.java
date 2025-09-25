@@ -5,13 +5,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
- 
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
- 
-import com.wipro.demp.entity.*;
 
+import com.wipro.demp.entity.*;
 import com.wipro.demp.repository.*;
 import com.wipro.demp.exception.*;
 
@@ -19,15 +18,13 @@ import com.wipro.demp.exception.*;
 public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
-    private final AddressService addressService;
     private final SpeakerService speakerService;
     private final SpeakerRepository speakerRepository;
     private final UserRepository userRepository;
 
-    public EventServiceImpl(EventRepository eventRepository, AddressService addressService,
+    public EventServiceImpl(EventRepository eventRepository,
             SpeakerService speakerService, SpeakerRepository speakerRepository, UserRepository userRepository) {
         this.eventRepository = eventRepository;
-        this.addressService = addressService;
         this.speakerService = speakerService;
         this.speakerRepository = speakerRepository;
         this.userRepository = userRepository;
@@ -35,35 +32,18 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Event createEvent(Event event) {
-
-        // Address address =
-        // addressService.getAddress(event.getAddress().getAddressId());
-        // if (address == null) {
-        // throw new AddressNotFoundException("Invalid address ID: " +
-        // event.getAddress().getAddressId());
-        // }
-
         event.setEventType(event.getEventType());
-
         event.setCreationTime(LocalDateTime.now());
+        // For microservice: just set addressId, do not fetch Address or set Address object
         if (EventType.VIRTUAL.equals(event.getEventType())) {
-            event.setAddress(null);
-        } else {
-            Address address = addressService.getAddress(event.getAddress().getAddressId());
-            if (address == null) {
-                throw new AddressNotFoundException("Invalid address ID: " + event.getAddress().getAddressId());
-            }
-            event.setAddress(address);
+            event.setAddressId(null);
         }
 
-        // event.setAddress(address);
-        // && !event.getSpeakers().isEmpty()
         if (event.getSpeakers() != null && !event.getSpeakers().isEmpty()) {
             List<Integer> speakerIds = event.getSpeakers().stream()
                     .map(Speaker::getSpeakerId)
                     .collect(Collectors.toList());
             List<Speaker> speakers = speakerRepository.findAllById(speakerIds);
-            
             event.setSpeakers(speakers);
         }
 
@@ -97,13 +77,12 @@ public class EventServiceImpl implements EventService {
 
         LocalDate today = LocalDate.now();
 
-        
         List<Event> upcomingEvents = events.stream()
                 .filter(event -> {
                     if (event.getDate() != null && event.getDate().isBefore(today)) {
                         event.setActiveStatus(EventStatus.COMPLETED);
                         eventRepository.save(event);
-                        return false; 
+                        return false;
                     }
                     return true;
                 })
@@ -114,10 +93,10 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Event updateEvent(int id, Event updatedEvent) {
-
         if (!eventRepository.existsById(id)) {
             throw new EventNotFoundException("Event not found with id: " + id);
         }
+
         Event existing = getEventById(id);
         existing.setEventName(updatedEvent.getEventName());
         existing.setDescription(updatedEvent.getDescription());
@@ -125,22 +104,11 @@ public class EventServiceImpl implements EventService {
         existing.setEventType(updatedEvent.getEventType());
         existing.setImage(updatedEvent.getImage());
         existing.setMaxAttendees(updatedEvent.getMaxAttendees());
-        // Address address =
-        // addressService.getAddress(updatedEvent.getAddress().getAddressId());
-        // if (address == null) {
-        // throw new AddressNotFoundException("Invalid address ID: " +
-        // updatedEvent.getAddress().getAddressId());
-        // }
-        // existing.setAddress(address);
-
+        // For microservice: just set addressId, do not fetch Address or set Address object
         if (EventType.VIRTUAL.equals(updatedEvent.getEventType())) {
-            existing.setAddress(null);
+            existing.setAddressId(null);
         } else {
-            Address address = addressService.getAddress(updatedEvent.getAddress().getAddressId());
-            if (address == null) {
-                throw new AddressNotFoundException("Invalid address ID: " + updatedEvent.getAddress().getAddressId());
-            }
-            existing.setAddress(address);
+            existing.setAddressId(updatedEvent.getAddressId());
         }
 
         if (updatedEvent.getSpeakers() != null &&
@@ -189,13 +157,13 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Page<Event> getPaginatedEvents(String eventName, Pageable pageable) {
-    EventStatus active = EventStatus.ACTIVE;
- 
-    if (eventName != null && !eventName.isEmpty()) {
-        return eventRepository.findByEventNameContainingIgnoreCaseAndActiveStatusOrderByCreationTimeDesc(eventName, active, pageable);
+        EventStatus active = EventStatus.ACTIVE;
+
+        if (eventName != null && !eventName.isEmpty()) {
+            return eventRepository.findByEventNameContainingIgnoreCaseAndActiveStatusOrderByCreationTimeDesc(eventName, active, pageable);
+        }
+
+        return eventRepository.findByActiveStatusOrderByCreationTimeDesc(active, pageable);
     }
- 
-    return eventRepository.findByActiveStatusOrderByCreationTimeDesc(active, pageable);
-}
 
 }

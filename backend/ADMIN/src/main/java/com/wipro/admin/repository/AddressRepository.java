@@ -1,8 +1,8 @@
-package com.wipro.demp.repository;
+package com.wipro.admin.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
- 
-import com.wipro.demp.entity.Address;
+
+import com.wipro.admin.entity.Address;
  
 public interface AddressRepository extends JpaRepository<Address,Integer> {
     

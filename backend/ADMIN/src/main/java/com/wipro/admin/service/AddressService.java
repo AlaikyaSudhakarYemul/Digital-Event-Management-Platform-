@@ -1,9 +1,9 @@
-package com.wipro.demp.service;
+package com.wipro.admin.service;
 
 import java.util.List;
- 
-import com.wipro.demp.entity.Address;
- 
+
+import com.wipro.admin.entity.Address;
+
 public interface AddressService {
  
     public Address addAddress(Address address);

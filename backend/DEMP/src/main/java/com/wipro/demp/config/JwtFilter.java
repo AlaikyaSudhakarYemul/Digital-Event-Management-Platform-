@@ -46,13 +46,14 @@ public class JwtFilter extends OncePerRequestFilter {
                 String token = authHeader.substring(7);
                 String email = jwtUtil.extractEmail(token);
                 String role = jwtUtil.extractRole(token);
- 
+                String authority = role != null && role.startsWith("ROLE_") ? role : "ROLE_" + role;
+                List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(authority));
+
                 if (email != null) {
-                    List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(role));
                     UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(email, null, authorities);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
-                    System.out.println("JWT Verified: User=" + email + ", Role=" + role);
+                    System.out.println("JWT Verified: User=" + email + ", Role=" + authority);
                 } else {
                     System.err.println("Invalid JWT Token: Could not extract email.");
                 }

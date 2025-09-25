@@ -1,17 +1,16 @@
-package com.wipro.demp.service;
+package com.wipro.admin.service;
 
- 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
- 
+
 import org.springframework.stereotype.Service;
- 
-import com.wipro.demp.entity.Address;
-import com.wipro.demp.repository.AddressRepository;
-import com.wipro.demp.exception.AddressNotFoundException;
- 
+
+import com.wipro.admin.entity.Address;
+import com.wipro.admin.exception.AddressNotFoundException;
+import com.wipro.admin.repository.AddressRepository;
+
 @Service
 public class AddressServiceImpl implements AddressService {
  

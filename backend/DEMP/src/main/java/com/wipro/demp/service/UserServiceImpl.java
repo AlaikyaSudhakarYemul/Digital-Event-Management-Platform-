@@ -20,25 +20,25 @@ import com.wipro.demp.repository.UserRepository;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
- 
-   @Autowired
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
- 
+
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
- 
+
     @Override
     public Users registerUser(Users user) {
         userRepository.findByUserName(user.getUserName()).ifPresent(existingUser -> {
             throw new IllegalArgumentException("User already exists!");
         });
- 
+
         user.setCreatedOn(LocalDate.now());
         user.setCreationTime(LocalDateTime.now());
         user.setUpdatedOn(LocalDate.now());
         user.setDeleted(false);
- 
+
         return userRepository.save(user);
     }
 
@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
     public List<Users> getAllUsers() {
         return userRepository.findAll();
     }
-   
+
     @Override
     public Users findByUsername(String username) {
         return userRepository.findByUserName(username)
@@ -54,30 +54,31 @@ public class UserServiceImpl implements UserService {
                     return new UserNotFoundException("User not found!");
                 });
     }
- 
+
     @Override
     public Users updateUser(int id, Users updatedUser) {
-       
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
             throw new SecurityException("Unauthorized access - User not authenticated.");
         }
- 
+
         String loggedInUsername = authentication.getName();
         Users existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
- 
-        if (!existingUser.getUserName().equals(loggedInUsername) && !authentication.getAuthorities().contains(new SimpleGrantedAuthority("USER"))) {
+
+        if (!existingUser.getUserName().equals(loggedInUsername)
+                && !authentication.getAuthorities().contains(new SimpleGrantedAuthority("USER"))) {
             throw new SecurityException("Unauthorized access - Insufficient permissions.");
         }
- 
+
         existingUser.setUserName(updatedUser.getUserName());
         existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         existingUser.setUpdatedOn(LocalDate.now());
- 
+
         return userRepository.save(existingUser);
     }
- 
+
     @Override
     public void deleteUser(int id) {
         if (!userRepository.existsById(id)) {
@@ -91,11 +92,16 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
         }
     }
- 
+
     @Override
     public Users findByEmail(String email) {
         return userRepository.findByEmail(email).orElse(null);
     }
- 
-    
+
+    @Override
+    public Users getUserById(int id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
+    }
+
 }

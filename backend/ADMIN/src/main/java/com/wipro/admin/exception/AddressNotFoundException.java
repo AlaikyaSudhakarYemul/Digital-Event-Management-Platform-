@@ -1,4 +1,4 @@
-package com.wipro.demp.exception;
+package com.wipro.admin.exception;
 
 public class AddressNotFoundException extends RuntimeException {
     public AddressNotFoundException(String message) {

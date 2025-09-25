@@ -40,9 +40,8 @@ public class Event {
     @NotNull(message = "Event type cannot be null")
     private EventType eventType;
  
-    @ManyToOne
-    @JoinColumn(name = "address_id")
-    private Address address;
+    // Store only the address ID, not a JPA relationship
+    private Integer addressId;
     
  
     @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })

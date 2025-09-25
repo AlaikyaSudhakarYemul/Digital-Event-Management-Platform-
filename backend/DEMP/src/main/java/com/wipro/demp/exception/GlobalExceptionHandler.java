@@ -17,11 +17,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
  
-    @ExceptionHandler(AddressNotFoundException.class)
-    public ResponseEntity<String> handleAddressNotFoundException(AddressNotFoundException ex){
-        return ResponseEntity.badRequest().body(ex.getMessage());
-    }
- 
     @ExceptionHandler(EventNotFoundException.class)
     public ResponseEntity<String> handleEventNotFoundException(EventNotFoundException ex){
         return ResponseEntity.badRequest().body(ex.getMessage());
