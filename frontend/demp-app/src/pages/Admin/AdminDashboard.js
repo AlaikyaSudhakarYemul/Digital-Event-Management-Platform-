@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AddressManager from './AddressManagement';
 import SpeakerManager from './SpeakerManagement';
  
@@ -17,6 +18,12 @@ const authorizedFetch = (url, options = {}) => {
  
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState('address');
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('adminToken');
+    navigate('/admin/login');
+  };
  
   // Address state
   const [addressForm, setAddressForm] = useState({
@@ -132,7 +139,7 @@ const AdminDashboard = () => {
   return (
     <div className="flex h-screen bg-gray-900 text-white">
       {/* Sidebar */}
-      <div className="w-1/4 bg-gray-800 p-6 space-y-4">
+      <div className="w-1/4 bg-gray-800 p-6 space-y-4 flex flex-col h-full">
         <h2 className="text-xl font-bold mb-4">Admin Panel</h2>
         <button
           className={`w-full text-left px-4 py-2 rounded ${activeSection === 'address' ? 'bg-cyan-600' : 'bg-gray-700'}`}
@@ -145,6 +152,13 @@ const AdminDashboard = () => {
           onClick={() => setActiveSection('speaker')}
         >
           Speaker
+        </button>
+        <div className="flex-grow" />
+        <button
+          className="w-full mt-8 px-4 py-2 rounded bg-red-600 hover:bg-red-700 text-white font-semibold"
+          onClick={handleLogout}
+        >
+          Logout
         </button>
       </div>
  
