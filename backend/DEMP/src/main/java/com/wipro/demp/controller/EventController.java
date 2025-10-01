@@ -10,7 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
- 
+
+import com.wipro.demp.dto.EventDTO;
 import com.wipro.demp.entity.Event;
 import com.wipro.demp.service.EventService;
  
@@ -30,7 +31,7 @@ public class EventController {
     @PostMapping("/create")
     public ResponseEntity<?> createEvent(@RequestBody Event event) {
         logger.info("Creating event: {}", event);
-        Event createdEvent = eventService.createEvent(event);
+        EventDTO createdEvent = eventService.createEvent(event);
         logger.info("Event created successfully: {}", createdEvent);
         if (createdEvent == null) {
             logger.error("Failed to create event: {}", event);
@@ -47,7 +48,7 @@ public class EventController {
             throw new InvalidParameterException("ID must be a positive integer");
         }
         logger.info("Retrieving event with ID: {}", id);
-        Event event = eventService.getEventById(id);
+        EventDTO event = eventService.getEventById(id);
         logger.info("Event with ID fetched successfully: {}",event);
         return new ResponseEntity<>(event, HttpStatus.OK);
     }
@@ -70,7 +71,7 @@ public class EventController {
             logger.error("Invalid ID or request body for update: ID={}, Event={}", id, updatedEvent);
             return ResponseEntity.badRequest().body("Invalid request body.");
         }
-        Event event = eventService.updateEvent(id, updatedEvent);
+        EventDTO event = eventService.updateEvent(id, updatedEvent);
         logger.info("Event with ID updated successfully: {}", event);
         return new ResponseEntity<>(event, HttpStatus.OK);
     }
@@ -109,7 +110,7 @@ public class EventController {
             return ResponseEntity.badRequest().body("Invalid pagination parameters.");
         }
         Pageable pageable = PageRequest.of(page, size);
-        Page<Event> eventPage = eventService.getPaginatedEvents(eventName, pageable);
+        Page<EventDTO> eventPage = eventService.getPaginatedEvents(eventName, pageable);
         if (eventPage.isEmpty()) {
             logger.warn("No events found for the given criteria");
             return ResponseEntity.noContent().build();

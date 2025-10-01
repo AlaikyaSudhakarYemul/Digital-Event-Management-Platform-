@@ -1,11 +1,9 @@
 package com.wipro.demp.entity;
 
-
- 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
- 
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Max;
@@ -40,15 +38,19 @@ public class Event {
     @NotNull(message = "Event type cannot be null")
     private EventType eventType;
  
-    // Store only the address ID, not a JPA relationship
+    // @ManyToOne
+    // @JoinColumn(name="address_id")
+    // private Address address;
+
+    // @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    // @JoinTable(name = "event_speaker",
+    //     joinColumns = @JoinColumn(name="event_id"),
+    //     inverseJoinColumns = @JoinColumn(name="speaker_id"))
+    // private List<Speaker> speakers;
+
     private Integer addressId;
-    
- 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinTable(name = "event_speaker",
-        joinColumns = @JoinColumn(name = "event_id"),
-        inverseJoinColumns = @JoinColumn(name = "speaker_id"))
-    private List<Speaker> speakers;
+
+    private List<Integer> speakerIds;
  
     @ManyToOne
     @JoinColumn(name = "user_id")

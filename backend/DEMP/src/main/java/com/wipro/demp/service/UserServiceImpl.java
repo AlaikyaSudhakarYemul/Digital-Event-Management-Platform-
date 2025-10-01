@@ -20,7 +20,7 @@ import com.wipro.demp.repository.UserRepository;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
+    
     @Autowired
     private PasswordEncoder passwordEncoder;
 

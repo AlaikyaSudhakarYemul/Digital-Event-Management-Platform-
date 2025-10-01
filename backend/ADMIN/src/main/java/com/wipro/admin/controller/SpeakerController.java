@@ -99,4 +99,5 @@ public class SpeakerController {
         logger.info("Speaker with ID {} deleted successfully", id);
         return ResponseEntity.ok("Speaker deleted successfully!");
     }
+        
 }

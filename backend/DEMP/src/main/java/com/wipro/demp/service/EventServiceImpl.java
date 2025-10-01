@@ -1,16 +1,21 @@
 package com.wipro.demp.service;
 
+import com.wipro.demp.dto.EventDTO;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.wipro.demp.entity.*;
+
 import com.wipro.demp.repository.*;
 import com.wipro.demp.exception.*;
 
@@ -18,33 +23,126 @@ import com.wipro.demp.exception.*;
 public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
-    private final SpeakerService speakerService;
-    private final SpeakerRepository speakerRepository;
     private final UserRepository userRepository;
 
-    public EventServiceImpl(EventRepository eventRepository,
-            SpeakerService speakerService, SpeakerRepository speakerRepository, UserRepository userRepository) {
+    @Autowired
+    private RestTemplate restTemplate;
+
+    public EventServiceImpl(EventRepository eventRepository, UserRepository userRepository) {
         this.eventRepository = eventRepository;
-        this.speakerService = speakerService;
-        this.speakerRepository = speakerRepository;
         this.userRepository = userRepository;
     }
 
+    public Address getAddressById(int addressId) {
+        String url = "http://localhost:8081/api/admin/" + addressId;
+        return restTemplate.getForObject(url, Address.class);
+    }
+
+    public Speaker getSpeakerById(int speakerId) {
+        String url = "http://localhost:8081/api/speakers/" + speakerId;
+        return restTemplate.getForObject(url, Speaker.class);
+    }
+
+    public List<Speaker> getAllSpeakers() {
+        String url = "http://localhost:8081/api/speakers";
+        Speaker[] speakersArray = restTemplate.getForObject(url, Speaker[].class);
+        if (speakersArray == null) {
+            return new ArrayList<>();
+        }
+        return List.of(speakersArray);
+    }
+
+    public EventDTO getDTO(Event event) {
+        EventDTO dto = new EventDTO();
+        dto.setEventId(event.getEventId());
+        dto.setEventName(event.getEventName());
+        dto.setDescription(event.getDescription());
+        dto.setDate(event.getDate());
+        dto.setImage(event.getImage());
+        dto.setEventType(event.getEventType());
+        dto.setAddressId(event.getAddressId());
+        if (event.getAddressId() != null) {
+            Address address = getAddressById(event.getAddressId());
+            dto.setAddress(address);
+        }
+        dto.setSpeakerIds(event.getSpeakerIds());
+        if(event.getSpeakerIds() != null && !event.getSpeakerIds().isEmpty()){
+            List<Speaker> speakers = new ArrayList<>();
+            for(Integer speakerId : event.getSpeakerIds()){
+                Speaker speaker = getSpeakerById(speakerId);
+                speakers.add(speaker);
+            }
+            dto.setSpeakers(speakers);
+        }
+        dto.setUser(event.getUser());
+        dto.setActiveStatus(event.getActiveStatus());
+        dto.setMaxAttendees(event.getMaxAttendees());
+        dto.setCurrentAttendees(event.getCurrentAttendees());
+        dto.setCreationTime(event.getCreationTime());
+        dto.setCreatedOn(event.getCreatedOn());
+        dto.setUpdatedOn(event.getUpdatedOn());
+        dto.setDeletedOn(event.getDeletedOn());
+        dto.setDeleted(event.isDeleted());
+        dto.setVersion(event.getVersion());
+        return dto;
+    }
+
+    public Event setDTO(EventDTO dto) {
+        Event event = new Event();
+        event.setEventId(dto.getEventId());
+        event.setEventName(dto.getEventName());
+        event.setDescription(dto.getDescription());
+        event.setDate(dto.getDate());
+        event.setImage(dto.getImage());
+        event.setEventType(dto.getEventType());
+        event.setAddressId(dto.getAddressId());
+        event.setSpeakerIds(dto.getSpeakerIds());
+        event.setUser(dto.getUser());
+        event.setActiveStatus(dto.getActiveStatus());
+        event.setMaxAttendees(dto.getMaxAttendees());
+        event.setCurrentAttendees(dto.getCurrentAttendees());
+        event.setCreationTime(dto.getCreationTime());
+        event.setCreatedOn(dto.getCreatedOn());
+        event.setUpdatedOn(dto.getUpdatedOn());
+        event.setDeletedOn(dto.getDeletedOn());
+        event.setDeleted(dto.isDeleted());
+        event.setVersion(dto.getVersion());
+        return event;
+    }
+
     @Override
-    public Event createEvent(Event event) {
+    public EventDTO createEvent(Event event) {
+
         event.setEventType(event.getEventType());
+
         event.setCreationTime(LocalDateTime.now());
-        // For microservice: just set addressId, do not fetch Address or set Address object
         if (EventType.VIRTUAL.equals(event.getEventType())) {
+            // event.setAddress(null);
             event.setAddressId(null);
+        } else {
+            Address address = getAddressById(event.getAddressId());
+            if (address == null) {
+                throw new IllegalStateException("Invalid address ID: " + event.getAddressId());
+            }
+            event.setAddressId(address.getAddressId());
         }
 
-        if (event.getSpeakers() != null && !event.getSpeakers().isEmpty()) {
-            List<Integer> speakerIds = event.getSpeakers().stream()
-                    .map(Speaker::getSpeakerId)
-                    .collect(Collectors.toList());
-            List<Speaker> speakers = speakerRepository.findAllById(speakerIds);
-            event.setSpeakers(speakers);
+        // event.setAddress(address);
+        // && !event.getSpeakers().isEmpty()
+        if (event.getSpeakerIds() != null && !event.getSpeakerIds().isEmpty()) {
+            // List<Integer> speakerIds = event.getSpeakerIds().stream()
+            //         .map(Integer::getSpeakerId)
+            //         .collect(Collectors.toList());
+            List<Integer> speakerIds = event.getSpeakerIds();
+            List<Speaker> speakers = new ArrayList<>();
+            List<Integer> speakerIds2 = new ArrayList<>();
+            for (Integer speakerId : speakerIds) {
+                Speaker speaker = getSpeakerById(speakerId);
+                // .orElseThrow(() -> new RuntimeException("Speaker not found: " + speakerId));
+                speakers.add(speaker);
+                speakerIds2.add(speakerId);
+            }
+            event.setSpeakerIds(speakerIds2);
         }
 
         Users createdBy = userRepository.findById(event.getUser().getUserId())
@@ -59,17 +157,22 @@ public class EventServiceImpl implements EventService {
         event.setCreationTime(LocalDateTime.now());
         event.setUpdatedOn(LocalDateTime.now().toLocalDate());
         event.setDeleted(false);
-        return eventRepository.save(event);
+        // return eventRepository.save(event);
+        Event savedEvent = eventRepository.save(event);
+        return getDTO(savedEvent);
     }
 
     @Override
-    public Event getEventById(int id) {
-        return eventRepository.findById(id)
+    public EventDTO getEventById(int id) {
+        // return eventRepository.findById(id)
+                // .orElseThrow(() -> new EventNotFoundException("Event not found with id: " + id));
+        Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new EventNotFoundException("Event not found with id: " + id));
+        return getDTO(event);
     }
 
     @Override
-    public List<Event> getAllEvents() {
+    public List<EventDTO> getAllEvents() {
         List<Event> events = eventRepository.findAllInReverse();
         if (events.isEmpty()) {
             throw new EventNotFoundException("No events found.");
@@ -88,46 +191,61 @@ public class EventServiceImpl implements EventService {
                 })
                 .collect(Collectors.toList());
 
-        return upcomingEvents;
+        // return upcomingEvents;
+        return upcomingEvents.stream()
+                .map(this::getDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Event updateEvent(int id, Event updatedEvent) {
+    public EventDTO updateEvent(int id, Event updatedEvent) {
+
         if (!eventRepository.existsById(id)) {
             throw new EventNotFoundException("Event not found with id: " + id);
         }
-
-        Event existing = getEventById(id);
+        // Event existing = getEventById(id);
+        Event existing = eventRepository.findById(id)
+                .orElseThrow(() -> new EventNotFoundException("Event not found with id: " + id));
         existing.setEventName(updatedEvent.getEventName());
         existing.setDescription(updatedEvent.getDescription());
         existing.setDate(updatedEvent.getDate());
         existing.setEventType(updatedEvent.getEventType());
         existing.setImage(updatedEvent.getImage());
         existing.setMaxAttendees(updatedEvent.getMaxAttendees());
-        // For microservice: just set addressId, do not fetch Address or set Address object
+
         if (EventType.VIRTUAL.equals(updatedEvent.getEventType())) {
+            // existing.setAddress(null);
             existing.setAddressId(null);
         } else {
-            existing.setAddressId(updatedEvent.getAddressId());
+            Address address = getAddressById(updatedEvent.getAddressId());
+            if (address == null) {
+                throw new IllegalStateException("Invalid address ID: " + updatedEvent.getAddressId());
+            }
+            existing.setAddressId(address.getAddressId());
         }
 
-        if (updatedEvent.getSpeakers() != null &&
-                !updatedEvent.getSpeakers().isEmpty()) {
-            List<Integer> speakerIds = updatedEvent.getSpeakers().stream()
-                    .map(Speaker::getSpeakerId)
-                    .toList();
-            List<Speaker> speakers = speakerService.findAllByIds(speakerIds);
+        if (updatedEvent.getSpeakerIds() != null &&
+                !updatedEvent.getSpeakerIds().isEmpty()) {
+            List<Integer> speakerIds = updatedEvent.getSpeakerIds();
+            List<Speaker> speakers = getAllSpeakers();
             if (speakers.size() != speakerIds.size()) {
                 throw new IllegalStateException("One or more speaker IDs are invalid.");
             }
-            existing.setSpeakers(speakers);
+            // existing.setSpeakerIds(speakers);
+            List<Integer> speakerId = new ArrayList<>();
+            for (Speaker speaker : speakers) {
+                speakerId.add(speaker.getSpeakerId());
+            }
+            existing.setSpeakerIds(speakerId);
         } else {
-            existing.setSpeakers(List.of());
+            existing.setSpeakerIds(List.of());
         }
         existing.setActiveStatus(updatedEvent.getActiveStatus());
 
         existing.setUpdatedOn(LocalDateTime.now().toLocalDate());
-        return eventRepository.save(existing);
+        // return eventRepository.save(existing);
+        Event savedEvent = eventRepository.save(existing);
+        return getDTO(savedEvent);
 
     }
 
@@ -147,23 +265,30 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> findByEventName(String eventName) {
+    public List<EventDTO> findByEventName(String eventName) {
         List<Event> event = eventRepository.findByEventName(eventName);
         if (event == null) {
             throw new EventNotFoundException("Event not found with name: " + eventName);
         }
-        return event;
+        // return event;
+        return event.stream()
+                .map(this::getDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Page<Event> getPaginatedEvents(String eventName, Pageable pageable) {
+    public Page<EventDTO> getPaginatedEvents(String eventName, Pageable pageable) {
         EventStatus active = EventStatus.ACTIVE;
 
         if (eventName != null && !eventName.isEmpty()) {
-            return eventRepository.findByEventNameContainingIgnoreCaseAndActiveStatusOrderByCreationTimeDesc(eventName, active, pageable);
+            // return eventRepository.findByEventNameContainingIgnoreCaseAndActiveStatusOrderByCreationTimeDesc(eventName,
+                    // active, pageable);
+            return eventRepository.findByEventNameContainingIgnoreCaseAndActiveStatusOrderByCreationTimeDesc(eventName,
+                    active, pageable).map(this::getDTO);
         }
 
-        return eventRepository.findByActiveStatusOrderByCreationTimeDesc(active, pageable);
+        // return eventRepository.findByActiveStatusOrderByCreationTimeDesc(active, pageable);
+        return eventRepository.findByActiveStatusOrderByCreationTimeDesc(active, pageable).map(this::getDTO);
     }
 
 }

@@ -62,7 +62,7 @@ public class AddressController {
         return new ResponseEntity<>(updatedAddress, HttpStatus.OK);
     }
  
-    @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getAddress(@PathVariable int id) {
         logger.info("Fetching address with ID: {}", id);
@@ -88,7 +88,7 @@ public class AddressController {
         return new ResponseEntity<>(address, HttpStatus.OK);
     }
  
-    @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<List<Address>> getAllAddresses() {
         logger.info("Fetching all addresses");
