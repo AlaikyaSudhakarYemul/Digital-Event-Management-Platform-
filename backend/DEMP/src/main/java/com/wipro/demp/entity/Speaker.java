@@ -1,15 +1,14 @@
 package com.wipro.demp.entity;
- 
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import lombok.Getter;
 import lombok.Setter;
-
 @Getter
 @Setter
 public class Speaker {
- 
+
     private int speakerId;
  
     private String name;

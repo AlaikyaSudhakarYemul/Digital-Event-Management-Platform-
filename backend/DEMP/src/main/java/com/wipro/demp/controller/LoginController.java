@@ -25,7 +25,7 @@ import com.wipro.demp.service.UserService;
 @CrossOrigin(origins = "http://localhost:3000")
 public class LoginController {
 
-    private static final Logger logger = LoggerFactory.getLogger(EventController.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class.getName());
 
     private final UserService userService;
     private final JwtUtil jwtUtil;

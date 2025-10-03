@@ -1,4 +1,4 @@
-package com.wipro.demp.exception;
+package com.wipro.event.exception;
 
 public class EventNotFoundException extends RuntimeException {
     public EventNotFoundException(String message) {

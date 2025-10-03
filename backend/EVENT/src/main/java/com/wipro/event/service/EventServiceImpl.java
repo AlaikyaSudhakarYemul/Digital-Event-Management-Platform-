@@ -1,6 +1,5 @@
-package com.wipro.demp.service;
+package com.wipro.event.service;
 
-import com.wipro.demp.dto.EventDTO;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,26 +10,41 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
-import com.wipro.demp.entity.*;
+import com.wipro.event.dto.EventDTO;
+import com.wipro.event.entity.Address;
+import com.wipro.event.entity.Event;
+import com.wipro.event.entity.EventStatus;
+import com.wipro.event.entity.EventType;
+import com.wipro.event.entity.Speaker;
+import com.wipro.event.entity.Users;
+import com.wipro.event.exception.EventNotFoundException;
+import com.wipro.event.repository.EventRepository;
 
-import com.wipro.demp.repository.*;
-import com.wipro.demp.exception.*;
 
 @Service
 public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
-    private final UserRepository userRepository;
+    // private final UserRepository userRepository;
 
     @Autowired
     private RestTemplate restTemplate;
 
-    public EventServiceImpl(EventRepository eventRepository, UserRepository userRepository) {
+    // public EventServiceImpl(EventRepository eventRepository, UserRepository userRepository) {
+    //     this.eventRepository = eventRepository;
+    //     this.userRepository = userRepository;
+    // }
+    public EventServiceImpl(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
-        this.userRepository = userRepository;
     }
 
     public Address getAddressById(int addressId) {
@@ -50,6 +64,24 @@ public class EventServiceImpl implements EventService {
             return new ArrayList<>();
         }
         return List.of(speakersArray);
+    }
+
+    public Users getUserById(int userId){
+        String url = "http://localhost:8080/api/user/" + userId;
+        // Extract JWT token from current request
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        if (requestAttributes == null) {
+            throw new IllegalStateException("No request context available for forwarding JWT token");
+        }
+        jakarta.servlet.http.HttpServletRequest request = (jakarta.servlet.http.HttpServletRequest) ((org.springframework.web.context.request.ServletRequestAttributes) requestAttributes).getRequest();
+        String authHeader = request.getHeader("Authorization");
+        HttpHeaders headers = new HttpHeaders();
+        if (authHeader != null) {
+            headers.set("Authorization", authHeader);
+        }
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        ResponseEntity<Users> response = restTemplate.exchange(url, HttpMethod.GET, entity, Users.class);
+        return response.getBody();
     }
 
     public EventDTO getDTO(Event event) {
@@ -74,7 +106,10 @@ public class EventServiceImpl implements EventService {
             }
             dto.setSpeakers(speakers);
         }
-        dto.setUser(event.getUser());
+        if(event.getUserId()!=null){
+            Users user = getUserById(event.getUserId());
+            dto.setUser(user);
+        }
         dto.setActiveStatus(event.getActiveStatus());
         dto.setMaxAttendees(event.getMaxAttendees());
         dto.setCurrentAttendees(event.getCurrentAttendees());
@@ -97,7 +132,7 @@ public class EventServiceImpl implements EventService {
         event.setEventType(dto.getEventType());
         event.setAddressId(dto.getAddressId());
         event.setSpeakerIds(dto.getSpeakerIds());
-        event.setUser(dto.getUser());
+        event.setUserId(dto.getUser().getUserId());
         event.setActiveStatus(dto.getActiveStatus());
         event.setMaxAttendees(dto.getMaxAttendees());
         event.setCurrentAttendees(dto.getCurrentAttendees());
@@ -145,11 +180,11 @@ public class EventServiceImpl implements EventService {
             event.setSpeakerIds(speakerIds2);
         }
 
-        Users createdBy = userRepository.findById(event.getUser().getUserId())
-                .orElseThrow(
-                        () -> new EventNotFoundException("User not found with id: " + event.getUser().getUserId()));
+        // Users createdBy = userRepository.findById(event.getUser().getUserId())
+        //         .orElseThrow(
+        //                 () -> new EventNotFoundException("User not found with id: " + event.getUser().getUserId()));
 
-        event.setUser(createdBy);
+        // event.setUser(createdBy);
 
         event.setActiveStatus(EventStatus.ACTIVE);
         event.setMaxAttendees(event.getMaxAttendees());
@@ -224,23 +259,23 @@ public class EventServiceImpl implements EventService {
             existing.setAddressId(address.getAddressId());
         }
 
-        if (updatedEvent.getSpeakerIds() != null &&
-                !updatedEvent.getSpeakerIds().isEmpty()) {
+        if (updatedEvent.getSpeakerIds() != null && !updatedEvent.getSpeakerIds().isEmpty()) {
             List<Integer> speakerIds = updatedEvent.getSpeakerIds();
-            List<Speaker> speakers = getAllSpeakers();
-            if (speakers.size() != speakerIds.size()) {
-                throw new IllegalStateException("One or more speaker IDs are invalid.");
+            List<Integer> validSpeakerIds = new ArrayList<>();
+            for (Integer speakerId : speakerIds) {
+                Speaker speaker = getSpeakerById(speakerId);
+                if (speaker == null) {
+                    throw new IllegalStateException("Speaker ID " + speakerId + " is invalid.");
+                }
+                validSpeakerIds.add(speakerId);
             }
-            // existing.setSpeakerIds(speakers);
-            List<Integer> speakerId = new ArrayList<>();
-            for (Speaker speaker : speakers) {
-                speakerId.add(speaker.getSpeakerId());
-            }
-            existing.setSpeakerIds(speakerId);
+            existing.setSpeakerIds(validSpeakerIds);
         } else {
             existing.setSpeakerIds(List.of());
         }
-        existing.setActiveStatus(updatedEvent.getActiveStatus());
+        if(updatedEvent.getActiveStatus()!=null){
+            existing.setActiveStatus(updatedEvent.getActiveStatus());
+        }        
 
         existing.setUpdatedOn(LocalDateTime.now().toLocalDate());
         // return eventRepository.save(existing);

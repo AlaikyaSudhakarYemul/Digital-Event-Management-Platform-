@@ -1,4 +1,4 @@
-package com.wipro.demp.controller;
+package com.wipro.event.controller;
 
 import java.security.InvalidParameterException;
  
@@ -11,9 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.wipro.demp.dto.EventDTO;
-import com.wipro.demp.entity.Event;
-import com.wipro.demp.service.EventService;
+import com.wipro.event.dto.EventDTO;
+import com.wipro.event.entity.Event;
+import com.wipro.event.service.EventService;
  
 @RestController
 @RequestMapping("/api/events")

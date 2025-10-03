@@ -1,11 +1,12 @@
-package com.wipro.demp.service;
+package com.wipro.event.service;
 
-import com.wipro.demp.dto.EventDTO;
-import com.wipro.demp.entity.Event;
 import java.util.List;
  
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import com.wipro.event.dto.EventDTO;
+import com.wipro.event.entity.Event;
  
 public interface EventService {
       EventDTO createEvent(Event event);

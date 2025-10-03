@@ -17,10 +17,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
  
-    @ExceptionHandler(EventNotFoundException.class)
-    public ResponseEntity<String> handleEventNotFoundException(EventNotFoundException ex){
-        return ResponseEntity.badRequest().body(ex.getMessage());
-    }
+    // @ExceptionHandler(EventNotFoundException.class)
+    // public ResponseEntity<String> handleEventNotFoundException(EventNotFoundException ex){
+    //     return ResponseEntity.badRequest().body(ex.getMessage());
+    // }
  
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException ex){

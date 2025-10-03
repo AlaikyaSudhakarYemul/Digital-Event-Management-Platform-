@@ -1,4 +1,4 @@
-package com.wipro.demp.entity;
+package com.wipro.event.entity;
 
  
 public enum EventStatus {

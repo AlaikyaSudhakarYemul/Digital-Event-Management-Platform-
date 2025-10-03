@@ -1,10 +1,4 @@
-package com.wipro.demp.dto;
-
-import com.wipro.demp.entity.Address;
-import com.wipro.demp.entity.EventStatus;
-import com.wipro.demp.entity.EventType;
-import com.wipro.demp.entity.Speaker;
-import com.wipro.demp.entity.Users;
+package com.wipro.event.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +7,12 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.wipro.event.entity.Address;
+import com.wipro.event.entity.EventStatus;
+import com.wipro.event.entity.EventType;
+import com.wipro.event.entity.Speaker;
+import com.wipro.event.entity.Users;
 
 
 @Getter

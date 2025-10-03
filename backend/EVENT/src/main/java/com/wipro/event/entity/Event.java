@@ -1,4 +1,4 @@
-package com.wipro.demp.entity;
+package com.wipro.event.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
 import lombok.Getter;
 import lombok.Setter;
  
@@ -52,9 +53,11 @@ public class Event {
 
     private List<Integer> speakerIds;
  
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Users user;
+    // @ManyToOne
+    // @JoinColumn(name = "user_id")
+    // private Users user;
+
+    private Integer userId;
  
     @Enumerated(EnumType.STRING)
     private EventStatus activeStatus;

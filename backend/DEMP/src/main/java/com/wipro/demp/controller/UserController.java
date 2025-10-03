@@ -15,6 +15,8 @@ import org.springframework.web.client.RestTemplate;
 import com.wipro.demp.entity.Address;
 import com.wipro.demp.entity.Users;
 import com.wipro.demp.service.UserService;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 @RestController
 @RequestMapping("/api")
@@ -34,6 +36,17 @@ public class UserController {
 
     @Value("${admin.service.url}")
     private String adminServiceUrl;
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable int id) {
+        if(id<=0){
+            logger.warn("User cannot be fetched with user ID: {}",id);
+            return ResponseEntity.badRequest().body("USer ID given is incorrect");
+        }
+        Users user = userService.getUserById(id);
+        return ResponseEntity.ok(user);
+    }
+    
 
     @PutMapping("/user/{id}")
     public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody Users user) {
