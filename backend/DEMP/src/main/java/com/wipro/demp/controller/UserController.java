@@ -54,32 +54,32 @@ public class UserController {
 
     }
 
-    // @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/user/{id}/address/{addressId}")
-    public ResponseEntity<?> getUserAddress(
-        @PathVariable int id,
-        @PathVariable int addressId,
-        @RequestHeader("Authorization") String authHeader) {
+    // // @PreAuthorize("hasRole('ADMIN')")
+    // @GetMapping("/user/{id}/address/{addressId}")
+    // public ResponseEntity<?> getUserAddress(
+    //     @PathVariable int id,
+    //     @PathVariable int addressId,
+    //     @RequestHeader("Authorization") String authHeader) {
 
-        HttpHeaders headers = new HttpHeaders();
-        String token = authHeader;
-        // Remove all leading 'Bearer ' prefixes
-        while (token.startsWith("Bearer ")) {
-            token = token.substring(7).trim();
-        }
-        token = "Bearer " + token;
-        headers.set("Authorization", token);
-        System.out.println("Headers: " + headers);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<Address> response = restTemplate.exchange(
-            "http://localhost:8081/api/admin/" + addressId,
-            HttpMethod.GET,
-            entity,
-            Address.class
-        );
-        Address address = response.getBody();
-        return ResponseEntity.ok(address);
-    }
+    //     HttpHeaders headers = new HttpHeaders();
+    //     String token = authHeader;
+    //     // Remove all leading 'Bearer ' prefixes
+    //     while (token.startsWith("Bearer ")) {
+    //         token = token.substring(7).trim();
+    //     }
+    //     token = "Bearer " + token;
+    //     headers.set("Authorization", token);
+    //     System.out.println("Headers: " + headers);
+    //     HttpEntity<String> entity = new HttpEntity<>(headers);
+    //     ResponseEntity<Address> response = restTemplate.exchange(
+    //         "http://localhost:8081/api/admin/" + addressId,
+    //         HttpMethod.GET,
+    //         entity,
+    //         Address.class
+    //     );
+    //     Address address = response.getBody();
+    //     return ResponseEntity.ok(address);
+    // }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/address")
@@ -144,41 +144,41 @@ public class UserController {
     }
 
     // @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/user/{id}/addresses")
-    public ResponseEntity<?> getUserAddresses(@PathVariable int id, @RequestHeader("Authorization") String authHeader) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", authHeader);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        // Call ADMIN microservice to get addresses for user
-        ResponseEntity<Address[]> response = restTemplate.exchange(
-            "http://localhost:8081/api/admin/all" ,
-            HttpMethod.GET,
-            entity,
-            Address[].class
-        );
-        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
-    }
+    // @GetMapping("/user/{id}/addresses")
+    // public ResponseEntity<?> getUserAddresses(@PathVariable int id, @RequestHeader("Authorization") String authHeader) {
+    //     HttpHeaders headers = new HttpHeaders();
+    //     headers.set("Authorization", authHeader);
+    //     HttpEntity<String> entity = new HttpEntity<>(headers);
+    //     // Call ADMIN microservice to get addresses for user
+    //     ResponseEntity<Address[]> response = restTemplate.exchange(
+    //         "http://localhost:8081/api/admin/all" ,
+    //         HttpMethod.GET,
+    //         entity,
+    //         Address[].class
+    //     );
+    //     return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
+    // }
 
     // @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/user/{userId}/address/{addressId}")
-    public ResponseEntity<?> updateAddressForUser(
-        @PathVariable int userId,
-        @PathVariable int addressId,
-        @RequestBody Address address,
-        @RequestHeader("Authorization") String authHeader) {
+    // @PutMapping("/user/{userId}/address/{addressId}")
+    // public ResponseEntity<?> updateAddressForUser(
+    //     @PathVariable int userId,
+    //     @PathVariable int addressId,
+    //     @RequestBody Address address,
+    //     @RequestHeader("Authorization") String authHeader) {
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", authHeader);
-        HttpEntity<Address> entity = new HttpEntity<>(address, headers);
+    //     HttpHeaders headers = new HttpHeaders();
+    //     headers.set("Authorization", authHeader);
+    //     HttpEntity<Address> entity = new HttpEntity<>(address, headers);
 
-        ResponseEntity<Address> response = restTemplate.exchange(
-            "http://localhost:8081/api/admin/" + addressId,
-            HttpMethod.PUT,
-            entity,
-            Address.class
-        );
-        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
-    }
+    //     ResponseEntity<Address> response = restTemplate.exchange(
+    //         "http://localhost:8081/api/admin/" + addressId,
+    //         HttpMethod.PUT,
+    //         entity,
+    //         Address.class
+    //     );
+    //     return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
+    // }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/user/{userId}/address/{addressId}")
