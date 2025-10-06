@@ -48,17 +48,17 @@ public class EventServiceImpl implements EventService {
     }
 
     public Address getAddressById(int addressId) {
-        String url = "http://localhost:8081/api/admin/" + addressId;
+        String url = "http://ADMIN/api/admin/" + addressId;
         return restTemplate.getForObject(url, Address.class);
     }
 
     public Speaker getSpeakerById(int speakerId) {
-        String url = "http://localhost:8081/api/speakers/" + speakerId;
+        String url = "http://ADMIN/api/speakers/" + speakerId;
         return restTemplate.getForObject(url, Speaker.class);
     }
 
     public List<Speaker> getAllSpeakers() {
-        String url = "http://localhost:8081/api/speakers";
+        String url = "http://ADMIN/api/speakers";
         Speaker[] speakersArray = restTemplate.getForObject(url, Speaker[].class);
         if (speakersArray == null) {
             return new ArrayList<>();
@@ -67,7 +67,7 @@ public class EventServiceImpl implements EventService {
     }
 
     public Users getUserById(int userId){
-        String url = "http://localhost:8080/api/user/" + userId;
+        String url = "http://DEMP/api/user/" + userId;
         // Extract JWT token from current request
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         if (requestAttributes == null) {
@@ -216,15 +216,8 @@ public class EventServiceImpl implements EventService {
         LocalDate today = LocalDate.now();
 
         List<Event> upcomingEvents = events.stream()
-                .filter(event -> {
-                    if (event.getDate() != null && event.getDate().isBefore(today)) {
-                        event.setActiveStatus(EventStatus.COMPLETED);
-                        eventRepository.save(event);
-                        return false;
-                    }
-                    return true;
-                })
-                .collect(Collectors.toList());
+        	    .filter(event -> event.getDate() == null || !event.getDate().isBefore(today))
+        	    .collect(Collectors.toList());
 
         // return upcomingEvents;
         return upcomingEvents.stream()

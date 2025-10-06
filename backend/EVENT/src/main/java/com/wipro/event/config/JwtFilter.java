@@ -21,7 +21,7 @@ import java.util.Collections;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
-    private final SecretKey SECRET_KEY = Keys.hmacShaKeyFor(Base64.getDecoder().decode("+YIsZn3SvkyK0mw7La+WkVFFqyjbrM/DbbQh8eecVfE=")); // Use the same key in both microservices
+    private final SecretKey SECRET_KEY = Keys.hmacShaKeyFor(Base64.getDecoder().decode("cPDiUiq1/3iUlBjDYl7SbFjuW74chZ/uOtWiSCSsK5g="));
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

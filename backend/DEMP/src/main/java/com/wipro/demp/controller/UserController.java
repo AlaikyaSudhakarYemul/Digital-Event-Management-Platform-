@@ -102,7 +102,7 @@ public class UserController {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Address> entity = new HttpEntity<>(address, headers);
         ResponseEntity<Address> response = restTemplate.exchange(
-            "http://localhost:8081/api/admin/add",
+            "http://ADMIN/api/admin/add",
             HttpMethod.POST,
             entity,
             Address.class
@@ -118,7 +118,7 @@ public class UserController {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Address> entity = new HttpEntity<>(address, headers);
         ResponseEntity<Address> response = restTemplate.exchange(
-            "http://localhost:8081/api/admin/" + id,
+            "http://ADMIN/api/admin/" + id,
             HttpMethod.PUT,
             entity,
             Address.class
@@ -133,7 +133,7 @@ public class UserController {
         headers.set("Authorization", authHeader);
         HttpEntity<String> entity = new HttpEntity<>(headers);
         ResponseEntity<Address[]> response = restTemplate.exchange(
-            "http://localhost:8081/api/admin/all",
+            "http://ADMIN/api/admin/all",
             HttpMethod.GET,
             entity,
             Address[].class
@@ -148,7 +148,7 @@ public class UserController {
         headers.set("Authorization", authHeader);
         HttpEntity<String> entity = new HttpEntity<>(headers);
         ResponseEntity<String> response = restTemplate.exchange(
-            "http://localhost:8081/api/admin/" + id,
+            "http://ADMIN/api/admin/" + id,
             HttpMethod.DELETE,
             entity,
             String.class
@@ -205,7 +205,7 @@ public class UserController {
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         ResponseEntity<String> response = restTemplate.exchange(
-            "http://localhost:8081/api/admin/" + addressId,
+            "http://ADMIN/api/admin/" + addressId,
             HttpMethod.DELETE,
             entity,
             String.class
@@ -228,7 +228,7 @@ public class UserController {
         headers.set("Authorization", token);
         HttpEntity<String> entity = new HttpEntity<>(headers);
         ResponseEntity<String> response = restTemplate.exchange(
-            "http://localhost:8081/api/speakers/" + id,
+            "http://ADMIN/api/speakers/" + id,
             HttpMethod.GET,
             entity,
             String.class
@@ -251,7 +251,7 @@ public class UserController {
         headers.set("Authorization", token);
         HttpEntity<String> entity = new HttpEntity<>(headers);
         ResponseEntity<String> response = restTemplate.exchange(
-            "http://localhost:8081/api/speakers",
+            "http://ADMIN/api/speakers",
             HttpMethod.GET,
             entity,
             String.class
@@ -276,7 +276,7 @@ public class UserController {
         headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(speakerData, headers);
         ResponseEntity<String> response = restTemplate.exchange(
-            "http://localhost:8081/api/speakers",
+            "http://ADMIN/api/speakers",
             HttpMethod.POST,
             entity,
             String.class
@@ -301,7 +301,7 @@ public class UserController {
         headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(speakerData, headers);
         ResponseEntity<String> response = restTemplate.exchange(
-            "http://localhost:8081/api/speakers/" + id,
+            "http://ADMIN/api/speakers/" + id,
             HttpMethod.PUT,
             entity,
             String.class
@@ -325,7 +325,7 @@ public class UserController {
         headers.set("Authorization", token);
         HttpEntity<String> entity = new HttpEntity<>(headers);
         ResponseEntity<String> response = restTemplate.exchange(
-            "http://localhost:8081/api/speakers/" + id,
+            "http://ADMIN/api/speakers/" + id,
             HttpMethod.DELETE,
             entity,
             String.class
