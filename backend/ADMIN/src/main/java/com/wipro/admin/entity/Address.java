@@ -27,6 +27,7 @@ public class Address {
     @Size(min=5, max=50, message = "Address must be more than 5 and less than or equal to 50 characters")
     private String address;
 
+    private String city;
     private String state;
     private String country;
 

@@ -24,12 +24,12 @@ public interface EventRepository extends JpaRepository <Event, Integer> {
  
     @Query("SELECT e FROM Event e ORDER BY e.id DESC")
     List<Event> findAllInReverse();
- 
+    
     Page<Event> findByActiveStatus(EventStatus status, Pageable pageable);
     Page<Event> findByActiveStatusOrderByCreationTimeDesc(EventStatus status, Pageable pageable);
     Page<Event> findByEventNameContainingIgnoreCaseAndActiveStatusOrderByCreationTimeDesc(String eventName, EventStatus status, Pageable pageable);
  
     Page<Event> findByEventNameContainingIgnoreCaseAndActiveStatus(String eventName, EventStatus status, Pageable pageable);
  
+    List<Event> findByUserId(Integer userId);
 }
- 

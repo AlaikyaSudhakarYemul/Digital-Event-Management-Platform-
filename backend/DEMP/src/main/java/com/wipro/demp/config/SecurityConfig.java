@@ -22,7 +22,7 @@ public class SecurityConfig {
     private JwtFilter jwtFilter;
  
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable()).cors(withDefaults())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
@@ -50,7 +50,7 @@ public class SecurityConfig {
     }
  
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }

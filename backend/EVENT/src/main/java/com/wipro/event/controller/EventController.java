@@ -1,7 +1,7 @@
 package com.wipro.event.controller;
 
 import java.security.InvalidParameterException;
- 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -98,6 +98,17 @@ public class EventController {
         logger.info("Events with name '{}' fetched successfully", eventName);
         return new ResponseEntity<>(eventService.findByEventName(eventName), HttpStatus.OK);
     }
+    
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<?> getEventsByUserId(@PathVariable int userId){
+        if(userId<=0) {
+            logger.error("Invalid User ID: {}",userId);
+            return ResponseEntity.badRequest().body("Invalid User ID");
+        }
+        logger.info("Events with User ID '{}' is fetched successfully",userId);
+        return new ResponseEntity<>(eventService.findEventsByUserId(userId),HttpStatus.OK);
+    }
+    
  
     @GetMapping("/paginated")
     public ResponseEntity<?> getPaginatedEvents(

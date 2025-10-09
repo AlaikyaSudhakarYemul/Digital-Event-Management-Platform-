@@ -122,7 +122,7 @@ public class EventServiceImpl implements EventService {
         return dto;
     }
 
-    public Event setDTO(EventDTO dto) {
+    /*public Event setDTO(EventDTO dto) {
         Event event = new Event();
         event.setEventId(dto.getEventId());
         event.setEventName(dto.getEventName());
@@ -143,7 +143,7 @@ public class EventServiceImpl implements EventService {
         event.setDeleted(dto.isDeleted());
         event.setVersion(dto.getVersion());
         return event;
-    }
+    }*/
 
     @Override
     public EventDTO createEvent(Event event) {
@@ -300,6 +300,17 @@ public class EventServiceImpl implements EventService {
         }
         // return event;
         return event.stream()
+                .map(this::getDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<EventDTO> findEventsByUserId(int userId){
+        List<Event> events = eventRepository.findByUserId(userId);
+        if (events == null || events.isEmpty()) {
+            throw new EventNotFoundException("No events found for userId: " + userId);
+        }
+        return events.stream()
                 .map(this::getDTO)
                 .collect(Collectors.toList());
     }
