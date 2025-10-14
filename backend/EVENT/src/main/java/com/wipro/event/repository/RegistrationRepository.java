@@ -8,7 +8,7 @@ import com.wipro.event.entity.Registrations;
 
 public interface RegistrationRepository extends JpaRepository<Registrations, Integer> {
 	
-	   List<Registrations> findByUserUserId(int userId);
+	   List<Registrations> findByUserId(int userId);
 	   List<Registrations> findByEventEventId(int eventId);
 	   List<Registrations> findByStatus(String status);
 

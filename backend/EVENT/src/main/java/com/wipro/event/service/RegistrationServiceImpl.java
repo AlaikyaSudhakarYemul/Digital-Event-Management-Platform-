@@ -2,13 +2,16 @@ package com.wipro.event.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -23,6 +26,7 @@ import com.wipro.event.repository.RegistrationRepository;
 
 import jakarta.persistence.OptimisticLockException;
 
+@Service
 public class RegistrationServiceImpl implements RegistrationService {
 	
 	private final RegistrationRepository registrationRepository;
@@ -87,7 +91,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 	public RegistrationsDTO createRegistration(Registrations registration) {
 		
 		   if (registration.getUserId()<=0 || registration.getEvent() == null) {
-	            throw new IllegalArgumentException("User ID should be valud and Event must not be null");
+	            throw new IllegalArgumentException("User ID should be valid and Event must not be null");
 	        }
 
 //	        Users user = getUserById(registration.getUserId());
@@ -123,36 +127,87 @@ public class RegistrationServiceImpl implements RegistrationService {
 	@Override
 	public RegistrationsDTO getRegistrationById(int id) {
 		
-		return null;
+		Registrations registration = registrationRepository.findById(id).orElse(null);
+		
+		
+		return getRegistrationDTO(registration);
 	}
 
 	@Override
 	public List<RegistrationsDTO> getAllRegistrations() {
 		
-		return null;
+		List<Registrations> registrationsList = registrationRepository.findAll();
+		
+		List<RegistrationsDTO> registrationsDTOs = new ArrayList<>();
+		
+		for(Registrations registration : registrationsList) {
+			registrationsDTOs.add(getRegistrationDTO(registration));
+		}
+		
+		return registrationsDTOs;
 	}
 
 	@Override
 	public List<RegistrationsDTO> getRegistrationsByUserId(int userId) {
-		
-		return null;
+	    List<Registrations> registrationsList = registrationRepository.findByUserId(userId);
+	    List<RegistrationsDTO> registrationsDTOs = new ArrayList<>();
+	    for (Registrations registration : registrationsList) {
+	        registrationsDTOs.add(getRegistrationDTO(registration));
+	    }
+	    return registrationsDTOs;
 	}
 
 	@Override
 	public List<RegistrationsDTO> getRegistrationsByEventId(int eventId) {
 		
-		return null;
+		List<Registrations> registrationsList =  registrationRepository.findByEventEventId(eventId);
+		
+		List<RegistrationsDTO> registrationsDTOs = new ArrayList<>();
+		
+		for(Registrations registration : registrationsList) {
+			registrationsDTOs.add(getRegistrationDTO(registration));
+		}
+		
+		return registrationsDTOs;
 	}
 
 	@Override
 	public RegistrationsDTO updateRegistration(Registrations registration) {
 		
-		return null;
+		Optional<Registrations> existing = registrationRepository.findById(registration.getRegistrationId());
+        if (registration.getUserId() <=0 || registration.getEvent() == null) {
+            throw new IllegalArgumentException("User ID should be valid and Event must not be null");
+        }
+
+//        Users user = userRepository.findById(registration.getUser().getUserId())
+//                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+//        registration.setUser(user);
+
+        Event event = eventRepository.findById(registration.getEvent().getEventId())
+                .orElseThrow(() -> new IllegalArgumentException("Event not found"));
+        registration.setEvent(event);
+
+        if (existing.isPresent()) {
+            Registrations existingReg = existing.get();
+            registration.setCreatedOn(existingReg.getCreatedOn());
+            registration.setUpdatedOn(LocalDate.now());
+            registration.setStatus(RegistrationStatus.UPDATED);
+            Registrations updatedReg =  registrationRepository.save(registration);
+            return getRegistrationDTO(updatedReg);
+        }
+        return null;
 	}
 
 	@Override
 	public void deleteRegistration(int id) {
 		
+		 Optional<Registrations> reg = registrationRepository.findById(id);
+	        reg.ifPresent(r -> {
+	            r.setDeletedOn(LocalDate.now());
+	            r.setDeleted(true);
+	            r.setStatus(RegistrationStatus.CANCELLED);
+	            registrationRepository.save(r);
+	        });
 		
 	}
 
