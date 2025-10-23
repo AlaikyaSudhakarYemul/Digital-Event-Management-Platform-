@@ -90,6 +90,7 @@ public class EventServiceImpl implements EventService {
         dto.setEventName(event.getEventName());
         dto.setDescription(event.getDescription());
         dto.setDate(event.getDate());
+        dto.setTime(event.getTime());
         dto.setImage(event.getImage());
         dto.setEventType(event.getEventType());
         dto.setAddressId(event.getAddressId());

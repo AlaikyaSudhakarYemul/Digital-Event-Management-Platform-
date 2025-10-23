@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import com.wipro.event.entity.Address;
@@ -23,6 +24,7 @@ public class EventDTO {
     private String eventName;
     private String description;
     private LocalDate date;
+    private LocalTime time;
     private String image;
     private EventType eventType;
     private Integer addressId;

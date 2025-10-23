@@ -11,6 +11,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestAttributes;
@@ -31,6 +33,9 @@ public class RegistrationServiceImpl implements RegistrationService {
 	
 	private final RegistrationRepository registrationRepository;
 	private final EventRepository eventRepository;
+
+	@Autowired
+    private JavaMailSender mailSender;
 	
 	@Autowired
 	private RestTemplate restTemplate;
@@ -120,6 +125,11 @@ public class RegistrationServiceImpl implements RegistrationService {
 
 	        registration.setDeleted(false);
 	        Registrations registrations = registrationRepository.save(registration);
+			SimpleMailMessage message = new SimpleMailMessage();
+        	message.setTo();
+        	message.setSubject("Event Registration Confirmation");
+        	message.setText("Dear User,\n\nYour registration for the event has been confirmed.\n\nThank you!");
+        	mailSender.send(message);
 	        return getRegistrationDTO(registrations);
 		
 	}

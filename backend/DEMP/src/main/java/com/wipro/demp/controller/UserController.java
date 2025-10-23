@@ -2,7 +2,7 @@ package com.wipro.demp.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+// import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -34,8 +34,8 @@ public class UserController {
         this.restTemplate = restTemplate;
     }
 
-    @Value("${admin.service.url}")
-    private String adminServiceUrl;
+    // @Value("${admin.service.url}")
+    // private String adminServiceUrl;
 
     @GetMapping("/user/{id}")
     public ResponseEntity<?> getUserById(@PathVariable int id) {
