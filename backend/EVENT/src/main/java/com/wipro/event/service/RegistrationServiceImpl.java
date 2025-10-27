@@ -125,12 +125,13 @@ public class RegistrationServiceImpl implements RegistrationService {
 
 	        registration.setDeleted(false);
 	        Registrations registrations = registrationRepository.save(registration);
+	        RegistrationsDTO regDTO = getRegistrationDTO(registrations);
 			SimpleMailMessage message = new SimpleMailMessage();
-        	message.setTo();
+        	message.setTo(regDTO.getUser().getEmail());
         	message.setSubject("Event Registration Confirmation");
-        	message.setText("Dear User,\n\nYour registration for the event has been confirmed.\n\nThank you!");
+        	message.setText("Dear "+regDTO.getUser().getUserName()+",\n\nYour registration for the event "+regDTO.getEvent().getEventName()+" has been confirmed.\n\nThank you!");
         	mailSender.send(message);
-	        return getRegistrationDTO(registrations);
+	        return regDTO;
 		
 	}
 

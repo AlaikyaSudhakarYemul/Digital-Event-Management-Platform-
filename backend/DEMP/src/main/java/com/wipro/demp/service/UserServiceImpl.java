@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.Authentication;
 
@@ -20,7 +22,10 @@ import com.wipro.demp.repository.UserRepository;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    
+
+    @Autowired
+    private JavaMailSender mailSender;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -38,6 +43,12 @@ public class UserServiceImpl implements UserService {
         user.setCreationTime(LocalDateTime.now());
         user.setUpdatedOn(LocalDate.now());
         user.setDeleted(false);
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(user.getEmail());
+        message.setSubject("Account Creation Confirmation");
+        message.setText("Dear "+user.getUserName()+",\n\nWelcome to our Event Platform. Hope you enjoy our website.\n\nThank you!");
+        mailSender.send(message);
 
         return userRepository.save(user);
     }
@@ -95,21 +106,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Users findByEmail(String email) {
-    	
-    	Optional<Users> optionalUser = userRepository.findByEmail(email);
-    	if(optionalUser.isPresent()) {
-    		
-    		Users user = optionalUser.get();
-    		if(user.isDeleted()) {
-    			return null;
-    		}
-    		return optionalUser.get();
-    	}
-    	else {
-    		return null;
-    	}
-    	
-//        return userRepository.findByEmail(email).orElse(null);
+
+        Optional<Users> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isPresent()) {
+
+            Users user = optionalUser.get();
+            if (user.isDeleted()) {
+                return null;
+            }
+            return optionalUser.get();
+        } else {
+            return null;
+        }
+
+        // return userRepository.findByEmail(email).orElse(null);
     }
 
     @Override
