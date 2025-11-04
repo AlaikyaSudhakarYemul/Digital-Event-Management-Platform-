@@ -46,8 +46,18 @@ public class UserServiceImpl implements UserService {
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(user.getEmail());
-        message.setSubject("Account Creation Confirmation");
-        message.setText("Dear "+user.getUserName()+",\n\nWelcome to our Event Platform. Hope you enjoy our website.\n\nThank you!");
+        message.setSubject("EVENTRA Account Creation Confirmation");
+        String msg="Dear "+user.getUserName()+",\n\nWelcome to *EVENTRA* Platform. This is a Confirmation mail for your successful registration on this website.\n"+
+        "We’re excited to have you on board and hope you enjoy exploring everything EVENTRA has to offer.\n\n"
+        		+ "*What you can do next:*\n" +
+                "- Explore upcoming events\n" +
+                "- Customize your profile\n" +
+                "- Connect with other attendees\n\n" +
+                "If you have any questions or need help, feel free to reach out to our support team.\n\n" +
+                "Thank you and welcome again!\n\n" +
+                "Best regards,\n" +
+                "The EVENTRA Team";
+        message.setText(msg);
         mailSender.send(message);
 
         return userRepository.save(user);

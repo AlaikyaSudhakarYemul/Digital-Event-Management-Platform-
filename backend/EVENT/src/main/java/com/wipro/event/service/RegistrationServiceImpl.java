@@ -19,6 +19,7 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
 import com.wipro.event.dto.RegistrationsDTO;
+import com.wipro.event.entity.Address;
 import com.wipro.event.entity.Event;
 import com.wipro.event.entity.RegistrationStatus;
 import com.wipro.event.entity.Registrations;
@@ -33,6 +34,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 	
 	private final RegistrationRepository registrationRepository;
 	private final EventRepository eventRepository;
+	private final EventServiceImpl eventService;
 
 	@Autowired
     private JavaMailSender mailSender;
@@ -40,9 +42,10 @@ public class RegistrationServiceImpl implements RegistrationService {
 	@Autowired
 	private RestTemplate restTemplate;
 	
-	public RegistrationServiceImpl(RegistrationRepository registrationRepository, EventRepository eventRepository) {
+	public RegistrationServiceImpl(RegistrationRepository registrationRepository, EventRepository eventRepository,EventServiceImpl eventService) {
 		this.registrationRepository = registrationRepository;
 		this.eventRepository = eventRepository;
+		this.eventService = eventService;
 	}
 	
 	public Users getUserById(int userId){
@@ -126,11 +129,32 @@ public class RegistrationServiceImpl implements RegistrationService {
 	        registration.setDeleted(false);
 	        Registrations registrations = registrationRepository.save(registration);
 	        RegistrationsDTO regDTO = getRegistrationDTO(registrations);
+	        
 			SimpleMailMessage message = new SimpleMailMessage();
+			
         	message.setTo(regDTO.getUser().getEmail());
         	message.setSubject("Event Registration Confirmation");
-        	message.setText("Dear "+regDTO.getUser().getUserName()+",\n\nYour registration for the event "+regDTO.getEvent().getEventName()+" has been confirmed.\n\nThank you!");
+        	
+        	String msg = "Dear " + regDTO.getUser().getUserName() + ",\n\n" +
+                    "We’re happy to confirm your registration for the event *" + regDTO.getEvent().getEventName() + "!* 🎉\n\n" +
+                    "Here are your registration details:\n" +
+                    "\n" +
+                    "*Event Name:* " + regDTO.getEvent().getEventName() + "\n" +
+                    "*Date:* " + regDTO.getEvent().getDate() +  "\n" +
+                    "*Event Type:* " + regDTO.getEvent().getEventType() + "\n" ;
+        	if(regDTO.getEvent().getAddressId()!=null) {
+        		Address address = eventService.getAddressById(regDTO.getEvent().getAddressId());	
+        		msg+="*Address:* "+address.getAddress()+", "+address.getState()+", "+address.getCountry()+" - "+address.getPincode()+"\n\n";
+        	}
+        	
+            msg += "\nWe look forward to seeing you there! If you have any questions or need assistance, feel free to contact our support team.\n\n" +
+                    "Thank you for choosing *EVENTRA*.\n\n" +
+                    "Best regards,\n" +
+                    "The EVENTRA Team";
+       
+        	message.setText(msg);
         	mailSender.send(message);
+        	
 	        return regDTO;
 		
 	}
