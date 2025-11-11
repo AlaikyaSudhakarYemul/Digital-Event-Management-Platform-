@@ -6,6 +6,9 @@ import { getToken, getAdminToken } from './services/authService'; // Assuming yo
 import AdminLogin from './pages/Admin/AdminLogin'; // Add your admin login component
 import AdminDashboard from './pages/Admin/AdminDashboard'; // Add your admin dashboard component
 import './App.css';
+import EventCreatePage from './components/EventCard/CreateEvent';
+import EventDetails from './pages/EventDetails/EventDetails';
+import OrganizerDashboard from './pages/Organizer/OrganizerDashboard';
 
 // PrivateRoute for user
 function PrivateRoute({ children }) {
@@ -22,6 +25,8 @@ function App() {
     <Routes>
       {/* Public Routes */}
       <Route path="/" element={<Home />} />
+      <Route path="/CreateEvent" element={<EventCreatePage />} />
+      <Route path="/events/:eventId" element={<EventDetails />} />
 
       {/* User Protected Route */}
       <Route
@@ -41,6 +46,16 @@ function App() {
           <AdminPrivateRoute>
             <AdminDashboard />
           </AdminPrivateRoute>
+        }
+      />
+
+      {/* Organizer Dashboard Route */}
+      <Route
+        path="/organizer/dashboard"
+        element={
+          <PrivateRoute>
+            <OrganizerDashboard />
+          </PrivateRoute>
         }
       />
     </Routes>

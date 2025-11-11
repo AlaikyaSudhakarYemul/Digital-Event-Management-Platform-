@@ -82,8 +82,15 @@ const AuthPopup = ({ onClose, onLoginSuccess }) => {
       return;
     }
  
-    const userData = await response.json();
-    login(userData); // Save user in context
+    const data = await response.json();
+    if (data.token) {
+      localStorage.setItem('auth_token', data.token);
+    }
+    if (data.user) {
+      // Save full user object (including userId) in localStorage and context
+      localStorage.setItem('user', JSON.stringify(data.user));
+      login(data.user);
+    }
     if (onLoginSuccess) onLoginSuccess();
     setSubmitted(true);
   } catch (error) {
@@ -110,14 +117,12 @@ const AuthPopup = ({ onClose, onLoginSuccess }) => {
           })
         });
         if (response.ok) {
+          const data = await response.json();
+          if (data.user) {
+            localStorage.setItem('user', JSON.stringify(data.user));
+            login(data.user);
+          }
           setSubmitted(true);
-          // Optionally, auto-login after registration
-          login({
-            name: values.name,
-            email: values.email,
-            role: values.role,
-            contact: values.contact
-          });
           if (onLoginSuccess) onLoginSuccess();
         } else {
           const errorData = await response.json();
