@@ -57,8 +57,10 @@ public class NotificationService {
 
         helper.setTo(user.getEmail());
         helper.setSubject("Event Reminder: " + event.getEventName());
-        helper.setText("This is a reminder for your upcoming event: " + event.getEventName() +
-    ". Please find the calendar invite attached. You will receive a reminder 30 minutes before the event.");
+        helper.setText("Dear " + user.getUserName() + ",\n\n" + "This is a reminder for your upcoming event: " + event.getEventName() +
+    ". \n\nPlease find the calendar invite attached. You will receive a reminder 30 minutes before the event.\n\n" + "Thank you for choosing *EVENTRA*.\n\n" +
+                "Best regards,\n" +
+                "The EVENTRA Team");
         helper.addAttachment("invite.ics", new ByteArrayResource(icsContent.getBytes()), "text/calendar");
 
         mailSender.send(message);
