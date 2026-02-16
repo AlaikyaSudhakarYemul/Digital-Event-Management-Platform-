@@ -4,6 +4,7 @@ package com.wipro.demp.entity;
  
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
  
 import jakarta.persistence.*;
@@ -32,8 +33,11 @@ public class Event {
  
     @NotNull(message = "Date must not be NULL")
     private LocalDate date;
+
+    @NotNull(message="Time must not be NULL")
+    private LocalTime time;
  
-    // saving the image url or path
+    @Lob
     private String image;
  
     @Enumerated(EnumType.STRING)

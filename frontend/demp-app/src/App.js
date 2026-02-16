@@ -8,7 +8,6 @@ import AdminDashboard from './pages/Admin/AdminDashboard'; // Add your admin das
 import './App.css';
 import EventCreatePage from './components/EventCard/CreateEvent';
 import EventDetails from './pages/EventDetails/EventDetails';
-import OrganizerDashboard from './pages/Organizer/OrganizerDashboard';
 
 // PrivateRoute for user
 function PrivateRoute({ children }) {
@@ -46,16 +45,6 @@ function App() {
           <AdminPrivateRoute>
             <AdminDashboard />
           </AdminPrivateRoute>
-        }
-      />
-
-      {/* Organizer Dashboard Route */}
-      <Route
-        path="/organizer/dashboard"
-        element={
-          <PrivateRoute>
-            <OrganizerDashboard />
-          </PrivateRoute>
         }
       />
     </Routes>
