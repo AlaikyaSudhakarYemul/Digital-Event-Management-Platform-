@@ -9,10 +9,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+// import org.springframework.security.access.prepost.PreAuthorize;
+// import org.springframework.security.core.Authentication;
+// import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
  
 import com.wipro.demp.entity.Event;
+// import com.wipro.demp.entity.Registrations;
+// import com.wipro.demp.entity.Users;
 import com.wipro.demp.service.EventService;
+import com.wipro.demp.service.RegistrationService;
  
 @RestController
 @RequestMapping("/api/events")
@@ -21,10 +27,12 @@ public class EventController {
  
     private static final Logger logger = LoggerFactory.getLogger(EventController.class.getName());
     private final EventService eventService;
+    // private final RegistrationService registrationService;
  
-    public EventController(EventService eventService) {
-        logger.info("Initializing EventController with EventService");
+    public EventController(EventService eventService, RegistrationService registrationService) {
+        logger.info("Initializing EventController with EventService and RegistrationService");
         this.eventService = eventService;
+        // this.registrationService = registrationService;
     }
  
     @PostMapping("/create")
@@ -97,6 +105,33 @@ public class EventController {
         logger.info("Events with name '{}' fetched successfully", eventName);
         return new ResponseEntity<>(eventService.findByEventName(eventName), HttpStatus.OK);
     }
+ 
+    // @PreAuthorize("hasRole('USER')")
+    // @PostMapping("/{id}/register")
+    // public ResponseEntity<?> registerForEvent(@PathVariable int id) {
+    //     logger.info("Registering user for event with ID: {}", id);
+    //     if (id < 0) {
+    //         logger.error("Invalid event ID: {}", id);
+    //         return ResponseEntity.badRequest().body("Invalid event ID.");
+    //     }
+    //     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    //     if (authentication == null || !(authentication.getPrincipal() instanceof Users)) {
+    //         logger.error("User not authenticated");
+    //         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated.");
+    //     }
+    //     Users user = (Users) authentication.getPrincipal();
+    //     Event event = eventService.getEventById(id);
+    //     if (event == null) {
+    //         logger.error("Event not found: {}", id);
+    //         return ResponseEntity.notFound().build();
+    //     }
+    //     Registrations registration = new Registrations();
+    //     registration.setUser(user);
+    //     registration.setEvent(event);
+    //     Registrations saved = registrationService.createRegistration(registration);
+    //     logger.info("User {} registered for event {}", user.getUserId(), id);
+    //     return new ResponseEntity<>(saved, HttpStatus.CREATED);
+    // }
  
     @GetMapping("/paginated")
     public ResponseEntity<?> getPaginatedEvents(

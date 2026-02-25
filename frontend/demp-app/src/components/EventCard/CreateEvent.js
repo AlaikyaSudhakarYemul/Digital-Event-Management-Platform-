@@ -23,6 +23,7 @@ const EventCreatePage = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [speakers, setSpeakers] = useState([]);
   const [addresses, setAddresses] = useState([]);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   useEffect(() => {
     fetch('http://localhost:8080/api/speakers')
@@ -73,48 +74,44 @@ const EventCreatePage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    console.log('Form submitted');
+    if (!validateForm()) {
+      console.log('Form validation failed');
+      return;
+    }
+    console.log('Form validation passed');
 
-    
+    const selectedAddress = addresses.find(
+      (addr) => addr.addressId.toString() === formData.addressId.toString()
+    );
 
-  
-const selectedAddress = addresses.find(
-    (addr) => addr.addressId.toString() === formData.addressId.toString()
-  );
+    const eventTypeMap = {
+      "1": "IN_PERSON",
+      "2": "VIRTUAL",
+      "3": "HYBRID"
+    };
 
+    const payload = {
+      eventName: formData.eventName,
+      description: formData.description,
+      date: formData.date,
+      time: formData.time,
+      speakers: [
+        { speakerId: formData.speakerId }
+      ],
+      eventType: eventTypeMap[formData.eventTypeId],
+      image: imageBase64 || null,
+      address: selectedAddress || null,
+      maxAttendees: parseInt(formData.maxAttendees, 10)
+    };
 
-const eventTypeMap = {
-    "1": "IN_PERSON",
-    "2": "VIRTUAL",
-    "3": "HYBRID"
-  };
-
-
-    
-  // Combine date and time into ISO string for LocalDateTime
-  const payload = {
-    eventName: formData.eventName,
-    description: formData.description,
-    date: formData.date, // LocalDate (YYYY-MM-DD)
-    time: formData.time, // LocalTime (HH:mm)
-    speakers: [
-      { speakerId: formData.speakerId }
-    ],
-    eventType: eventTypeMap[formData.eventTypeId],
-    image: imageBase64 || null,
-    address: selectedAddress || null, // ✅ Only full address, no addressId separately
-    maxAttendees: parseInt(formData.maxAttendees, 10)
-  };
-
-
-    console.log(payload);
+    console.log('Payload:', payload);
 
     try {
-      // Get user and token from localStorage
-  const userObj = JSON.parse(localStorage.getItem('user'));
-  const token = localStorage.getItem('auth_token');
-  // Add user to payload
-  payload.user = { userId: userObj?.userId };
+      const userObj = JSON.parse(localStorage.getItem('user'));
+      const token = localStorage.getItem('auth_token');
+      payload.user = { userId: userObj?.userId };
+
       const response = await fetch('http://localhost:8080/api/events/create', {
         method: 'POST',
         headers: {
@@ -131,13 +128,33 @@ const eventTypeMap = {
         return;
       }
 
-      alert('Event created successfully!');
-      navigate('/');
+      console.log('Event created successfully, showing popup');
+      setShowSuccessPopup(true);
     } catch (error) {
       console.error('Error:', error);
       alert('Something went wrong while creating the event!');
     }
   };
+
+  const handlePopupClose = () => {
+    setShowSuccessPopup(false);
+    navigate('/');
+  };
+
+  const SuccessPopup = () => (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+      <div className="bg-white rounded-lg shadow-lg p-8 max-w-sm w-full mx-4">
+        <h2 className="text-2xl font-bold text-green-600 mb-4">Success!</h2>
+        <p className="text-gray-600 mb-6">Your event has been created successfully.</p>
+        <button
+          onClick={handlePopupClose}
+          className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  );
 
   const renderInput = (name, label, icon, type = 'text', readOnly = false) => (
     <div key={name} className="flex flex-col">
@@ -259,13 +276,12 @@ const eventTypeMap = {
               className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-2 px-4 rounded-lg mt-4"
             >
               Create Event
-           
-</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  );
+            </button>
+          </form>
+        </div>
+      </div>
+      {showSuccessPopup && <SuccessPopup />}    </div>
+  );
 };
 
 export default EventCreatePage;

@@ -5,6 +5,7 @@ import Home from './pages/Home/Home';
 import { getToken, getAdminToken } from './services/authService'; // Assuming you have separate tokens
 import AdminLogin from './pages/Admin/AdminLogin'; // Add your admin login component
 import AdminDashboard from './pages/Admin/AdminDashboard'; // Add your admin dashboard component
+import OrganizerDashboard from './pages/OrganizerDashboard/OrganizerDashboard';
 import './App.css';
 import EventCreatePage from './components/EventCard/CreateEvent';
 import EventDetails from './pages/EventDetails/EventDetails';
@@ -47,6 +48,7 @@ function App() {
           </AdminPrivateRoute>
         }
       />
+      <Route path="/organizer/dashboard" element={<OrganizerDashboard />} />
     </Routes>
   );
 }

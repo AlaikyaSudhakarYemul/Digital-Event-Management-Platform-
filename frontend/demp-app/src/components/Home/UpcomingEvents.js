@@ -14,9 +14,15 @@ const UpcomingEvents = ({ navigate }) => {
     const fetchEvents = async () => {
       try {
         const res = await fetch('http://localhost:8080/api/events/all');
-        if (!res.ok) throw new Error('Failed to fetch events');
-        const data = await res.json();
-        setEvents(Array.isArray(data) ? data : []);
+        if (res.status === 404 || res.status === 500) {
+          // If no events or server error, treat as empty
+          setEvents([]);
+        } else if (!res.ok) {
+          throw new Error('Failed to fetch events');
+        } else {
+          const data = await res.json();
+          setEvents(Array.isArray(data) ? data : []);
+        }
       } catch (err) {
         console.error(err);
         setError('Could not load events');
