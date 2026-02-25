@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,8 +22,11 @@ import com.wipro.demp.repository.UserRepository;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
+    @Autowired
+    private JavaMailSender mailSender;
  
-   @Autowired
+    @Autowired
     private PasswordEncoder passwordEncoder;
  
     public UserServiceImpl(UserRepository userRepository) {
@@ -38,6 +43,22 @@ public class UserServiceImpl implements UserService {
         user.setCreationTime(LocalDateTime.now());
         user.setUpdatedOn(LocalDate.now());
         user.setDeleted(false);
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(user.getEmail());
+        message.setSubject("EVENTRA Account Creation Confirmation");
+        String msg="Dear "+user.getUserName()+",\n\nWelcome to *EVENTRA* Platform. This is a Confirmation mail for your successful registration on this website.\n"+
+        "We’re excited to have you on board and hope you enjoy exploring everything EVENTRA has to offer.\n\n"
+        		+ "*What you can do next:*\n" +
+                "- Explore upcoming events\n" +
+                "- Customize your profile\n" +
+                "- Connect with other attendees\n\n" +
+                "If you have any questions or need help, feel free to reach out to our support team.\n\n" +
+                "Thank you and welcome again!\n\n" +
+                "Best regards,\n" +
+                "The EVENTRA Team";
+        message.setText(msg);
+        mailSender.send(message);
  
         return userRepository.save(user);
     }
