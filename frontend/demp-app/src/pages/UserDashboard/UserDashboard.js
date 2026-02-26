@@ -13,6 +13,85 @@ const getUser = () => {
       };
 };
 
+
+// const toJSDateFromLocalDate = (val) => {
+//   if (!val) return null;
+//   try {
+//     if (Array.isArray(val) && val.length >= 3) {
+//       const [y, m, d] = val;
+//       return new Date(y, (m ?? 1) - 1, d ?? 1);
+//     }
+//     // string/Date fallback
+//     const d = new Date(val);
+//     return Number.isNaN(d.getTime()) ? null : d;
+//   } catch {
+//     return null;
+//   }
+// };
+
+
+// const formatDate = (val) => {
+//   const d = toJSDateFromLocalDate(val);
+//   if (!d) return "-";
+//   return d.toLocaleDateString(undefined, {
+//     year: "numeric",
+//     month: "short",
+//     day: "2-digit",
+//   });
+// };
+
+// const formatTime = (val) => {
+//   if (!val) return "-";
+//   try {
+//     if (Array.isArray(val) && val.length >= 2) {
+//       const [h, m] = val;
+//       return String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0");
+//     }
+//     const parts = val.toString().split(":");
+//     const h = parts[0] ?? "00";
+//     const m = parts[1] ?? "00";
+//     return String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0");
+//   } catch {
+//     return val.toString();
+//   }
+// };
+
+
+// const formatAddress = (addr) => {
+//   if (!addr) return "-";
+//   const parts = [
+//     addr.line1,
+//     addr.line2,
+//     addr.city,
+//     addr.state,
+//     addr.pincode,
+//     addr.country,
+//   ]
+//     .filter(Boolean)
+//     .join(", ");
+//   return parts || "-";
+// };
+
+
+// const normalizeRegistration = (reg) => {
+//   const e = reg?.event || {};
+//   return {
+//     registrationId: reg?.registrationId,
+//     registrationStatus: reg?.status, // from Registrations.status (enum)
+//     eventId: e?.eventId,
+//     eventName: e?.eventName,
+//     description: e?.description,
+//     date: e?.date,
+//     time: e?.time,
+//     location: formatAddress(e?.address),
+//     eventType: e?.eventType,
+//     eventStatus: e?.activeStatus,
+
+//   };
+// };
+
+
+
 const UserDashboard = () => {
   const [showProfile, setShowProfile] = useState(false);
   const [userData, setUserData] = useState({
@@ -23,13 +102,27 @@ const UserDashboard = () => {
   const [registeredEvents, setRegisteredEvents] = useState([]);
   const [activeTab, setActiveTab] = useState("home");
 
+  const [loading, setLoading] = useState(false);
+  const [loadError, setLoadError] = useState("");
+  const [search, setSearch] = useState("");
+  const [sortBy, setSortBy] = useState({ key: "date", dir: "asc" });
+
+
   useEffect(() => {
     const user = getUser();
     setUserData(user);
 
+    
+  const uid = user.id || user.userId;
+    if (!uid) {
+      setLoadError("User ID not found. Please sign in again.");
+      return;
+    }
+
+
     const fetchRegisteredEvents = async () => {
       try {
-        const response = await fetch(`/api/user-events?email=${user.email}`);
+        const response = await fetch(`/api/registrations/user/${encodeURIComponent(uid)}`);
         if (response.ok) {
           const data = await response.json();
           setRegisteredEvents(data);
@@ -100,6 +193,9 @@ const UserDashboard = () => {
           {activeTab === "myEvents" && (
             <div className="dashboard-card">
               <h4>My Registered Events</h4>
+              {
+                <p>registeredEvents: {registeredEvents.length}</p>
+              }
               {registeredEvents.length > 0 ? (
                 <ul>
                   {registeredEvents.map((event) => (
