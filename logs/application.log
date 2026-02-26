@@ -699,3 +699,76 @@ This generated password is for development use only. Your security configuration
 2026-02-26T22:39:21.530+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-6] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
 2026-02-26T22:39:21.563+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-6] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
 2026-02-26T22:39:21.563+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-6] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
+2026-02-26T23:05:16.862+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : Fetching all events
+2026-02-26T23:05:16.872+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-02-26T23:05:17.229+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : Fetching all events
+2026-02-26T23:05:17.281+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-02-26T23:07:29.472+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-8] c.wipro.demp.controller.EventController  : Fetching event with ID: 3
+2026-02-26T23:07:29.474+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-8] c.wipro.demp.controller.EventController  : Retrieving event with ID: 3
+2026-02-26T23:07:29.583+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-8] c.wipro.demp.controller.EventController  : Event with ID fetched successfully: com.wipro.demp.entity.Event@5d3379a2
+2026-02-26T23:07:29.641+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-9] c.wipro.demp.controller.EventController  : Fetching event with ID: 3
+2026-02-26T23:07:29.655+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-9] c.wipro.demp.controller.EventController  : Retrieving event with ID: 3
+2026-02-26T23:07:29.672+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-9] c.wipro.demp.controller.EventController  : Event with ID fetched successfully: com.wipro.demp.entity.Event@56079792
+2026-02-26T23:07:34.796+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-3] c.wipro.demp.controller.EventController  : Fetching all events
+2026-02-26T23:07:34.798+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-3] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-02-26T23:07:34.851+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-2] c.wipro.demp.controller.EventController  : Fetching all events
+2026-02-26T23:07:34.852+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-2] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-02-26T23:09:43.218+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : Fetching event with ID: 3
+2026-02-26T23:09:43.222+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : Retrieving event with ID: 3
+2026-02-26T23:09:43.276+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : Event with ID fetched successfully: com.wipro.demp.entity.Event@4f43f80f
+2026-02-26T23:09:43.296+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : Fetching event with ID: 3
+2026-02-26T23:09:43.298+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : Retrieving event with ID: 3
+2026-02-26T23:09:43.310+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : Event with ID fetched successfully: com.wipro.demp.entity.Event@1cb200bb
+2026-02-26T23:09:54.884+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-4] c.wipro.demp.controller.EventController  : Fetching all events
+2026-02-26T23:09:54.890+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-4] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-02-26T23:09:54.962+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-5] c.wipro.demp.controller.EventController  : Fetching all events
+2026-02-26T23:09:54.964+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-5] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-02-26T23:10:11.414+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-9] c.wipro.demp.controller.UserController   : User login attempt for email: pranathichandragiri@gmail.com
+2026-02-26T23:10:11.746+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-9] c.wipro.demp.controller.UserController   : User Pranathi logged in successfully
+2026-02-26T23:10:11.754+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-9] com.wipro.demp.config.JwtUtil            :  Generated JWT Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcmFuYXRoaWNoYW5kcmFnaXJpQGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3NzIxMjc2MTEsImV4cCI6MTc3MjE2MzYxMX0.8eJ_7nNNTvBJivfuw8XL-GEwKRcS38xInahLj-nHf3o
+2026-02-26T23:10:16.071+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-2] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 5
+2026-02-26T23:10:16.108+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-2] c.w.d.controller.RegistrationController  : Registrations for user ID 5 found: 2
+2026-02-26T23:10:16.110+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-2] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 5
+2026-02-26T23:10:23.129+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-6] c.wipro.demp.controller.EventController  : Fetching all events
+2026-02-26T23:10:23.133+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-6] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-02-26T23:10:23.219+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-7] c.wipro.demp.controller.EventController  : Fetching all events
+2026-02-26T23:10:23.223+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-7] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-02-26T23:10:28.190+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : Fetching event with ID: 3
+2026-02-26T23:10:28.195+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : Retrieving event with ID: 3
+2026-02-26T23:10:28.228+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : Event with ID fetched successfully: com.wipro.demp.entity.Event@39215b28
+2026-02-26T23:10:28.245+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : Fetching event with ID: 3
+2026-02-26T23:10:28.247+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : Retrieving event with ID: 3
+2026-02-26T23:10:28.266+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : Event with ID fetched successfully: com.wipro.demp.entity.Event@42688fcc
+2026-02-26T23:10:30.747+05:30 DEBUG 2688 --- [DEMP] [http-nio-8080-exec-5] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcmFuYXRoaWNoYW5kcmFnaXJpQGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3NzIxMjc2MTEsImV4cCI6MTc3MjE2MzYxMX0.8eJ_7nNNTvBJivfuw8XL-GEwKRcS38xInahLj-nHf3o
+2026-02-26T23:10:30.754+05:30 DEBUG 2688 --- [DEMP] [http-nio-8080-exec-5] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcmFuYXRoaWNoYW5kcmFnaXJpQGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3NzIxMjc2MTEsImV4cCI6MTc3MjE2MzYxMX0.8eJ_7nNNTvBJivfuw8XL-GEwKRcS38xInahLj-nHf3o
+2026-02-26T23:10:30.925+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-5] c.w.d.controller.RegistrationController  : Creating registration: com.wipro.demp.entity.Registrations@16af171f
+2026-02-26T23:10:37.858+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-5] c.w.d.service.RegistrationServiceImpl    : Confirmation email sent to pranathichandragiri@gmail.com
+2026-02-26T23:10:42.352+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-5] c.w.d.service.RegistrationServiceImpl    : Calendar invite sent to pranathichandragiri@gmail.com
+2026-02-26T23:10:42.374+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-5] c.w.d.controller.RegistrationController  : Registration created successfully: com.wipro.demp.entity.Registrations@16af171f
+2026-02-26T23:10:49.251+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-8] c.wipro.demp.controller.EventController  : Fetching all events
+2026-02-26T23:10:49.260+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-8] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-02-26T23:10:49.326+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-9] c.wipro.demp.controller.EventController  : Fetching all events
+2026-02-26T23:10:49.326+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-9] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-02-26T23:10:53.429+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-2] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 5
+2026-02-26T23:10:53.513+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-2] c.w.d.controller.RegistrationController  : Registrations for user ID 5 found: 3
+2026-02-26T23:10:53.519+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-2] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 5
+2026-02-26T23:13:57.195+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : Fetching all events
+2026-02-26T23:13:57.200+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-02-26T23:13:57.267+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : Fetching all events
+2026-02-26T23:13:57.269+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-02-26T23:14:24.319+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-5] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 5
+2026-02-26T23:14:24.388+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-5] c.w.d.controller.RegistrationController  : Registrations for user ID 5 found: 3
+2026-02-26T23:14:24.390+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-5] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 5
+2026-02-26T23:15:07.349+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-3] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 5
+2026-02-26T23:15:07.398+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-3] c.w.d.controller.RegistrationController  : Registrations for user ID 5 found: 3
+2026-02-26T23:15:07.398+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-3] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 5
+2026-02-26T23:29:11.969+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-7] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 5
+2026-02-26T23:29:12.060+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-7] c.w.d.controller.RegistrationController  : Registrations for user ID 5 found: 3
+2026-02-26T23:29:12.062+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-7] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 5
+2026-02-26T23:29:14.552+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : Fetching all events
+2026-02-26T23:29:14.556+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-02-26T23:29:30.366+05:30  INFO 2688 --- [DEMP] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2026-02-26T23:29:30.385+05:30  INFO 2688 --- [DEMP] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2026-02-26T23:29:30.424+05:30  INFO 2688 --- [DEMP] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-02-26T23:29:30.449+05:30  INFO 2688 --- [DEMP] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-02-26T23:29:30.466+05:30  INFO 2688 --- [DEMP] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

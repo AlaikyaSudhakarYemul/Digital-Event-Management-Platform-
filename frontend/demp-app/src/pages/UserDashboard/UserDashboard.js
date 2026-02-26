@@ -9,7 +9,6 @@ const getUser = () => {
     const raw = localStorage.getItem("user");
     if (!raw) return null;
     const u = JSON.parse(raw);
-    // normalize both id | userId for convenience
     const id = u?.id ?? u?.userId ?? null;
     return id ? { ...u, id } : null;
   } catch {
@@ -20,12 +19,10 @@ const getUser = () => {
 const toJSDateFromLocalDate = (val) => {
   if (!val) return null;
   try {
-    // Support [yyyy, mm, dd]
     if (Array.isArray(val) && val.length >= 3) {
       const [y, m, d] = val;
       return new Date(y, (m ?? 1) - 1, d ?? 1);
     }
-    // string/Date
     const d = new Date(val);
     return Number.isNaN(d.getTime()) ? null : d;
   } catch {
@@ -59,8 +56,7 @@ const formatTime = (val) => {
   }
 };
 
-// Normalize possible registration payloads from the API
-// Expected registration: { registrationId, status, event: {...} }
+// Normalize registration payload to what UI needs
 const normalizeRegistration = (reg) => ({
   registrationId: reg.registrationId,
   eventName: reg.event.eventName,
@@ -136,9 +132,7 @@ const UserDashboard = () => {
         )}`;
 
         const response = await fetch(url, {
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
         });
 
         if (!response.ok) {
@@ -149,7 +143,6 @@ const UserDashboard = () => {
         }
 
         const raw = await response.json();
-        // Support array or single object from backend
         const arr = Array.isArray(raw) ? raw : raw ? [raw] : [];
         const normalized = arr.map(normalizeRegistration).filter(Boolean);
 
@@ -250,19 +243,25 @@ const UserDashboard = () => {
             </div>
           )}
 
-          <div className="dashboard-cards">
-  <div className="dashboard-card" style={{ padding: 0, textAlign: "left" }}>
-    <div className="card-header">Upcoming Events</div>
-    <div className="card-body">
-      {!hasUser && (
-        <p className="muted">Please sign in again—user ID missing in localStorage.</p>
-      )}
+          {activeTab === "home" && (
+            <>
+              <div className="dashboard-cards">
+                {/* Upcoming Events card from user's registrations — Sophisticated single-line list */}
+                <div className="dashboard-card" style={{ padding: 0, textAlign: "left" }}>
+                  <div className="card-header">Upcoming Events</div>
+                  <div className="card-body">
+                    {!hasUser && (
+                      <p className="muted">
+                        Please sign in again—user ID missing in localStorage.
+                      </p>
+                    )}
 
-      {hasUser && (
-        <>
-          {upcomingMyEvents.length > 0 ? (
-            <ol className="upcoming-inline">
-              {upcomingMyEvents.slice(0, 5).map((e, idx) => {
+                    {hasUser && (
+                      <>
+                        {upcomingMyEvents.length > 0 ? (
+                          <ol className="upcoming-inline">
+                            
+{upcomingMyEvents.slice(0, 5).map((e, idx) => {
                 const dateStr = formatDate(e.date);
                 const timeStr = e.time ? formatTime(e.time) : "";
                 const parts = [dateStr, timeStr].filter(Boolean);
@@ -281,18 +280,20 @@ const UserDashboard = () => {
                     <span className="upcoming-inline__sep"> — </span>
                     <span className="upcoming-inline__meta">{rightSide}</span>
                   </li>
-                );
-              })}
-            </ol>
-          ) : !loading ? (
-            <p>No upcoming events in your registrations.</p>
-          ) : null}
-        </>
-      )}
-    </div>
-  </div>
-</div>
 
+                              );
+                            })}
+                          </ol>
+                        ) : !loading ? (
+                          <p>No upcoming events in your registrations.</p>
+                        ) : null}
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
 
           {activeTab === "myEvents" && (
             <div className="dashboard-card">
