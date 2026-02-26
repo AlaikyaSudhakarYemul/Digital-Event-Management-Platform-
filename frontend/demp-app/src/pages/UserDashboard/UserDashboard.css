@@ -26,8 +26,38 @@
 .sidebar-menu li {
   margin: 20px 0;
   cursor: pointer;
+  padding: 8px 10px;
+  color: #e5e7eb;
+  position: relative;
+  border-radius: 6px;
 }
 
+/* Hover effect (subtle, keeps colors intact) */
+.sidebar-menu li:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ACTIVE ITEM — clean highlight, no color change */
+.sidebar-menu li.active {
+  font-weight: 600;
+  color: #ffffff;
+  position: relative;
+}
+
+/* LEFT ACCENT BAR for active item */
+.sidebar-menu li.active::before {
+  content: "";
+  position: absolute;
+  left: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 70%;
+  background: #9ca3af;
+  border-radius: 4px;
+}
+
+/* MAIN SECTION */
 .dashboard-main {
   flex: 1;
   padding: 30px;
@@ -122,7 +152,7 @@
   margin-left: 10px;
 }
 
-/* Modal styles */
+/* MODAL */
 .profile-modal {
   position: fixed;
   top: 0;
@@ -153,4 +183,156 @@
   padding: 8px 18px;
   border-radius: 5px;
   cursor: pointer;
+}
+
+/* CARD STYLES */
+.dashboard-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card-header {
+  background: #eef2f7;
+  padding: 12px 16px;
+  font-weight: 600;
+  text-align: center;
+  color: #111827;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.card-body {
+  padding: 16px 18px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 6px;
+}
+
+.events-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  background: #fff;
+}
+
+.events-table th,
+.events-table td {
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.events-table thead th {
+  background: #f3f4f6;
+  font-weight: 600;
+}
+
+.events-table tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+
+.muted {
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+/* Force numbers to show even if a reset removed list-style */
+.numbered-list {
+  list-style: decimal;
+  padding-left: 1.25rem;  /* indent to make room for numbers */
+  margin: 0;
+}
+
+.numbered-list li {
+  margin-bottom: 10px;
+}
+
+/* Optional: style the number marker */
+.numbered-list li::marker {
+  font-weight: 600;
+  color: #374151; /* neutral dark */
+}
+
+/* Sophisticated single-line, hyphen-separated, numbered list */
+.upcoming-inline {
+  list-style: none;              /* we draw our own number pill */
+  padding-left: 0;
+  margin: 0;
+}
+
+.upcoming-inline__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 10px 0;
+  line-height: 1.4;
+  white-space: nowrap;           /* keep each item on one visual line */
+  overflow: hidden;              /* hide overflow */
+  text-overflow: ellipsis;       /* show ... if too long */
+  border-radius: 6px;            /* for nicer focus ring */
+  padding: 2px 4px;              /* small breathing space */
+  transition: background 0.15s ease-in-out;
+}
+
+.upcoming-inline__item:hover {
+  background: rgba(0, 0, 0, 0.03);   /* subtle hover */
+}
+
+/* Keyboard accessibility */
+.upcoming-inline__item:focus-visible {
+  outline: 2px solid #9ca3af;        /* neutral focus ring */
+  outline-offset: 2px;
+}
+
+/* Number pill */
+.upcoming-inline__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;                    /* fits 2-digit numbers */
+  border-radius: 999px;
+  background: #eef2f7;               /* subtle gray-blue */
+  color: #111827;
+  font-weight: 600;
+  font-size: 12px;
+  flex: 0 0 auto;
+}
+
+/* Title (left segment) — truncates first if space is tight */
+.upcoming-inline__title {
+  font-weight: 600;
+  color: #111827;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Separator — consistent dash */
+.upcoming-inline__sep {
+  color: #6b7280;
+  flex: 0 0 auto;
+}
+
+/* Meta (right segment: date — time — location) */
+.upcoming-inline__meta {
+  color: #374151;                   /* darker than muted */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Responsive: allow meta to wrap on very narrow screens,
+   but keep event title readable */
+@media (max-width: 560px) {
+  .upcoming-inline__item {
+    white-space: normal;           /* allow wrapping on small screens */
+  }
+  .upcoming-inline__meta {
+    display: inline;               /* wrap inline naturally */
+    white-space: normal;
+  }
 }

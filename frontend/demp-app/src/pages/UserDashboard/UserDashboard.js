@@ -1,212 +1,343 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import "./UserDashboard.css";
 
-// Helper to get user info from localStorage
+/** ---- Helpers ---- **/
+
+// Get user from localStorage and ensure we have an id/userId
 const getUser = () => {
-  const user = localStorage.getItem("user");
-  return user
-    ? JSON.parse(user)
-    : {
-        userName: "",
-        email: "",
-        contactNo: "",
-      };
+  try {
+    const raw = localStorage.getItem("user");
+    if (!raw) return null;
+    const u = JSON.parse(raw);
+    // normalize both id | userId for convenience
+    const id = u?.id ?? u?.userId ?? null;
+    return id ? { ...u, id } : null;
+  } catch {
+    return null;
+  }
 };
 
+const toJSDateFromLocalDate = (val) => {
+  if (!val) return null;
+  try {
+    // Support [yyyy, mm, dd]
+    if (Array.isArray(val) && val.length >= 3) {
+      const [y, m, d] = val;
+      return new Date(y, (m ?? 1) - 1, d ?? 1);
+    }
+    // string/Date
+    const d = new Date(val);
+    return Number.isNaN(d.getTime()) ? null : d;
+  } catch {
+    return null;
+  }
+};
 
-// const toJSDateFromLocalDate = (val) => {
-//   if (!val) return null;
-//   try {
-//     if (Array.isArray(val) && val.length >= 3) {
-//       const [y, m, d] = val;
-//       return new Date(y, (m ?? 1) - 1, d ?? 1);
-//     }
-//     // string/Date fallback
-//     const d = new Date(val);
-//     return Number.isNaN(d.getTime()) ? null : d;
-//   } catch {
-//     return null;
-//   }
-// };
+const formatDate = (val) => {
+  const d = toJSDateFromLocalDate(val);
+  if (!d) return "-";
+  return d.toLocaleDateString(undefined, {
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+  });
+};
 
+const formatTime = (val) => {
+  if (!val) return "-";
+  try {
+    if (Array.isArray(val) && val.length >= 2) {
+      const [h, m] = val;
+      return String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0");
+    }
+    const parts = val.toString().split(":");
+    const h = parts[0] ?? "00";
+    const m = parts[1] ?? "00";
+    return String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0");
+  } catch {
+    return val.toString();
+  }
+};
 
-// const formatDate = (val) => {
-//   const d = toJSDateFromLocalDate(val);
-//   if (!d) return "-";
-//   return d.toLocaleDateString(undefined, {
-//     year: "numeric",
-//     month: "short",
-//     day: "2-digit",
-//   });
-// };
+// Normalize possible registration payloads from the API
+// Expected registration: { registrationId, status, event: {...} }
+const normalizeRegistration = (reg) => ({
+  registrationId: reg.registrationId,
+  eventName: reg.event.eventName,
+  date: reg.event.date,
+  time: reg.event.time,
+  location: [
+    reg.event.address.address,
+    reg.event.address.state,
+    reg.event.address.pincode,
+    reg.event.address.country,
+  ]
+    .filter(Boolean)
+    .join(", "),
+});
 
-// const formatTime = (val) => {
-//   if (!val) return "-";
-//   try {
-//     if (Array.isArray(val) && val.length >= 2) {
-//       const [h, m] = val;
-//       return String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0");
-//     }
-//     const parts = val.toString().split(":");
-//     const h = parts[0] ?? "00";
-//     const m = parts[1] ?? "00";
-//     return String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0");
-//   } catch {
-//     return val.toString();
-//   }
-// };
+/** Upcoming checker: today or future */
+const isUpcoming = (isoDate) => {
+  if (!isoDate) return false;
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const d = new Date(isoDate);
+    d.setHours(0, 0, 0, 0);
+    return d >= today;
+  } catch {
+    return false;
+  }
+};
 
+/** ---- Component ---- **/
 
-// const formatAddress = (addr) => {
-//   if (!addr) return "-";
-//   const parts = [
-//     addr.line1,
-//     addr.line2,
-//     addr.city,
-//     addr.state,
-//     addr.pincode,
-//     addr.country,
-//   ]
-//     .filter(Boolean)
-//     .join(", ");
-//   return parts || "-";
-// };
-
-
-// const normalizeRegistration = (reg) => {
-//   const e = reg?.event || {};
-//   return {
-//     registrationId: reg?.registrationId,
-//     registrationStatus: reg?.status, // from Registrations.status (enum)
-//     eventId: e?.eventId,
-//     eventName: e?.eventName,
-//     description: e?.description,
-//     date: e?.date,
-//     time: e?.time,
-//     location: formatAddress(e?.address),
-//     eventType: e?.eventType,
-//     eventStatus: e?.activeStatus,
-
-//   };
-// };
-
-
+const API_BASE =
+  process.env.REACT_APP_API_BASE_URL ?? "http://localhost:8080";
 
 const UserDashboard = () => {
   const [showProfile, setShowProfile] = useState(false);
-  const [userData, setUserData] = useState({
-    userName: "",
-    email: "",
-    contactNo: "",
-  });
-  const [registeredEvents, setRegisteredEvents] = useState([]);
+  const [userData, setUserData] = useState(null);
+  const [registeredEvents, setRegisteredEvents] = useState([]); // normalized registrations
   const [activeTab, setActiveTab] = useState("home");
 
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState("");
-  const [search, setSearch] = useState("");
-  const [sortBy, setSortBy] = useState({ key: "date", dir: "asc" });
 
-
+  // read user once on mount
   useEffect(() => {
-    const user = getUser();
-    setUserData(user);
-
-    
-  const uid = user.id || user.userId;
-    if (!uid) {
-      setLoadError("User ID not found. Please sign in again.");
+    const u = getUser();
+    if (!u) {
+      setLoadError(
+        "User not found in this browser. Please sign in again so we can load your records."
+      );
+      setUserData(null);
       return;
     }
+    setUserData({
+      userName: u.userName ?? u.name ?? "",
+      email: u.email ?? "",
+      contactNo: u.contactNo ?? u.phone ?? "",
+      id: u.id,
+    });
+  }, []);
 
+  // fetch registrations when we have a user id
+  useEffect(() => {
+    if (!userData?.id) return;
+    let cancelled = false;
 
     const fetchRegisteredEvents = async () => {
+      setLoading(true);
+      setLoadError("");
       try {
-        const response = await fetch(`/api/registrations/user/${encodeURIComponent(uid)}`);
-        if (response.ok) {
-          const data = await response.json();
-          setRegisteredEvents(data);
-        } else {
-          console.error("Failed to fetch registered events");
+        const url = `${API_BASE}/api/registrations/user/${encodeURIComponent(
+          userData.id
+        )}`;
+
+        const response = await fetch(url, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          const msg = `Failed to fetch registrations (HTTP ${response.status})`;
+          console.error(msg);
+          if (!cancelled) setLoadError(msg);
+          return;
         }
-      } catch (error) {
-        console.error("Error fetching registered events:", error);
+
+        const raw = await response.json();
+        // Support array or single object from backend
+        const arr = Array.isArray(raw) ? raw : raw ? [raw] : [];
+        const normalized = arr.map(normalizeRegistration).filter(Boolean);
+
+        if (!cancelled) {
+          setRegisteredEvents(normalized);
+        }
+      } catch (err) {
+        console.error("Error fetching registered events:", err);
+        if (!cancelled)
+          setLoadError(
+            "Could not load registrations. Please try again or check your network / backend."
+          );
+      } finally {
+        if (!cancelled) setLoading(false);
       }
     };
 
     fetchRegisteredEvents();
-  }, []);
+    return () => {
+      cancelled = true;
+    };
+  }, [userData?.id]);
+
+  const hasUser = !!userData?.id;
+
+  /** ---- Derived: Upcoming events from user's registrations (Option B) ---- **/
+  const upcomingMyEvents = useMemo(() => {
+    return (registeredEvents || [])
+      .filter((r) => isUpcoming(r.date))
+      .sort((a, b) => new Date(a.date) - new Date(b.date));
+  }, [registeredEvents]);
 
   return (
     <div className="dashboard-container">
       <aside className="sidebar">
         <div className="sidebar-header">User Dashboard</div>
         <ul className="sidebar-menu">
-          <li onClick={() => setActiveTab("home")}>Home</li>
-          <li onClick={() => setActiveTab("myEvents")}>My Events</li>
-          <li onClick={() => setActiveTab("tickets")}>My Tickets</li>
-          <li onClick={() => setActiveTab("settings")}>Settings</li>
+          <li
+            className={activeTab === "home" ? "active" : ""}
+            onClick={() => setActiveTab("home")}
+          >
+            Home
+          </li>
+          <li
+            className={activeTab === "myEvents" ? "active" : ""}
+            onClick={() => setActiveTab("myEvents")}
+          >
+            My Events
+          </li>
+          <li
+            className={activeTab === "tickets" ? "active" : ""}
+            onClick={() => setActiveTab("tickets")}
+          >
+            My Tickets
+          </li>
+          <li
+            className={activeTab === "settings" ? "active" : ""}
+            onClick={() => setActiveTab("settings")}
+          >
+            Settings
+          </li>
         </ul>
       </aside>
 
       <main className="dashboard-main">
         <header className="dashboard-header">
           <div>
-            <div className="user-name">{userData.userName}</div>
-            <div className="user-email">{userData.email}</div>
+            <div className="user-name">{userData?.userName || "-"}</div>
+            <div className="user-email">{userData?.email || "-"}</div>
           </div>
-          <button className="profile-btn" onClick={() => setShowProfile(true)}>
+          <button
+            className="profile-btn"
+            onClick={() => setShowProfile(true)}
+            disabled={!hasUser}
+            title={!hasUser ? "Sign in to view profile" : "Open profile"}
+          >
             Profile
           </button>
         </header>
 
         <section className="dashboard-content">
-          {activeTab === "home" && (
-            <>
-              <div className="dashboard-cards">
-                <div className="dashboard-card">[Upcoming Events Placeholder]</div>
-                <div className="dashboard-card">[Tickets Summary Placeholder]</div>
-              </div>
-              <div className="recent-activities">
-                <h4>Recent Activities</h4>
-                <ul>
-                  <li>
-                    <span className="activity-icon">📅</span>
-                    Registered for Tech Meetup 2025{" "}
-                    <span className="activity-date">18 May 2025</span>
-                  </li>
-                  <li>
-                    <span className="activity-icon">🎫</span>
-                    Downloaded ticket for Music Fest{" "}
-                    <span className="activity-date">16 May 2025</span>
-                  </li>
-                  <li>
-                    <span className="activity-icon">✉️</span>
-                    Sent inquiry to Organizer{" "}
-                    <span className="activity-date">14 May 2025</span>
-                  </li>
-                </ul>
-              </div>
-            </>
+          {/* Global load/error banners */}
+          {loading && (
+            <div className="info-banner">Loading your registrations…</div>
           )}
+          {loadError && (
+            <div className="error-banner">
+              {loadError}
+              {!hasUser ? (
+                <>
+                  {" "}
+                  <span className="hint">
+                    (Expected localStorage key: "user" with fields including
+                    "id" or "userId")
+                  </span>
+                </>
+              ) : null}
+            </div>
+          )}
+
+          <div className="dashboard-cards">
+  <div className="dashboard-card" style={{ padding: 0, textAlign: "left" }}>
+    <div className="card-header">Upcoming Events</div>
+    <div className="card-body">
+      {!hasUser && (
+        <p className="muted">Please sign in again—user ID missing in localStorage.</p>
+      )}
+
+      {hasUser && (
+        <>
+          {upcomingMyEvents.length > 0 ? (
+            <ol className="upcoming-inline">
+              {upcomingMyEvents.slice(0, 5).map((e, idx) => {
+                const dateStr = formatDate(e.date);
+                const timeStr = e.time ? formatTime(e.time) : "";
+                const parts = [dateStr, timeStr].filter(Boolean);
+                const rightSide = parts.join(" — ");
+                const fullText = `${idx + 1}) ${e.eventName} — ${rightSide}`;
+
+                return (
+                  <li
+                    key={`${e.eventName}-${e.date}-${idx}`}
+                    className="upcoming-inline__item"
+                    title={fullText}            // tooltip with full text
+                    tabIndex={0}                 // keyboard focusable
+                  >
+                    <span className="upcoming-inline__num">{idx + 1}</span>
+                    <span className="upcoming-inline__title">{e.eventName}</span>
+                    <span className="upcoming-inline__sep"> — </span>
+                    <span className="upcoming-inline__meta">{rightSide}</span>
+                  </li>
+                );
+              })}
+            </ol>
+          ) : !loading ? (
+            <p>No upcoming events in your registrations.</p>
+          ) : null}
+        </>
+      )}
+    </div>
+  </div>
+</div>
+
 
           {activeTab === "myEvents" && (
             <div className="dashboard-card">
-              <h4>My Registered Events</h4>
-              {
-                <p>registeredEvents: {registeredEvents.length}</p>
-              }
-              {registeredEvents.length > 0 ? (
-                <ul>
-                  {registeredEvents.map((event) => (
-                    <li key={event.id}>
-                      <strong>{event.title}</strong> – {event.date}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>No events registered yet.</p>
-              )}
+              <div className="card-header">My Registered Events</div>
+
+              <div className="card-body">
+                {!hasUser && (
+                  <p className="muted">
+                    Please sign in again—user ID missing in localStorage.
+                  </p>
+                )}
+
+                {hasUser && (
+                  <>
+                    {registeredEvents.length > 0 ? (
+                      <div className="table-wrapper">
+                        <table className="events-table">
+                          <thead>
+                            <tr>
+                              <th>S.No.</th>
+                              <th>Event Name</th>
+                              <th>Date</th>
+                              <th>Time</th>
+                              <th>Location</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {registeredEvents.map((r, idx) => (
+                              <tr key={r.registrationId ?? `${r.eventId}-${idx}`}>
+                                <td>{idx + 1}</td>
+                                <td>{r.eventName}</td>
+                                <td>{formatDate(r.date)}</td>
+                                <td>{r.time ? formatTime(r.time) : "-"}</td>
+                                <td>{r.location || "-"}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    ) : !loading ? (
+                      <p>No events registered yet.</p>
+                    ) : null}
+                  </>
+                )}
+              </div>
             </div>
           )}
 
@@ -226,17 +357,20 @@ const UserDashboard = () => {
         </section>
 
         {showProfile && (
-          <div className="profile-modal">
-            <div className="profile-modal-content">
+          <div className="profile-modal" onClick={() => setShowProfile(false)}>
+            <div
+              className="profile-modal-content"
+              onClick={(e) => e.stopPropagation()}
+            >
               <h3>User Profile</h3>
               <p>
-                <strong>Name:</strong> {userData.userName}
+                <strong>Name:</strong> {userData?.userName || "-"}
               </p>
               <p>
-                <strong>Email:</strong> {userData.email}
+                <strong>Email:</strong> {userData?.email || "-"}
               </p>
               <p>
-                <strong>Contact No:</strong> {userData.contactNo}
+                <strong>Contact No:</strong> {userData?.contactNo || "-"}
               </p>
               <button className="close-btn" onClick={() => setShowProfile(false)}>
                 Close
