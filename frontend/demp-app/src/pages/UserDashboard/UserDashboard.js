@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import "./UserDashboard.css";
 
-/** ---- Helpers ---- **/
-
-// Get user from localStorage and ensure we have an id/userId
 const getUser = () => {
   try {
     const raw = localStorage.getItem("user");
@@ -56,7 +54,7 @@ const formatTime = (val) => {
   }
 };
 
-// Normalize registration payload to what UI needs
+
 const normalizeRegistration = (reg) => ({
   registrationId: reg.registrationId,
   eventName: reg.event.eventName,
@@ -72,7 +70,7 @@ const normalizeRegistration = (reg) => ({
     .join(", "),
 });
 
-/** Upcoming checker: today or future */
+
 const isUpcoming = (isoDate) => {
   if (!isoDate) return false;
   try {
@@ -92,15 +90,39 @@ const API_BASE =
   process.env.REACT_APP_API_BASE_URL ?? "http://localhost:8080";
 
 const UserDashboard = () => {
+  const navigate = useNavigate();
   const [showProfile, setShowProfile] = useState(false);
   const [userData, setUserData] = useState(null);
-  const [registeredEvents, setRegisteredEvents] = useState([]); // normalized registrations
+  const [registeredEvents, setRegisteredEvents] = useState([]); 
   const [activeTab, setActiveTab] = useState("home");
 
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState("");
 
-  // read user once on mount
+  const handleLogout = useCallback(() => {
+  try {
+    
+    ['user','userToken','token','adminToken','access_token','refresh_token']
+      .forEach(k => localStorage.removeItem(k));
+    sessionStorage.clear();
+    document.cookie.split(';').forEach(c => {
+      const [name] = c.split('=');
+      if (name) {
+        document.cookie = `${name.trim()}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+      }
+    });
+  } catch (e) {
+    console.warn('Logout cleanup warning:', e);
+  }
+
+  window.location.replace('/'); 
+}, []);
+
+  const goHome = useCallback(() => {
+    navigate("/");
+  }, [navigate]);
+
+
   useEffect(() => {
     const u = getUser();
     if (!u) {
@@ -118,7 +140,7 @@ const UserDashboard = () => {
     });
   }, []);
 
-  // fetch registrations when we have a user id
+
   useEffect(() => {
     if (!userData?.id) return;
     let cancelled = false;
@@ -168,7 +190,7 @@ const UserDashboard = () => {
 
   const hasUser = !!userData?.id;
 
-  /** ---- Derived: Upcoming events from user's registrations (Option B) ---- **/
+
   const upcomingMyEvents = useMemo(() => {
     return (registeredEvents || [])
       .filter((r) => isUpcoming(r.date))
@@ -177,34 +199,58 @@ const UserDashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <aside className="sidebar">
-        <div className="sidebar-header">User Dashboard</div>
-        <ul className="sidebar-menu">
-          <li
-            className={activeTab === "home" ? "active" : ""}
-            onClick={() => setActiveTab("home")}
+
+      <aside className="sidebar sidebar--with-bottom">
+        <div>
+          <div className="sidebar-header">User Dashboard</div>
+          <ul className="sidebar-menu">
+            <li
+              className={activeTab === "home" ? "active" : ""}
+              onClick={() => setActiveTab("home")}
+            >
+              Home
+            </li>
+            <li
+              className={activeTab === "myEvents" ? "active" : ""}
+              onClick={() => setActiveTab("myEvents")}
+            >
+              My Events
+            </li>
+            <li
+              className={activeTab === "tickets" ? "active" : ""}
+              onClick={() => setActiveTab("tickets")}
+            >
+              My Tickets
+            </li>
+            <li
+              className={activeTab === "settings" ? "active" : ""}
+              onClick={() => setActiveTab("settings")}
+            >
+              Settings
+            </li>
+          </ul>
+        </div>
+
+
+        <div className="sidebar-bottom no-sep">
+          <button
+            type="button"
+            className="home-btn"
+            onClick={goHome}
+            title="Go to Home"
           >
-            Home
-          </li>
-          <li
-            className={activeTab === "myEvents" ? "active" : ""}
-            onClick={() => setActiveTab("myEvents")}
+            Go to Home
+          </button>
+
+          <button
+            type="button"
+            className="logout-btn"
+            onClick={handleLogout}  
+            title="Logout and go to Home"
           >
-            My Events
-          </li>
-          <li
-            className={activeTab === "tickets" ? "active" : ""}
-            onClick={() => setActiveTab("tickets")}
-          >
-            My Tickets
-          </li>
-          <li
-            className={activeTab === "settings" ? "active" : ""}
-            onClick={() => setActiveTab("settings")}
-          >
-            Settings
-          </li>
-        </ul>
+            Logout
+          </button>
+        </div>
       </aside>
 
       <main className="dashboard-main">
@@ -224,7 +270,7 @@ const UserDashboard = () => {
         </header>
 
         <section className="dashboard-content">
-          {/* Global load/error banners */}
+
           {loading && (
             <div className="info-banner">Loading your registrations…</div>
           )}
@@ -246,7 +292,7 @@ const UserDashboard = () => {
           {activeTab === "home" && (
             <>
               <div className="dashboard-cards">
-                {/* Upcoming Events card from user's registrations — Sophisticated single-line list */}
+
                 <div className="dashboard-card" style={{ padding: 0, textAlign: "left" }}>
                   <div className="card-header">Upcoming Events</div>
                   <div className="card-body">
@@ -260,27 +306,25 @@ const UserDashboard = () => {
                       <>
                         {upcomingMyEvents.length > 0 ? (
                           <ol className="upcoming-inline">
-                            
-{upcomingMyEvents.slice(0, 5).map((e, idx) => {
-                const dateStr = formatDate(e.date);
-                const timeStr = e.time ? formatTime(e.time) : "";
-                const parts = [dateStr, timeStr].filter(Boolean);
-                const rightSide = parts.join(" — ");
-                const fullText = `${idx + 1}) ${e.eventName} — ${rightSide}`;
+                            {upcomingMyEvents.slice(0, 5).map((e, idx) => {
+                              const dateStr = formatDate(e.date);
+                              const timeStr = e.time ? formatTime(e.time) : "";
+                              const parts = [dateStr, timeStr].filter(Boolean);
+                              const rightSide = parts.join(" — ");
+                              const fullText = `${idx + 1}) ${e.eventName} — ${rightSide}`;
 
-                return (
-                  <li
-                    key={`${e.eventName}-${e.date}-${idx}`}
-                    className="upcoming-inline__item"
-                    title={fullText}            // tooltip with full text
-                    tabIndex={0}                 // keyboard focusable
-                  >
-                    <span className="upcoming-inline__num">{idx + 1}</span>
-                    <span className="upcoming-inline__title">{e.eventName}</span>
-                    <span className="upcoming-inline__sep"> — </span>
-                    <span className="upcoming-inline__meta">{rightSide}</span>
-                  </li>
-
+                              return (
+                                <li
+                                  key={`${e.eventName}-${e.date}-${idx}`}
+                                  className="upcoming-inline__item"
+                                  title={fullText}
+                                  tabIndex={0}
+                                >
+                                  <span className="upcoming-inline__num">{idx + 1}</span>
+                                  <span className="upcoming-inline__title">{e.eventName}</span>
+                                  <span className="upcoming-inline__sep"> — </span>
+                                  <span className="upcoming-inline__meta">{rightSide}</span>
+                                </li>
                               );
                             })}
                           </ol>

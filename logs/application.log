@@ -1,85 +1,143 @@
-2026-02-26T12:01:32.748+05:30  INFO 30920 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : Starting DempApplication using Java 22.0.1 with PID 30920 (D:\trumio\Digital-Event-Management-Platform-\backend\DEMP\target\classes started by AL20581021 in D:\trumio\Digital-Event-Management-Platform-)
-2026-02-26T12:01:32.750+05:30 DEBUG 30920 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : Running with Spring Boot v3.5.5, Spring v6.2.10
-2026-02-26T12:01:32.754+05:30  INFO 30920 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : No active profile set, falling back to 1 default profile: "default"
-2026-02-26T12:01:33.099+05:30  INFO 30920 --- [DEMP] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-02-26T12:01:33.227+05:30  INFO 30920 --- [DEMP] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 112 ms. Found 5 JPA repository interfaces.
-2026-02-26T12:01:33.513+05:30  INFO 30920 --- [DEMP] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
-2026-02-26T12:01:33.521+05:30  INFO 30920 --- [DEMP] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2026-02-26T12:01:33.525+05:30  INFO 30920 --- [DEMP] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.44]
-2026-02-26T12:01:33.737+05:30  INFO 30920 --- [DEMP] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2026-02-26T12:01:33.740+05:30  INFO 30920 --- [DEMP] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 976 ms
-2026-02-26T12:01:33.754+05:30  INFO 30920 --- [DEMP] [restartedMain] com.wipro.demp.config.JwtUtil            : JWT Secret Key initialized successfully.
-2026-02-26T12:01:33.776+05:30 DEBUG 30920 --- [DEMP] [restartedMain] com.wipro.demp.config.JwtFilter          : Filter 'jwtFilter' configured for use
-2026-02-26T12:01:33.837+05:30  INFO 30920 --- [DEMP] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-02-26T12:01:33.843+05:30  INFO 30920 --- [DEMP] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2026-02-26T12:01:33.860+05:30  INFO 30920 --- [DEMP] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-02-26T12:01:33.864+05:30  INFO 30920 --- [DEMP] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-8 - Starting...
-2026-02-26T12:01:33.886+05:30  INFO 30920 --- [DEMP] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-8 - Added connection com.mysql.cj.jdbc.ConnectionImpl@708b2846
-2026-02-26T12:01:33.891+05:30  INFO 30920 --- [DEMP] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-8 - Start completed.
-2026-02-26T12:01:33.893+05:30  WARN 30920 --- [DEMP] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2026-02-26T12:01:33.893+05:30  WARN 30920 --- [DEMP] [restartedMain] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2026-02-26T12:01:33.897+05:30  INFO 30920 --- [DEMP] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
-	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-8)']
+2026-03-02T11:47:08.476+05:30  INFO 11260 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : Starting DempApplication using Java 22.0.1 with PID 11260 (D:\trumio\Digital-Event-Management-Platform-\backend\DEMP\target\classes started by AL20581021 in D:\trumio\Digital-Event-Management-Platform-)
+2026-03-02T11:47:08.535+05:30 DEBUG 11260 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : Running with Spring Boot v3.5.5, Spring v6.2.10
+2026-03-02T11:47:08.553+05:30  INFO 11260 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : No active profile set, falling back to 1 default profile: "default"
+2026-03-02T11:47:08.757+05:30  INFO 11260 --- [DEMP] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-03-02T11:47:08.761+05:30  INFO 11260 --- [DEMP] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-03-02T11:47:11.975+05:30  INFO 11260 --- [DEMP] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-02T11:47:12.209+05:30  INFO 11260 --- [DEMP] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 209 ms. Found 5 JPA repository interfaces.
+2026-03-02T11:47:14.361+05:30  INFO 11260 --- [DEMP] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-03-02T11:47:14.415+05:30  INFO 11260 --- [DEMP] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-03-02T11:47:14.416+05:30  INFO 11260 --- [DEMP] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.44]
+2026-03-02T11:47:14.716+05:30  INFO 11260 --- [DEMP] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-03-02T11:47:14.719+05:30  INFO 11260 --- [DEMP] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5955 ms
+2026-03-02T11:47:14.995+05:30  INFO 11260 --- [DEMP] [restartedMain] com.wipro.demp.config.JwtUtil            : JWT Secret Key initialized successfully.
+2026-03-02T11:47:15.100+05:30 DEBUG 11260 --- [DEMP] [restartedMain] com.wipro.demp.config.JwtFilter          : Filter 'jwtFilter' configured for use
+2026-03-02T11:47:15.453+05:30  INFO 11260 --- [DEMP] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-03-02T11:47:15.617+05:30  INFO 11260 --- [DEMP] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.26.Final
+2026-03-02T11:47:15.703+05:30  INFO 11260 --- [DEMP] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-03-02T11:47:16.475+05:30  INFO 11260 --- [DEMP] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-02T11:47:16.575+05:30  INFO 11260 --- [DEMP] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-03-02T11:47:16.795+05:30  INFO 11260 --- [DEMP] [restartedMain] i.opentelemetry.api.GlobalOpenTelemetry  : AutoConfiguredOpenTelemetrySdk found on classpath but automatic configuration is disabled. To enable, run your JVM with -Dotel.java.global-autoconfigure.enabled=true
+2026-03-02T11:47:17.329+05:30  INFO 11260 --- [DEMP] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3b1f9e57
+2026-03-02T11:47:17.337+05:30  INFO 11260 --- [DEMP] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-03-02T11:47:17.482+05:30  WARN 11260 --- [DEMP] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-03-02T11:47:17.485+05:30  WARN 11260 --- [DEMP] [restartedMain] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2026-03-02T11:47:17.526+05:30  INFO 11260 --- [DEMP] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
 	Database driver: undefined/unknown
 	Database version: 8.0
 	Autocommit mode: undefined/unknown
 	Isolation level: undefined/unknown
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
-2026-02-26T12:01:34.144+05:30  INFO 30920 --- [DEMP] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-02-26T12:01:34.263+05:30  INFO 30920 --- [DEMP] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-02-26T12:01:34.488+05:30  INFO 30920 --- [DEMP] [restartedMain] c.w.demp.controller.AddressController    : Initializing AddressController with AddressService
-2026-02-26T12:01:34.646+05:30  INFO 30920 --- [DEMP] [restartedMain] c.wipro.demp.controller.EventController  : Initializing EventController with EventService and RegistrationService
-2026-02-26T12:01:34.655+05:30  INFO 30920 --- [DEMP] [restartedMain] c.w.d.controller.RegistrationController  : Initializing RegistrationController with RegistrationService
-2026-02-26T12:01:34.663+05:30  INFO 30920 --- [DEMP] [restartedMain] c.wipro.demp.controller.UserController   : Initializing UserController with UserService, JwtUtil, and PasswordEncoder
-2026-02-26T12:01:34.698+05:30  WARN 30920 --- [DEMP] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2026-02-26T12:01:34.809+05:30  WARN 30920 --- [DEMP] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+2026-03-02T11:47:20.181+05:30  INFO 11260 --- [DEMP] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-02T11:47:20.570+05:30  INFO 11260 --- [DEMP] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-02T11:47:21.393+05:30  INFO 11260 --- [DEMP] [restartedMain] c.w.demp.controller.AddressController    : Initializing AddressController with AddressService
+2026-03-02T11:47:21.796+05:30  INFO 11260 --- [DEMP] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-03-02T11:47:23.156+05:30  INFO 11260 --- [DEMP] [restartedMain] c.wipro.demp.controller.EventController  : Initializing EventController with EventService and RegistrationService
+2026-03-02T11:47:23.168+05:30  INFO 11260 --- [DEMP] [restartedMain] c.w.d.controller.RegistrationController  : Initializing RegistrationController with RegistrationService
+2026-03-02T11:47:23.197+05:30  INFO 11260 --- [DEMP] [restartedMain] c.wipro.demp.controller.UserController   : Initializing UserController with UserService, JwtUtil, and PasswordEncoder
+2026-03-02T11:47:23.363+05:30  WARN 11260 --- [DEMP] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-02T11:47:23.849+05:30  WARN 11260 --- [DEMP] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
 
-Using generated security password: 7ffaa749-71fa-49b9-9245-f55964a7a11b
+Using generated security password: eaae4b03-325c-4722-a4f8-23430ffc0f7e
 
 This generated password is for development use only. Your security configuration must be updated before running your application in production.
 
-2026-02-26T12:01:34.813+05:30  INFO 30920 --- [DEMP] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
-2026-02-26T12:01:34.912+05:30  INFO 30920 --- [DEMP] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
-2026-02-26T12:01:34.932+05:30  INFO 30920 --- [DEMP] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
-2026-02-26T12:01:34.940+05:30  INFO 30920 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : Started DempApplication in 2.284 seconds (process running for 1468.814)
-2026-02-26T12:01:34.943+05:30  INFO 30920 --- [DEMP] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
-2026-02-26T12:01:51.640+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-02-26T12:01:51.640+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2026-02-26T12:01:51.640+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
-2026-02-26T12:01:51.657+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-2] c.wipro.demp.controller.UserController   : User login attempt for email: edulapuramrajashekar91@gmail.com
-2026-02-26T12:01:51.768+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-2] c.wipro.demp.controller.UserController   : User Edulapuram Rajasekhar logged in successfully
-2026-02-26T12:01:51.768+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-2] com.wipro.demp.config.JwtUtil            :  Generated JWT Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlZHVsYXB1cmFtcmFqYXNoZWthcjkxQGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3NzIwODc1MTEsImV4cCI6MTc3MjEyMzUxMX0.9JKP3W89Xte36Ksr_QawgaBoo4wynvA9F8NAp7tyV3c
-2026-02-26T12:01:54.428+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-3] c.wipro.demp.controller.EventController  : Fetching event with ID: 2
-2026-02-26T12:01:54.430+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-3] c.wipro.demp.controller.EventController  : Retrieving event with ID: 2
-2026-02-26T12:01:54.436+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-3] c.wipro.demp.controller.EventController  : Event with ID fetched successfully: com.wipro.demp.entity.Event@ab17237
-2026-02-26T12:01:54.455+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-4] c.wipro.demp.controller.EventController  : Fetching event with ID: 2
-2026-02-26T12:01:54.456+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-4] c.wipro.demp.controller.EventController  : Retrieving event with ID: 2
-2026-02-26T12:01:54.464+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-4] c.wipro.demp.controller.EventController  : Event with ID fetched successfully: com.wipro.demp.entity.Event@7f81c116
-2026-02-26T12:01:56.418+05:30 DEBUG 30920 --- [DEMP] [http-nio-8080-exec-6] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlZHVsYXB1cmFtcmFqYXNoZWthcjkxQGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3NzIwODc1MTEsImV4cCI6MTc3MjEyMzUxMX0.9JKP3W89Xte36Ksr_QawgaBoo4wynvA9F8NAp7tyV3c
-2026-02-26T12:01:56.418+05:30 DEBUG 30920 --- [DEMP] [http-nio-8080-exec-6] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlZHVsYXB1cmFtcmFqYXNoZWthcjkxQGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3NzIwODc1MTEsImV4cCI6MTc3MjEyMzUxMX0.9JKP3W89Xte36Ksr_QawgaBoo4wynvA9F8NAp7tyV3c
-2026-02-26T12:01:56.428+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-6] c.w.d.controller.RegistrationController  : Creating registration: com.wipro.demp.entity.Registrations@790b0774
-2026-02-26T12:02:01.052+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-6] c.w.d.service.RegistrationServiceImpl    : Confirmation email sent to edulapuramrajashekar91@gmail.com
-2026-02-26T12:02:02.206+05:30 ERROR 30920 --- [DEMP] [http-nio-8080-exec-6] c.w.d.service.RegistrationServiceImpl    : Failed to send calendar invite for registration id 5: I/O error on GET request for "http://DEMP/api/user/4": DEMP
+2026-03-02T11:47:23.880+05:30  INFO 11260 --- [DEMP] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2026-03-02T11:47:24.628+05:30  INFO 11260 --- [DEMP] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-03-02T11:47:24.742+05:30  INFO 11260 --- [DEMP] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-03-02T11:47:24.774+05:30  INFO 11260 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : Started DempApplication in 17.617 seconds (process running for 18.991)
+2026-03-02T11:48:17.430+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-02T11:48:17.432+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-03-02T11:48:17.436+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2026-03-02T11:48:17.618+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : Fetching all events
+2026-03-02T11:48:17.619+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-03-02T11:49:25.898+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-6] c.wipro.demp.controller.UserController   : User login attempt for email: admin@gmail.com
+2026-03-02T11:49:26.080+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-6] c.wipro.demp.controller.UserController   : User Admin logged in successfully
+2026-03-02T11:49:26.163+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-6] com.wipro.demp.config.JwtUtil            :  Generated JWT Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:49:26.213+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-7] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:49:26.214+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-4] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:49:26.242+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-7] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:49:26.242+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-4] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:49:26.248+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-4] c.w.demp.controller.AddressController    : Fetching all addresses
+2026-03-02T11:49:26.249+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-7] c.w.demp.controller.SpeakerController    : Fetching all speakers
+2026-03-02T11:49:26.301+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-4] c.w.demp.controller.AddressController    : All addresses fetched successfully, count: 3
+2026-03-02T11:49:26.309+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-7] c.w.demp.controller.SpeakerController    : Total speakers found: 3
+2026-03-02T11:49:26.309+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-1] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:49:26.333+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-1] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:49:26.358+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-2] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:49:26.354+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-1] c.w.demp.controller.AddressController    : Fetching all addresses
+2026-03-02T11:49:26.367+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-2] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:49:26.379+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-2] c.w.demp.controller.SpeakerController    : Fetching all speakers
+2026-03-02T11:49:26.388+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-1] c.w.demp.controller.AddressController    : All addresses fetched successfully, count: 3
+2026-03-02T11:49:26.448+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-2] c.w.demp.controller.SpeakerController    : Total speakers found: 3
+2026-03-02T11:54:23.142+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-3] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:54:23.146+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-3] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:54:23.170+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-3] c.w.demp.controller.AddressController    : Creating address: com.wipro.demp.entity.Address@19be6991
+2026-03-02T11:54:23.239+05:30 ERROR 11260 --- [DEMP] [http-nio-8080-exec-3] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: jakarta.validation.ConstraintViolationException: Validation failed for classes [com.wipro.demp.entity.Address] during persist time for groups [jakarta.validation.groups.Default, ]
+List of constraint violations:[
+	ConstraintViolationImpl{interpolatedMessage='Address must be more than 5 and less than or equal to 50 characters', propertyPath=address, rootBeanClass=class com.wipro.demp.entity.Address, messageTemplate='Address must be more than 5 and less than or equal to 50 characters'}
+]] with root cause
 
-org.springframework.web.client.ResourceAccessException: I/O error on GET request for "http://DEMP/api/user/4": DEMP
-	at org.springframework.web.client.RestTemplate.createResourceAccessException(RestTemplate.java:926) ~[spring-web-6.2.10.jar:6.2.10]
-	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:906) ~[spring-web-6.2.10.jar:6.2.10]
-	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:801) ~[spring-web-6.2.10.jar:6.2.10]
-	at org.springframework.web.client.RestTemplate.getForObject(RestTemplate.java:415) ~[spring-web-6.2.10.jar:6.2.10]
-	at com.wipro.demp.service.NotificationService.sendCalendarInvite(NotificationService.java:32) ~[classes/:na]
-	at com.wipro.demp.service.RegistrationServiceImpl.createRegistration(RegistrationServiceImpl.java:138) ~[classes/:na]
+jakarta.validation.ConstraintViolationException: Validation failed for classes [com.wipro.demp.entity.Address] during persist time for groups [jakarta.validation.groups.Default, ]
+List of constraint violations:[
+	ConstraintViolationImpl{interpolatedMessage='Address must be more than 5 and less than or equal to 50 characters', propertyPath=address, rootBeanClass=class com.wipro.demp.entity.Address, messageTemplate='Address must be more than 5 and less than or equal to 50 characters'}
+]
+	at org.hibernate.boot.beanvalidation.BeanValidationEventListener.validate(BeanValidationEventListener.java:176) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.boot.beanvalidation.BeanValidationEventListener.onPreInsert(BeanValidationEventListener.java:88) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.action.internal.EntityIdentityInsertAction.preInsert(EntityIdentityInsertAction.java:201) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.action.internal.EntityIdentityInsertAction.execute(EntityIdentityInsertAction.java:79) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.spi.ActionQueue.execute(ActionQueue.java:682) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.spi.ActionQueue.addResolvedEntityInsertAction(ActionQueue.java:293) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.spi.ActionQueue.addInsertAction(ActionQueue.java:274) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.spi.ActionQueue.addAction(ActionQueue.java:324) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.internal.AbstractSaveEventListener.addInsertAction(AbstractSaveEventListener.java:394) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.internal.AbstractSaveEventListener.performSaveOrReplicate(AbstractSaveEventListener.java:308) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.internal.AbstractSaveEventListener.performSave(AbstractSaveEventListener.java:224) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.internal.AbstractSaveEventListener.saveWithGeneratedId(AbstractSaveEventListener.java:136) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.internal.DefaultPersistEventListener.entityIsTransient(DefaultPersistEventListener.java:177) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.internal.DefaultPersistEventListener.persist(DefaultPersistEventListener.java:95) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.internal.DefaultPersistEventListener.onPersist(DefaultPersistEventListener.java:79) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.internal.DefaultPersistEventListener.onPersist(DefaultPersistEventListener.java:55) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:127) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.internal.SessionImpl.firePersist(SessionImpl.java:761) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.internal.SessionImpl.persist(SessionImpl.java:745) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.orm.jpa.ExtendedEntityManagerCreator$ExtendedEntityManagerInvocationHandler.invoke(ExtendedEntityManagerCreator.java:364) ~[spring-orm-6.2.10.jar:6.2.10]
+	at jdk.proxy4/jdk.proxy4.$Proxy148.persist(Unknown Source) ~[na:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler.invoke(SharedEntityManagerCreator.java:320) ~[spring-orm-6.2.10.jar:6.2.10]
+	at jdk.proxy4/jdk.proxy4.$Proxy148.persist(Unknown Source) ~[na:na]
+	at org.springframework.data.jpa.repository.support.SimpleJpaRepository.save(SimpleJpaRepository.java:654) ~[spring-data-jpa-3.5.3.jar:3.5.3]
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
 	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:360) ~[spring-aop-6.2.10.jar:6.2.10]
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.2.10.jar:6.2.10]
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.2.10.jar:6.2.10]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker$RepositoryFragmentMethodInvoker.lambda$new$0(RepositoryMethodInvoker.java:277) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:170) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.data.repository.core.support.RepositoryComposition$RepositoryFragments.invoke(RepositoryComposition.java:515) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.data.repository.core.support.RepositoryComposition.invoke(RepositoryComposition.java:284) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$ImplementationMethodExecutionInterceptor.invoke(RepositoryFactorySupport.java:734) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.10.jar:6.2.10]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:174) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:149) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.10.jar:6.2.10]
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:69) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.10.jar:6.2.10]
 	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380) ~[spring-tx-6.2.10.jar:6.2.10]
 	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) ~[spring-tx-6.2.10.jar:6.2.10]
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.10.jar:6.2.10]
-	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728) ~[spring-aop-6.2.10.jar:6.2.10]
-	at com.wipro.demp.service.RegistrationServiceImpl$$SpringCGLIB$$0.createRegistration(<generated>) ~[classes/:na]
-	at com.wipro.demp.controller.RegistrationController.createRegistration(RegistrationController.java:38) ~[classes/:na]
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138) ~[spring-tx-6.2.10.jar:6.2.10]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.10.jar:6.2.10]
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:165) ~[spring-data-jpa-3.5.3.jar:3.5.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.10.jar:6.2.10]
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223) ~[spring-aop-6.2.10.jar:6.2.10]
+	at jdk.proxy4/jdk.proxy4.$Proxy151.save(Unknown Source) ~[na:na]
+	at com.wipro.demp.service.AddressServiceImpl.addAddress(AddressServiceImpl.java:30) ~[classes/:na]
+	at com.wipro.demp.controller.AddressController.createAddress(AddressController.java:45) ~[classes/:na]
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
 	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:258) ~[spring-web-6.2.10.jar:6.2.10]
@@ -187,119 +245,77 @@ org.springframework.web.client.ResourceAccessException: I/O error on GET request
 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
 	at java.base/java.lang.Thread.run(Thread.java:1570) ~[na:na]
-Caused by: java.net.UnknownHostException: DEMP
-	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:567) ~[na:na]
-	at java.base/java.net.Socket.connect(Socket.java:752) ~[na:na]
-	at java.base/java.net.Socket.connect(Socket.java:687) ~[na:na]
-	at java.base/sun.net.NetworkClient.doConnect(NetworkClient.java:183) ~[na:na]
-	at java.base/sun.net.www.http.HttpClient.openServer(HttpClient.java:531) ~[na:na]
-	at java.base/sun.net.www.http.HttpClient.openServer(HttpClient.java:636) ~[na:na]
-	at java.base/sun.net.www.http.HttpClient.<init>(HttpClient.java:280) ~[na:na]
-	at java.base/sun.net.www.http.HttpClient.New(HttpClient.java:386) ~[na:na]
-	at java.base/sun.net.www.http.HttpClient.New(HttpClient.java:408) ~[na:na]
-	at java.base/sun.net.www.protocol.http.HttpURLConnection.getNewHttpClient(HttpURLConnection.java:1310) ~[na:na]
-	at java.base/sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1243) ~[na:na]
-	at java.base/sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:1129) ~[na:na]
-	at java.base/sun.net.www.protocol.http.HttpURLConnection.connect(HttpURLConnection.java:1058) ~[na:na]
-	at org.springframework.http.client.SimpleClientHttpRequest.executeInternal(SimpleClientHttpRequest.java:79) ~[spring-web-6.2.10.jar:6.2.10]
-	at org.springframework.http.client.AbstractStreamingClientHttpRequest.executeInternal(AbstractStreamingClientHttpRequest.java:71) ~[spring-web-6.2.10.jar:6.2.10]
-	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:81) ~[spring-web-6.2.10.jar:6.2.10]
-	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:900) ~[spring-web-6.2.10.jar:6.2.10]
-	... 122 common frames omitted
 
-2026-02-26T12:02:02.224+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-6] c.w.d.controller.RegistrationController  : Registration created successfully: com.wipro.demp.entity.Registrations@790b0774
-2026-02-26T12:02:03.390+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-7] c.wipro.demp.controller.EventController  : Fetching all events
-2026-02-26T12:02:03.391+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-7] c.wipro.demp.controller.EventController  : All events fetched successfully
-2026-02-26T12:02:03.417+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-8] c.wipro.demp.controller.EventController  : Fetching all events
-2026-02-26T12:02:03.418+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-8] c.wipro.demp.controller.EventController  : All events fetched successfully
-2026-02-26T12:05:59.283+05:30  INFO 30920 --- [DEMP] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
-2026-02-26T12:05:59.286+05:30  INFO 30920 --- [DEMP] [Thread-31] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
-2026-02-26T12:05:59.318+05:30  INFO 30920 --- [DEMP] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
-2026-02-26T12:05:59.322+05:30  INFO 30920 --- [DEMP] [Thread-31] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2026-02-26T12:05:59.324+05:30  INFO 30920 --- [DEMP] [Thread-31] com.zaxxer.hikari.HikariDataSource       : HikariPool-8 - Shutdown initiated...
-2026-02-26T12:05:59.343+05:30  INFO 30920 --- [DEMP] [Thread-31] com.zaxxer.hikari.HikariDataSource       : HikariPool-8 - Shutdown completed.
-2026-02-26T12:05:59.512+05:30  INFO 30920 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : Starting DempApplication using Java 22.0.1 with PID 30920 (D:\trumio\Digital-Event-Management-Platform-\backend\DEMP\target\classes started by AL20581021 in D:\trumio\Digital-Event-Management-Platform-)
-2026-02-26T12:05:59.515+05:30 DEBUG 30920 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : Running with Spring Boot v3.5.5, Spring v6.2.10
-2026-02-26T12:05:59.516+05:30  INFO 30920 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : No active profile set, falling back to 1 default profile: "default"
-2026-02-26T12:05:59.910+05:30  INFO 30920 --- [DEMP] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-02-26T12:06:00.049+05:30  INFO 30920 --- [DEMP] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 56 ms. Found 5 JPA repository interfaces.
-2026-02-26T12:06:00.222+05:30  INFO 30920 --- [DEMP] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
-2026-02-26T12:06:00.235+05:30  INFO 30920 --- [DEMP] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2026-02-26T12:06:00.275+05:30  INFO 30920 --- [DEMP] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.44]
-2026-02-26T12:06:00.422+05:30  INFO 30920 --- [DEMP] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2026-02-26T12:06:00.424+05:30  INFO 30920 --- [DEMP] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 904 ms
-2026-02-26T12:06:00.442+05:30  INFO 30920 --- [DEMP] [restartedMain] com.wipro.demp.config.JwtUtil            : JWT Secret Key initialized successfully.
-2026-02-26T12:06:00.452+05:30 DEBUG 30920 --- [DEMP] [restartedMain] com.wipro.demp.config.JwtFilter          : Filter 'jwtFilter' configured for use
-2026-02-26T12:06:00.488+05:30  INFO 30920 --- [DEMP] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-02-26T12:06:00.495+05:30  INFO 30920 --- [DEMP] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2026-02-26T12:06:00.506+05:30  INFO 30920 --- [DEMP] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-02-26T12:06:00.513+05:30  INFO 30920 --- [DEMP] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-9 - Starting...
-2026-02-26T12:06:00.530+05:30  INFO 30920 --- [DEMP] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-9 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2e6d4217
-2026-02-26T12:06:00.532+05:30  INFO 30920 --- [DEMP] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-9 - Start completed.
-2026-02-26T12:06:00.534+05:30  WARN 30920 --- [DEMP] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2026-02-26T12:06:00.535+05:30  WARN 30920 --- [DEMP] [restartedMain] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2026-02-26T12:06:00.537+05:30  INFO 30920 --- [DEMP] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
-	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-9)']
-	Database driver: undefined/unknown
-	Database version: 8.0
-	Autocommit mode: undefined/unknown
-	Isolation level: undefined/unknown
-	Minimum pool size: undefined/unknown
-	Maximum pool size: undefined/unknown
-2026-02-26T12:06:00.715+05:30  INFO 30920 --- [DEMP] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-02-26T12:06:00.788+05:30  INFO 30920 --- [DEMP] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-02-26T12:06:00.881+05:30  INFO 30920 --- [DEMP] [restartedMain] c.w.demp.controller.AddressController    : Initializing AddressController with AddressService
-2026-02-26T12:06:01.026+05:30  INFO 30920 --- [DEMP] [restartedMain] c.wipro.demp.controller.EventController  : Initializing EventController with EventService and RegistrationService
-2026-02-26T12:06:01.038+05:30  INFO 30920 --- [DEMP] [restartedMain] c.w.d.controller.RegistrationController  : Initializing RegistrationController with RegistrationService
-2026-02-26T12:06:01.054+05:30  INFO 30920 --- [DEMP] [restartedMain] c.wipro.demp.controller.UserController   : Initializing UserController with UserService, JwtUtil, and PasswordEncoder
-2026-02-26T12:06:01.082+05:30  WARN 30920 --- [DEMP] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2026-02-26T12:06:01.184+05:30  WARN 30920 --- [DEMP] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+2026-03-02T11:54:23.303+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-7] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:54:23.305+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-7] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:54:23.307+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-7] c.w.demp.controller.AddressController    : Fetching all addresses
+2026-03-02T11:54:23.316+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-7] c.w.demp.controller.AddressController    : All addresses fetched successfully, count: 3
+2026-03-02T11:57:31.707+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-5] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:57:31.708+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-5] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:57:31.715+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-5] c.w.demp.controller.AddressController    : Creating address: com.wipro.demp.entity.Address@51315bad
+2026-03-02T11:57:31.728+05:30 ERROR 11260 --- [DEMP] [http-nio-8080-exec-5] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: jakarta.validation.ConstraintViolationException: Validation failed for classes [com.wipro.demp.entity.Address] during persist time for groups [jakarta.validation.groups.Default, ]
+List of constraint violations:[
+	ConstraintViolationImpl{interpolatedMessage='Address must be more than 5 and less than or equal to 50 characters', propertyPath=address, rootBeanClass=class com.wipro.demp.entity.Address, messageTemplate='Address must be more than 5 and less than or equal to 50 characters'}
+]] with root cause
 
-Using generated security password: 7246ca64-6e89-4e47-861f-7db8e356d90e
-
-This generated password is for development use only. Your security configuration must be updated before running your application in production.
-
-2026-02-26T12:06:01.187+05:30  INFO 30920 --- [DEMP] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
-2026-02-26T12:06:01.291+05:30  INFO 30920 --- [DEMP] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
-2026-02-26T12:06:01.318+05:30  INFO 30920 --- [DEMP] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
-2026-02-26T12:06:01.325+05:30  INFO 30920 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : Started DempApplication in 1.869 seconds (process running for 1735.201)
-2026-02-26T12:06:01.330+05:30  INFO 30920 --- [DEMP] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
-2026-02-26T12:06:24.221+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-02-26T12:06:24.221+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2026-02-26T12:06:24.221+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
-2026-02-26T12:06:24.231+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-4] c.wipro.demp.controller.UserController   : User login attempt for email: pranathichandragiri@gmail.com
-2026-02-26T12:06:24.343+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-4] c.wipro.demp.controller.UserController   : User Pranathi logged in successfully
-2026-02-26T12:06:24.345+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-4] com.wipro.demp.config.JwtUtil            :  Generated JWT Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcmFuYXRoaWNoYW5kcmFnaXJpQGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3NzIwODc3ODQsImV4cCI6MTc3MjEyMzc4NH0.lj2j6shc61hzmKgPc2_ETcNg8LS7k67B1v4k3uw2ZGE
-2026-02-26T12:06:27.479+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-5] c.wipro.demp.controller.EventController  : Fetching event with ID: 2
-2026-02-26T12:06:27.479+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-5] c.wipro.demp.controller.EventController  : Retrieving event with ID: 2
-2026-02-26T12:06:27.497+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-5] c.wipro.demp.controller.EventController  : Event with ID fetched successfully: com.wipro.demp.entity.Event@130f9f8f
-2026-02-26T12:06:27.510+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-8] c.wipro.demp.controller.EventController  : Fetching event with ID: 2
-2026-02-26T12:06:27.510+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-8] c.wipro.demp.controller.EventController  : Retrieving event with ID: 2
-2026-02-26T12:06:27.517+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-8] c.wipro.demp.controller.EventController  : Event with ID fetched successfully: com.wipro.demp.entity.Event@671b2754
-2026-02-26T12:06:29.187+05:30 DEBUG 30920 --- [DEMP] [http-nio-8080-exec-2] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcmFuYXRoaWNoYW5kcmFnaXJpQGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3NzIwODc3ODQsImV4cCI6MTc3MjEyMzc4NH0.lj2j6shc61hzmKgPc2_ETcNg8LS7k67B1v4k3uw2ZGE
-2026-02-26T12:06:29.187+05:30 DEBUG 30920 --- [DEMP] [http-nio-8080-exec-2] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcmFuYXRoaWNoYW5kcmFnaXJpQGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3NzIwODc3ODQsImV4cCI6MTc3MjEyMzc4NH0.lj2j6shc61hzmKgPc2_ETcNg8LS7k67B1v4k3uw2ZGE
-2026-02-26T12:06:29.204+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-2] c.w.d.controller.RegistrationController  : Creating registration: com.wipro.demp.entity.Registrations@4afce2db
-2026-02-26T12:06:33.817+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-2] c.w.d.service.RegistrationServiceImpl    : Confirmation email sent to pranathichandragiri@gmail.com
-2026-02-26T12:06:34.986+05:30 ERROR 30920 --- [DEMP] [http-nio-8080-exec-2] c.w.d.service.RegistrationServiceImpl    : Failed to send calendar invite for registration id 6: I/O error on GET request for "http://DEMP/api/user/5": DEMP
-
-org.springframework.web.client.ResourceAccessException: I/O error on GET request for "http://DEMP/api/user/5": DEMP
-	at org.springframework.web.client.RestTemplate.createResourceAccessException(RestTemplate.java:926) ~[spring-web-6.2.10.jar:6.2.10]
-	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:906) ~[spring-web-6.2.10.jar:6.2.10]
-	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:801) ~[spring-web-6.2.10.jar:6.2.10]
-	at org.springframework.web.client.RestTemplate.getForObject(RestTemplate.java:415) ~[spring-web-6.2.10.jar:6.2.10]
-	at com.wipro.demp.service.NotificationService.sendCalendarInvite(NotificationService.java:32) ~[classes/:na]
-	at com.wipro.demp.service.RegistrationServiceImpl.createRegistration(RegistrationServiceImpl.java:138) ~[classes/:na]
+jakarta.validation.ConstraintViolationException: Validation failed for classes [com.wipro.demp.entity.Address] during persist time for groups [jakarta.validation.groups.Default, ]
+List of constraint violations:[
+	ConstraintViolationImpl{interpolatedMessage='Address must be more than 5 and less than or equal to 50 characters', propertyPath=address, rootBeanClass=class com.wipro.demp.entity.Address, messageTemplate='Address must be more than 5 and less than or equal to 50 characters'}
+]
+	at org.hibernate.boot.beanvalidation.BeanValidationEventListener.validate(BeanValidationEventListener.java:176) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.boot.beanvalidation.BeanValidationEventListener.onPreInsert(BeanValidationEventListener.java:88) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.action.internal.EntityIdentityInsertAction.preInsert(EntityIdentityInsertAction.java:201) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.action.internal.EntityIdentityInsertAction.execute(EntityIdentityInsertAction.java:79) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.spi.ActionQueue.execute(ActionQueue.java:682) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.spi.ActionQueue.addResolvedEntityInsertAction(ActionQueue.java:293) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.spi.ActionQueue.addInsertAction(ActionQueue.java:274) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.spi.ActionQueue.addAction(ActionQueue.java:324) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.internal.AbstractSaveEventListener.addInsertAction(AbstractSaveEventListener.java:394) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.internal.AbstractSaveEventListener.performSaveOrReplicate(AbstractSaveEventListener.java:308) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.internal.AbstractSaveEventListener.performSave(AbstractSaveEventListener.java:224) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.internal.AbstractSaveEventListener.saveWithGeneratedId(AbstractSaveEventListener.java:136) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.internal.DefaultPersistEventListener.entityIsTransient(DefaultPersistEventListener.java:177) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.internal.DefaultPersistEventListener.persist(DefaultPersistEventListener.java:95) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.internal.DefaultPersistEventListener.onPersist(DefaultPersistEventListener.java:79) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.internal.DefaultPersistEventListener.onPersist(DefaultPersistEventListener.java:55) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:127) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.internal.SessionImpl.firePersist(SessionImpl.java:761) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.internal.SessionImpl.persist(SessionImpl.java:745) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.orm.jpa.ExtendedEntityManagerCreator$ExtendedEntityManagerInvocationHandler.invoke(ExtendedEntityManagerCreator.java:364) ~[spring-orm-6.2.10.jar:6.2.10]
+	at jdk.proxy4/jdk.proxy4.$Proxy148.persist(Unknown Source) ~[na:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler.invoke(SharedEntityManagerCreator.java:320) ~[spring-orm-6.2.10.jar:6.2.10]
+	at jdk.proxy4/jdk.proxy4.$Proxy148.persist(Unknown Source) ~[na:na]
+	at org.springframework.data.jpa.repository.support.SimpleJpaRepository.save(SimpleJpaRepository.java:654) ~[spring-data-jpa-3.5.3.jar:3.5.3]
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
 	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:360) ~[spring-aop-6.2.10.jar:6.2.10]
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.2.10.jar:6.2.10]
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.2.10.jar:6.2.10]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker$RepositoryFragmentMethodInvoker.lambda$new$0(RepositoryMethodInvoker.java:277) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:170) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.data.repository.core.support.RepositoryComposition$RepositoryFragments.invoke(RepositoryComposition.java:515) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.data.repository.core.support.RepositoryComposition.invoke(RepositoryComposition.java:284) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$ImplementationMethodExecutionInterceptor.invoke(RepositoryFactorySupport.java:734) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.10.jar:6.2.10]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:174) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:149) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.10.jar:6.2.10]
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:69) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.10.jar:6.2.10]
 	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380) ~[spring-tx-6.2.10.jar:6.2.10]
 	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) ~[spring-tx-6.2.10.jar:6.2.10]
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.10.jar:6.2.10]
-	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728) ~[spring-aop-6.2.10.jar:6.2.10]
-	at com.wipro.demp.service.RegistrationServiceImpl$$SpringCGLIB$$0.createRegistration(<generated>) ~[classes/:na]
-	at com.wipro.demp.controller.RegistrationController.createRegistration(RegistrationController.java:38) ~[classes/:na]
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138) ~[spring-tx-6.2.10.jar:6.2.10]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.10.jar:6.2.10]
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:165) ~[spring-data-jpa-3.5.3.jar:3.5.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.10.jar:6.2.10]
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223) ~[spring-aop-6.2.10.jar:6.2.10]
+	at jdk.proxy4/jdk.proxy4.$Proxy151.save(Unknown Source) ~[na:na]
+	at com.wipro.demp.service.AddressServiceImpl.addAddress(AddressServiceImpl.java:30) ~[classes/:na]
+	at com.wipro.demp.controller.AddressController.createAddress(AddressController.java:45) ~[classes/:na]
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
 	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:258) ~[spring-web-6.2.10.jar:6.2.10]
@@ -407,368 +423,331 @@ org.springframework.web.client.ResourceAccessException: I/O error on GET request
 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
 	at java.base/java.lang.Thread.run(Thread.java:1570) ~[na:na]
-Caused by: java.net.UnknownHostException: DEMP
-	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:567) ~[na:na]
-	at java.base/java.net.Socket.connect(Socket.java:752) ~[na:na]
-	at java.base/java.net.Socket.connect(Socket.java:687) ~[na:na]
-	at java.base/sun.net.NetworkClient.doConnect(NetworkClient.java:183) ~[na:na]
-	at java.base/sun.net.www.http.HttpClient.openServer(HttpClient.java:531) ~[na:na]
-	at java.base/sun.net.www.http.HttpClient.openServer(HttpClient.java:636) ~[na:na]
-	at java.base/sun.net.www.http.HttpClient.<init>(HttpClient.java:280) ~[na:na]
-	at java.base/sun.net.www.http.HttpClient.New(HttpClient.java:386) ~[na:na]
-	at java.base/sun.net.www.http.HttpClient.New(HttpClient.java:408) ~[na:na]
-	at java.base/sun.net.www.protocol.http.HttpURLConnection.getNewHttpClient(HttpURLConnection.java:1310) ~[na:na]
-	at java.base/sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1243) ~[na:na]
-	at java.base/sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:1129) ~[na:na]
-	at java.base/sun.net.www.protocol.http.HttpURLConnection.connect(HttpURLConnection.java:1058) ~[na:na]
-	at org.springframework.http.client.SimpleClientHttpRequest.executeInternal(SimpleClientHttpRequest.java:79) ~[spring-web-6.2.10.jar:6.2.10]
-	at org.springframework.http.client.AbstractStreamingClientHttpRequest.executeInternal(AbstractStreamingClientHttpRequest.java:71) ~[spring-web-6.2.10.jar:6.2.10]
-	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:81) ~[spring-web-6.2.10.jar:6.2.10]
-	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:900) ~[spring-web-6.2.10.jar:6.2.10]
-	... 122 common frames omitted
 
-2026-02-26T12:06:35.002+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-2] c.w.d.controller.RegistrationController  : Registration created successfully: com.wipro.demp.entity.Registrations@4afce2db
-2026-02-26T12:06:35.905+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-3] c.wipro.demp.controller.EventController  : Fetching all events
-2026-02-26T12:06:35.906+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-3] c.wipro.demp.controller.EventController  : All events fetched successfully
-2026-02-26T12:06:35.927+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-6] c.wipro.demp.controller.EventController  : Fetching all events
-2026-02-26T12:06:35.927+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-6] c.wipro.demp.controller.EventController  : All events fetched successfully
-2026-02-26T12:11:54.237+05:30  INFO 30920 --- [DEMP] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
-2026-02-26T12:11:54.240+05:30  INFO 30920 --- [DEMP] [Thread-35] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
-2026-02-26T12:11:54.245+05:30  INFO 30920 --- [DEMP] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
-2026-02-26T12:11:54.253+05:30  INFO 30920 --- [DEMP] [Thread-35] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2026-02-26T12:11:54.254+05:30  INFO 30920 --- [DEMP] [Thread-35] com.zaxxer.hikari.HikariDataSource       : HikariPool-9 - Shutdown initiated...
-2026-02-26T12:11:54.255+05:30  INFO 30920 --- [DEMP] [Thread-35] com.zaxxer.hikari.HikariDataSource       : HikariPool-9 - Shutdown completed.
-2026-02-26T12:11:54.370+05:30  INFO 30920 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : Starting DempApplication using Java 22.0.1 with PID 30920 (D:\trumio\Digital-Event-Management-Platform-\backend\DEMP\target\classes started by AL20581021 in D:\trumio\Digital-Event-Management-Platform-)
-2026-02-26T12:11:54.371+05:30 DEBUG 30920 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : Running with Spring Boot v3.5.5, Spring v6.2.10
-2026-02-26T12:11:54.372+05:30  INFO 30920 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : No active profile set, falling back to 1 default profile: "default"
-2026-02-26T12:11:54.557+05:30  INFO 30920 --- [DEMP] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-02-26T12:11:54.581+05:30  INFO 30920 --- [DEMP] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 21 ms. Found 5 JPA repository interfaces.
-2026-02-26T12:11:54.678+05:30  INFO 30920 --- [DEMP] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
-2026-02-26T12:11:54.680+05:30  INFO 30920 --- [DEMP] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2026-02-26T12:11:54.680+05:30  INFO 30920 --- [DEMP] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.44]
-2026-02-26T12:11:54.748+05:30  INFO 30920 --- [DEMP] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2026-02-26T12:11:54.750+05:30  INFO 30920 --- [DEMP] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 374 ms
-2026-02-26T12:11:54.757+05:30  INFO 30920 --- [DEMP] [restartedMain] com.wipro.demp.config.JwtUtil            : JWT Secret Key initialized successfully.
-2026-02-26T12:11:54.761+05:30 DEBUG 30920 --- [DEMP] [restartedMain] com.wipro.demp.config.JwtFilter          : Filter 'jwtFilter' configured for use
-2026-02-26T12:11:54.781+05:30  INFO 30920 --- [DEMP] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-02-26T12:11:54.781+05:30  INFO 30920 --- [DEMP] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2026-02-26T12:11:54.792+05:30  INFO 30920 --- [DEMP] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-02-26T12:11:54.793+05:30  INFO 30920 --- [DEMP] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-10 - Starting...
-2026-02-26T12:11:54.796+05:30  INFO 30920 --- [DEMP] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-10 - Added connection com.mysql.cj.jdbc.ConnectionImpl@cc7ac62
-2026-02-26T12:11:54.803+05:30  INFO 30920 --- [DEMP] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-10 - Start completed.
-2026-02-26T12:11:54.804+05:30  WARN 30920 --- [DEMP] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2026-02-26T12:11:54.805+05:30  WARN 30920 --- [DEMP] [restartedMain] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2026-02-26T12:11:54.806+05:30  INFO 30920 --- [DEMP] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
-	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-10)']
-	Database driver: undefined/unknown
-	Database version: 8.0
-	Autocommit mode: undefined/unknown
-	Isolation level: undefined/unknown
-	Minimum pool size: undefined/unknown
-	Maximum pool size: undefined/unknown
-2026-02-26T12:11:54.909+05:30  INFO 30920 --- [DEMP] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-02-26T12:11:54.953+05:30  INFO 30920 --- [DEMP] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-02-26T12:11:55.006+05:30  INFO 30920 --- [DEMP] [restartedMain] c.w.demp.controller.AddressController    : Initializing AddressController with AddressService
-2026-02-26T12:11:55.090+05:30  INFO 30920 --- [DEMP] [restartedMain] c.wipro.demp.controller.EventController  : Initializing EventController with EventService and RegistrationService
-2026-02-26T12:11:55.094+05:30  INFO 30920 --- [DEMP] [restartedMain] c.w.d.controller.RegistrationController  : Initializing RegistrationController with RegistrationService
-2026-02-26T12:11:55.101+05:30  INFO 30920 --- [DEMP] [restartedMain] c.wipro.demp.controller.UserController   : Initializing UserController with UserService, JwtUtil, and PasswordEncoder
-2026-02-26T12:11:55.117+05:30  WARN 30920 --- [DEMP] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2026-02-26T12:11:55.190+05:30  WARN 30920 --- [DEMP] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+2026-03-02T11:57:31.764+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-10] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:57:31.766+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-10] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:57:31.769+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-10] c.w.demp.controller.AddressController    : Fetching all addresses
+2026-03-02T11:57:31.779+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-10] c.w.demp.controller.AddressController    : All addresses fetched successfully, count: 3
+2026-03-02T11:58:12.715+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-4] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:58:12.715+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-3] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:58:12.717+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-4] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:58:12.720+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-3] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:58:12.727+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-4] c.w.demp.controller.SpeakerController    : Fetching all speakers
+2026-03-02T11:58:12.727+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-3] c.w.demp.controller.AddressController    : Fetching all addresses
+2026-03-02T11:58:12.738+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-3] c.w.demp.controller.AddressController    : All addresses fetched successfully, count: 3
+2026-03-02T11:58:12.745+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-4] c.w.demp.controller.SpeakerController    : Total speakers found: 3
+2026-03-02T11:58:44.119+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-2] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:58:44.120+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-5] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:58:44.121+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-2] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:58:44.121+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-5] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:58:44.123+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-2] c.w.demp.controller.SpeakerController    : Fetching all speakers
+2026-03-02T11:58:44.123+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-5] c.w.demp.controller.AddressController    : Fetching all addresses
+2026-03-02T11:58:44.133+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-5] c.w.demp.controller.AddressController    : All addresses fetched successfully, count: 3
+2026-03-02T11:58:44.138+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-2] c.w.demp.controller.SpeakerController    : Total speakers found: 3
+2026-03-02T11:58:47.563+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-10] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:58:47.566+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-10] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:58:47.568+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-10] c.w.demp.controller.AddressController    : Creating address: com.wipro.demp.entity.Address@54cc3119
+2026-03-02T11:58:47.575+05:30 ERROR 11260 --- [DEMP] [http-nio-8080-exec-10] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: jakarta.validation.ConstraintViolationException: Validation failed for classes [com.wipro.demp.entity.Address] during persist time for groups [jakarta.validation.groups.Default, ]
+List of constraint violations:[
+	ConstraintViolationImpl{interpolatedMessage='Address must be more than 5 and less than or equal to 50 characters', propertyPath=address, rootBeanClass=class com.wipro.demp.entity.Address, messageTemplate='Address must be more than 5 and less than or equal to 50 characters'}
+]] with root cause
 
-Using generated security password: da870c09-fe59-4717-ac8c-4948ba43ceac
+jakarta.validation.ConstraintViolationException: Validation failed for classes [com.wipro.demp.entity.Address] during persist time for groups [jakarta.validation.groups.Default, ]
+List of constraint violations:[
+	ConstraintViolationImpl{interpolatedMessage='Address must be more than 5 and less than or equal to 50 characters', propertyPath=address, rootBeanClass=class com.wipro.demp.entity.Address, messageTemplate='Address must be more than 5 and less than or equal to 50 characters'}
+]
+	at org.hibernate.boot.beanvalidation.BeanValidationEventListener.validate(BeanValidationEventListener.java:176) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.boot.beanvalidation.BeanValidationEventListener.onPreInsert(BeanValidationEventListener.java:88) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.action.internal.EntityIdentityInsertAction.preInsert(EntityIdentityInsertAction.java:201) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.action.internal.EntityIdentityInsertAction.execute(EntityIdentityInsertAction.java:79) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.spi.ActionQueue.execute(ActionQueue.java:682) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.spi.ActionQueue.addResolvedEntityInsertAction(ActionQueue.java:293) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.spi.ActionQueue.addInsertAction(ActionQueue.java:274) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.spi.ActionQueue.addAction(ActionQueue.java:324) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.internal.AbstractSaveEventListener.addInsertAction(AbstractSaveEventListener.java:394) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.internal.AbstractSaveEventListener.performSaveOrReplicate(AbstractSaveEventListener.java:308) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.internal.AbstractSaveEventListener.performSave(AbstractSaveEventListener.java:224) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.internal.AbstractSaveEventListener.saveWithGeneratedId(AbstractSaveEventListener.java:136) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.internal.DefaultPersistEventListener.entityIsTransient(DefaultPersistEventListener.java:177) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.internal.DefaultPersistEventListener.persist(DefaultPersistEventListener.java:95) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.internal.DefaultPersistEventListener.onPersist(DefaultPersistEventListener.java:79) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.internal.DefaultPersistEventListener.onPersist(DefaultPersistEventListener.java:55) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:127) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.internal.SessionImpl.firePersist(SessionImpl.java:761) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.internal.SessionImpl.persist(SessionImpl.java:745) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.orm.jpa.ExtendedEntityManagerCreator$ExtendedEntityManagerInvocationHandler.invoke(ExtendedEntityManagerCreator.java:364) ~[spring-orm-6.2.10.jar:6.2.10]
+	at jdk.proxy4/jdk.proxy4.$Proxy148.persist(Unknown Source) ~[na:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler.invoke(SharedEntityManagerCreator.java:320) ~[spring-orm-6.2.10.jar:6.2.10]
+	at jdk.proxy4/jdk.proxy4.$Proxy148.persist(Unknown Source) ~[na:na]
+	at org.springframework.data.jpa.repository.support.SimpleJpaRepository.save(SimpleJpaRepository.java:654) ~[spring-data-jpa-3.5.3.jar:3.5.3]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:360) ~[spring-aop-6.2.10.jar:6.2.10]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker$RepositoryFragmentMethodInvoker.lambda$new$0(RepositoryMethodInvoker.java:277) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:170) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.data.repository.core.support.RepositoryComposition$RepositoryFragments.invoke(RepositoryComposition.java:515) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.data.repository.core.support.RepositoryComposition.invoke(RepositoryComposition.java:284) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$ImplementationMethodExecutionInterceptor.invoke(RepositoryFactorySupport.java:734) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.10.jar:6.2.10]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:174) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:149) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.10.jar:6.2.10]
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:69) ~[spring-data-commons-3.5.3.jar:3.5.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.10.jar:6.2.10]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380) ~[spring-tx-6.2.10.jar:6.2.10]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) ~[spring-tx-6.2.10.jar:6.2.10]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.10.jar:6.2.10]
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138) ~[spring-tx-6.2.10.jar:6.2.10]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.10.jar:6.2.10]
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:165) ~[spring-data-jpa-3.5.3.jar:3.5.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.10.jar:6.2.10]
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223) ~[spring-aop-6.2.10.jar:6.2.10]
+	at jdk.proxy4/jdk.proxy4.$Proxy151.save(Unknown Source) ~[na:na]
+	at com.wipro.demp.service.AddressServiceImpl.addAddress(AddressServiceImpl.java:30) ~[classes/:na]
+	at com.wipro.demp.controller.AddressController.createAddress(AddressController.java:45) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:258) ~[spring-web-6.2.10.jar:6.2.10]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:191) ~[spring-web-6.2.10.jar:6.2.10]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.2.10.jar:6.2.10]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:991) ~[spring-webmvc-6.2.10.jar:6.2.10]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:896) ~[spring-webmvc-6.2.10.jar:6.2.10]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.2.10.jar:6.2.10]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.2.10.jar:6.2.10]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.2.10.jar:6.2.10]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.2.10.jar:6.2.10]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914) ~[spring-webmvc-6.2.10.jar:6.2.10]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590) ~[tomcat-embed-core-10.1.44.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.2.10.jar:6.2.10]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.44.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:110) ~[spring-web-6.2.10.jar:6.2.10]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108) ~[spring-web-6.2.10.jar:6.2.10]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108) ~[spring-web-6.2.10.jar:6.2.10]
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:101) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:125) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:119) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at com.wipro.demp.config.JwtFilter.doFilterInternal(JwtFilter.java:76) ~[classes/:na]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.10.jar:6.2.10]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91) ~[spring-web-6.2.10.jar:6.2.10]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.10.jar:6.2.10]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.10.jar:6.2.10]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.10.jar:6.2.10]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.10.jar:6.2.10]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191) ~[spring-security-web-6.5.3.jar:6.5.3]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.2.10.jar:6.2.10]
+	at org.springframework.web.filter.ServletRequestPathFilter.doFilter(ServletRequestPathFilter.java:52) ~[spring-web-6.2.10.jar:6.2.10]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.2.10.jar:6.2.10]
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74) ~[spring-web-6.2.10.jar:6.2.10]
+	at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebSecurityConfiguration.java:319) ~[spring-security-config-6.5.3.jar:6.5.3]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.2.10.jar:6.2.10]
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$4(HandlerMappingIntrospector.java:267) ~[spring-webmvc-6.2.10.jar:6.2.10]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.2.10.jar:6.2.10]
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74) ~[spring-web-6.2.10.jar:6.2.10]
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:240) ~[spring-security-config-6.5.3.jar:6.5.3]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:362) ~[spring-web-6.2.10.jar:6.2.10]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:278) ~[spring-web-6.2.10.jar:6.2.10]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.2.10.jar:6.2.10]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.10.jar:6.2.10]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.2.10.jar:6.2.10]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.10.jar:6.2.10]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.2.10.jar:6.2.10]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.10.jar:6.2.10]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1769) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at java.base/java.lang.Thread.run(Thread.java:1570) ~[na:na]
 
-This generated password is for development use only. Your security configuration must be updated before running your application in production.
-
-2026-02-26T12:11:55.191+05:30  INFO 30920 --- [DEMP] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
-2026-02-26T12:11:55.276+05:30  INFO 30920 --- [DEMP] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
-2026-02-26T12:11:55.290+05:30  INFO 30920 --- [DEMP] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
-2026-02-26T12:11:55.294+05:30  INFO 30920 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : Started DempApplication in 0.954 seconds (process running for 2089.171)
-2026-02-26T12:11:55.300+05:30  INFO 30920 --- [DEMP] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
-2026-02-26T12:12:15.453+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-02-26T12:12:15.454+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2026-02-26T12:12:15.455+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
-2026-02-26T12:12:15.458+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-2] c.wipro.demp.controller.UserController   : User login attempt for email: pravallika@gmail.com
-2026-02-26T12:12:15.589+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-2] c.wipro.demp.controller.UserController   : User Pravallika logged in successfully
-2026-02-26T12:12:15.591+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-2] com.wipro.demp.config.JwtUtil            :  Generated JWT Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcmF2YWxsaWthQGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX09SR0FOSVpFUiIsImlhdCI6MTc3MjA4ODEzNSwiZXhwIjoxNzcyMTI0MTM1fQ.mvVM_yeBU5XGAYf3P2wiv5hheJJc9q90tDT_TB0m5vA
-2026-02-26T12:12:20.023+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-5] c.w.demp.controller.AddressController    : Fetching all addresses
-2026-02-26T12:12:20.023+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-3] c.w.demp.controller.SpeakerController    : Fetching all speakers
-2026-02-26T12:12:20.030+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-5] c.w.demp.controller.AddressController    : All addresses fetched successfully, count: 3
-2026-02-26T12:12:20.036+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-3] c.w.demp.controller.SpeakerController    : Total speakers found: 3
-2026-02-26T12:12:20.043+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-5] c.w.demp.controller.AddressController    : Fetching all addresses
-2026-02-26T12:12:20.049+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-5] c.w.demp.controller.AddressController    : All addresses fetched successfully, count: 3
-2026-02-26T12:12:20.053+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-4] c.w.demp.controller.SpeakerController    : Fetching all speakers
-2026-02-26T12:12:20.057+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-4] c.w.demp.controller.SpeakerController    : Total speakers found: 3
-2026-02-26T12:13:13.925+05:30 DEBUG 30920 --- [DEMP] [http-nio-8080-exec-9] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcmF2YWxsaWthQGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX09SR0FOSVpFUiIsImlhdCI6MTc3MjA4ODEzNSwiZXhwIjoxNzcyMTI0MTM1fQ.mvVM_yeBU5XGAYf3P2wiv5hheJJc9q90tDT_TB0m5vA
-2026-02-26T12:13:13.927+05:30 DEBUG 30920 --- [DEMP] [http-nio-8080-exec-9] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcmF2YWxsaWthQGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX09SR0FOSVpFUiIsImlhdCI6MTc3MjA4ODEzNSwiZXhwIjoxNzcyMTI0MTM1fQ.mvVM_yeBU5XGAYf3P2wiv5hheJJc9q90tDT_TB0m5vA
-2026-02-26T12:13:13.941+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-9] c.wipro.demp.controller.EventController  : Creating event: com.wipro.demp.entity.Event@22e0a7a0
-2026-02-26T12:13:13.985+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-9] c.wipro.demp.controller.EventController  : Event created successfully: com.wipro.demp.entity.Event@22e0a7a0
-2026-02-26T12:13:17.857+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : Fetching all events
-2026-02-26T12:13:17.858+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : All events fetched successfully
-2026-02-26T12:13:17.886+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-7] c.wipro.demp.controller.EventController  : Fetching all events
-2026-02-26T12:13:17.886+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-7] c.wipro.demp.controller.EventController  : All events fetched successfully
-2026-02-26T12:13:33.285+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-2] c.wipro.demp.controller.UserController   : User login attempt for email: alaikyayemul5@gmail.com
-2026-02-26T12:13:33.375+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-2] c.wipro.demp.controller.UserController   : User Alaikya Yemul logged in successfully
-2026-02-26T12:13:33.376+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-2] com.wipro.demp.config.JwtUtil            :  Generated JWT Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGFpa3lheWVtdWw1QGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3NzIwODgyMTMsImV4cCI6MTc3MjEyNDIxM30.4qEpN3g_psCJAzI8504xAbBoNGqOdI_O9iZRPfHfc2o
-2026-02-26T12:13:41.959+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-3] c.wipro.demp.controller.EventController  : Fetching event with ID: 3
-2026-02-26T12:13:41.959+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-3] c.wipro.demp.controller.EventController  : Retrieving event with ID: 3
-2026-02-26T12:13:41.966+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-3] c.wipro.demp.controller.EventController  : Event with ID fetched successfully: com.wipro.demp.entity.Event@52d2e0b6
-2026-02-26T12:13:41.972+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-5] c.wipro.demp.controller.EventController  : Fetching event with ID: 3
-2026-02-26T12:13:41.972+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-5] c.wipro.demp.controller.EventController  : Retrieving event with ID: 3
-2026-02-26T12:13:41.972+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-5] c.wipro.demp.controller.EventController  : Event with ID fetched successfully: com.wipro.demp.entity.Event@3cc5bdc8
-2026-02-26T12:13:44.103+05:30 DEBUG 30920 --- [DEMP] [http-nio-8080-exec-6] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGFpa3lheWVtdWw1QGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3NzIwODgyMTMsImV4cCI6MTc3MjEyNDIxM30.4qEpN3g_psCJAzI8504xAbBoNGqOdI_O9iZRPfHfc2o
-2026-02-26T12:13:44.103+05:30 DEBUG 30920 --- [DEMP] [http-nio-8080-exec-6] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGFpa3lheWVtdWw1QGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3NzIwODgyMTMsImV4cCI6MTc3MjEyNDIxM30.4qEpN3g_psCJAzI8504xAbBoNGqOdI_O9iZRPfHfc2o
-2026-02-26T12:13:44.118+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-6] c.w.d.controller.RegistrationController  : Creating registration: com.wipro.demp.entity.Registrations@245055b5
-2026-02-26T12:13:48.778+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-6] c.w.d.service.RegistrationServiceImpl    : Confirmation email sent to alaikyayemul5@gmail.com
-2026-02-26T12:13:53.459+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-6] c.w.d.service.RegistrationServiceImpl    : Calendar invite sent to alaikyayemul5@gmail.com
-2026-02-26T12:13:53.475+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-6] c.w.d.controller.RegistrationController  : Registration created successfully: com.wipro.demp.entity.Registrations@245055b5
-2026-02-26T12:13:55.260+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-9] c.wipro.demp.controller.EventController  : Fetching all events
-2026-02-26T12:13:55.260+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-9] c.wipro.demp.controller.EventController  : All events fetched successfully
-2026-02-26T12:13:55.286+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : Fetching all events
-2026-02-26T12:13:55.286+05:30  INFO 30920 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : All events fetched successfully
-2026-02-26T12:15:01.286+05:30  INFO 30920 --- [DEMP] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
-2026-02-26T12:15:01.286+05:30  INFO 30920 --- [DEMP] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
-2026-02-26T12:15:01.298+05:30  INFO 30920 --- [DEMP] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2026-02-26T12:15:01.298+05:30  INFO 30920 --- [DEMP] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-10 - Shutdown initiated...
-2026-02-26T12:15:01.302+05:30  INFO 30920 --- [DEMP] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-10 - Shutdown completed.
-2026-02-26T15:11:58.865+05:30  INFO 28496 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : Starting DempApplication using Java 22.0.1 with PID 28496 (D:\trumio\Digital-Event-Management-Platform-\backend\DEMP\target\classes started by AL20581021 in D:\trumio\Digital-Event-Management-Platform-)
-2026-02-26T15:11:58.954+05:30 DEBUG 28496 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : Running with Spring Boot v3.5.5, Spring v6.2.10
-2026-02-26T15:11:59.018+05:30  INFO 28496 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : No active profile set, falling back to 1 default profile: "default"
-2026-02-26T15:11:59.511+05:30  INFO 28496 --- [DEMP] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2026-02-26T15:11:59.523+05:30  INFO 28496 --- [DEMP] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2026-02-26T15:12:04.493+05:30  INFO 28496 --- [DEMP] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-02-26T15:12:04.932+05:30  INFO 28496 --- [DEMP] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 360 ms. Found 5 JPA repository interfaces.
-2026-02-26T15:12:08.589+05:30  INFO 28496 --- [DEMP] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
-2026-02-26T15:12:08.684+05:30  INFO 28496 --- [DEMP] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2026-02-26T15:12:08.690+05:30  INFO 28496 --- [DEMP] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.44]
-2026-02-26T15:12:09.021+05:30  INFO 28496 --- [DEMP] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2026-02-26T15:12:09.024+05:30  INFO 28496 --- [DEMP] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 9474 ms
-2026-02-26T15:12:09.433+05:30  INFO 28496 --- [DEMP] [restartedMain] com.wipro.demp.config.JwtUtil            : JWT Secret Key initialized successfully.
-2026-02-26T15:12:09.613+05:30 DEBUG 28496 --- [DEMP] [restartedMain] com.wipro.demp.config.JwtFilter          : Filter 'jwtFilter' configured for use
-2026-02-26T15:12:13.557+05:30  INFO 28496 --- [DEMP] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-02-26T15:12:13.855+05:30  INFO 28496 --- [DEMP] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.26.Final
-2026-02-26T15:12:14.031+05:30  INFO 28496 --- [DEMP] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2026-02-26T15:12:15.120+05:30  INFO 28496 --- [DEMP] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-02-26T15:12:15.236+05:30  INFO 28496 --- [DEMP] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2026-02-26T15:12:15.492+05:30  INFO 28496 --- [DEMP] [restartedMain] i.opentelemetry.api.GlobalOpenTelemetry  : AutoConfiguredOpenTelemetrySdk found on classpath but automatic configuration is disabled. To enable, run your JVM with -Dotel.java.global-autoconfigure.enabled=true
-2026-02-26T15:12:15.951+05:30  INFO 28496 --- [DEMP] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3a9f0b57
-2026-02-26T15:12:15.960+05:30  INFO 28496 --- [DEMP] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2026-02-26T15:12:16.161+05:30  WARN 28496 --- [DEMP] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2026-02-26T15:12:16.164+05:30  WARN 28496 --- [DEMP] [restartedMain] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2026-02-26T15:12:16.230+05:30  INFO 28496 --- [DEMP] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
-	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
-	Database driver: undefined/unknown
-	Database version: 8.0
-	Autocommit mode: undefined/unknown
-	Isolation level: undefined/unknown
-	Minimum pool size: undefined/unknown
-	Maximum pool size: undefined/unknown
-2026-02-26T15:12:19.520+05:30  INFO 28496 --- [DEMP] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-02-26T15:12:19.961+05:30  INFO 28496 --- [DEMP] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-02-26T15:12:20.732+05:30  INFO 28496 --- [DEMP] [restartedMain] c.w.demp.controller.AddressController    : Initializing AddressController with AddressService
-2026-02-26T15:12:21.399+05:30  INFO 28496 --- [DEMP] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
-2026-02-26T15:12:23.579+05:30  INFO 28496 --- [DEMP] [restartedMain] c.wipro.demp.controller.EventController  : Initializing EventController with EventService and RegistrationService
-2026-02-26T15:12:23.588+05:30  INFO 28496 --- [DEMP] [restartedMain] c.w.d.controller.RegistrationController  : Initializing RegistrationController with RegistrationService
-2026-02-26T15:12:23.607+05:30  INFO 28496 --- [DEMP] [restartedMain] c.wipro.demp.controller.UserController   : Initializing UserController with UserService, JwtUtil, and PasswordEncoder
-2026-02-26T15:12:23.850+05:30  WARN 28496 --- [DEMP] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2026-02-26T15:12:24.674+05:30  WARN 28496 --- [DEMP] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
-
-Using generated security password: d9e38169-21d9-422d-9ded-3cf75a4246b6
-
-This generated password is for development use only. Your security configuration must be updated before running your application in production.
-
-2026-02-26T15:12:24.712+05:30  INFO 28496 --- [DEMP] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
-2026-02-26T15:12:25.862+05:30  INFO 28496 --- [DEMP] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
-2026-02-26T15:12:25.999+05:30  INFO 28496 --- [DEMP] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
-2026-02-26T15:12:26.027+05:30  INFO 28496 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : Started DempApplication in 31.027 seconds (process running for 34.825)
-2026-02-26T15:14:12.895+05:30  INFO 28496 --- [DEMP] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-02-26T15:14:12.899+05:30  INFO 28496 --- [DEMP] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2026-02-26T15:14:12.915+05:30  INFO 28496 --- [DEMP] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
-2026-02-26T15:14:13.302+05:30  INFO 28496 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : Fetching all events
-2026-02-26T15:14:13.308+05:30  INFO 28496 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : All events fetched successfully
-2026-02-26T15:55:12.974+05:30  WARN 28496 --- [DEMP] [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=27m26s623ms432µs800ns).
-2026-02-26T17:29:39.826+05:30  INFO 28496 --- [DEMP] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
-2026-02-26T17:29:40.758+05:30  INFO 28496 --- [DEMP] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
-2026-02-26T17:29:40.782+05:30  INFO 28496 --- [DEMP] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2026-02-26T17:29:40.824+05:30  INFO 28496 --- [DEMP] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
-2026-02-26T17:29:40.862+05:30  INFO 28496 --- [DEMP] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
-2026-02-26T20:58:34.748+05:30  INFO 2688 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : Starting DempApplication using Java 22.0.1 with PID 2688 (D:\trumio\Digital-Event-Management-Platform-\backend\DEMP\target\classes started by AL20581021 in D:\trumio\Digital-Event-Management-Platform-)
-2026-02-26T20:58:34.759+05:30 DEBUG 2688 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : Running with Spring Boot v3.5.5, Spring v6.2.10
-2026-02-26T20:58:34.763+05:30  INFO 2688 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : No active profile set, falling back to 1 default profile: "default"
-2026-02-26T20:58:34.951+05:30  INFO 2688 --- [DEMP] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2026-02-26T20:58:34.961+05:30  INFO 2688 --- [DEMP] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2026-02-26T20:58:38.713+05:30  INFO 2688 --- [DEMP] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-02-26T20:58:39.049+05:30  INFO 2688 --- [DEMP] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 295 ms. Found 5 JPA repository interfaces.
-2026-02-26T20:58:41.991+05:30  INFO 2688 --- [DEMP] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
-2026-02-26T20:58:42.057+05:30  INFO 2688 --- [DEMP] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2026-02-26T20:58:42.061+05:30  INFO 2688 --- [DEMP] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.44]
-2026-02-26T20:58:42.431+05:30  INFO 2688 --- [DEMP] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2026-02-26T20:58:42.436+05:30  INFO 2688 --- [DEMP] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 7471 ms
-2026-02-26T20:58:42.846+05:30  INFO 2688 --- [DEMP] [restartedMain] com.wipro.demp.config.JwtUtil            : JWT Secret Key initialized successfully.
-2026-02-26T20:58:43.004+05:30 DEBUG 2688 --- [DEMP] [restartedMain] com.wipro.demp.config.JwtFilter          : Filter 'jwtFilter' configured for use
-2026-02-26T20:58:43.756+05:30  INFO 2688 --- [DEMP] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-02-26T20:58:43.981+05:30  INFO 2688 --- [DEMP] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.26.Final
-2026-02-26T20:58:44.127+05:30  INFO 2688 --- [DEMP] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2026-02-26T20:58:45.317+05:30  INFO 2688 --- [DEMP] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-02-26T20:58:45.488+05:30  INFO 2688 --- [DEMP] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2026-02-26T20:58:45.812+05:30  INFO 2688 --- [DEMP] [restartedMain] i.opentelemetry.api.GlobalOpenTelemetry  : AutoConfiguredOpenTelemetrySdk found on classpath but automatic configuration is disabled. To enable, run your JVM with -Dotel.java.global-autoconfigure.enabled=true
-2026-02-26T20:58:46.278+05:30  INFO 2688 --- [DEMP] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3a9f0b57
-2026-02-26T20:58:46.286+05:30  INFO 2688 --- [DEMP] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2026-02-26T20:58:46.463+05:30  WARN 2688 --- [DEMP] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2026-02-26T20:58:46.468+05:30  WARN 2688 --- [DEMP] [restartedMain] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2026-02-26T20:58:46.554+05:30  INFO 2688 --- [DEMP] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
-	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
-	Database driver: undefined/unknown
-	Database version: 8.0
-	Autocommit mode: undefined/unknown
-	Isolation level: undefined/unknown
-	Minimum pool size: undefined/unknown
-	Maximum pool size: undefined/unknown
-2026-02-26T20:58:49.965+05:30  INFO 2688 --- [DEMP] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-02-26T20:58:50.312+05:30  INFO 2688 --- [DEMP] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-02-26T20:58:50.971+05:30  INFO 2688 --- [DEMP] [restartedMain] c.w.demp.controller.AddressController    : Initializing AddressController with AddressService
-2026-02-26T20:58:51.477+05:30  INFO 2688 --- [DEMP] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
-2026-02-26T20:58:53.565+05:30  INFO 2688 --- [DEMP] [restartedMain] c.wipro.demp.controller.EventController  : Initializing EventController with EventService and RegistrationService
-2026-02-26T20:58:53.576+05:30  INFO 2688 --- [DEMP] [restartedMain] c.w.d.controller.RegistrationController  : Initializing RegistrationController with RegistrationService
-2026-02-26T20:58:53.597+05:30  INFO 2688 --- [DEMP] [restartedMain] c.wipro.demp.controller.UserController   : Initializing UserController with UserService, JwtUtil, and PasswordEncoder
-2026-02-26T20:58:53.861+05:30  WARN 2688 --- [DEMP] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2026-02-26T20:58:54.781+05:30  WARN 2688 --- [DEMP] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
-
-Using generated security password: 828ed29a-e405-4a5e-85b1-ba32335281fa
-
-This generated password is for development use only. Your security configuration must be updated before running your application in production.
-
-2026-02-26T20:58:54.849+05:30  INFO 2688 --- [DEMP] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
-2026-02-26T20:58:56.586+05:30  INFO 2688 --- [DEMP] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
-2026-02-26T20:58:56.986+05:30  INFO 2688 --- [DEMP] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
-2026-02-26T20:58:57.017+05:30  INFO 2688 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : Started DempApplication in 24.659 seconds (process running for 30.356)
-2026-02-26T21:00:23.433+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-3] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-02-26T21:00:23.437+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2026-02-26T21:00:23.461+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed initialization in 9 ms
-2026-02-26T21:00:23.859+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-3] c.wipro.demp.controller.EventController  : Fetching all events
-2026-02-26T21:00:23.863+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-3] c.wipro.demp.controller.EventController  : All events fetched successfully
-2026-02-26T21:00:36.283+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-6] c.wipro.demp.controller.UserController   : User login attempt for email: alaikyayemul5@gmail.com
-2026-02-26T21:00:36.792+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-6] c.wipro.demp.controller.UserController   : User Alaikya Yemul logged in successfully
-2026-02-26T21:00:37.128+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-6] com.wipro.demp.config.JwtUtil            :  Generated JWT Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGFpa3lheWVtdWw1QGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3NzIxMTk4MzYsImV4cCI6MTc3MjE1NTgzNn0.OQAi_HWlv7LLRzZ2N4sspbeW1mbJmsViH1VnYBMyMWw
-2026-02-26T21:21:46.428+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
-2026-02-26T21:21:46.683+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
-2026-02-26T21:21:46.685+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
-2026-02-26T21:25:28.304+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-4] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
-2026-02-26T21:25:28.463+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-4] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
-2026-02-26T21:25:28.466+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-4] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
-2026-02-26T21:37:01.647+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-9] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
-2026-02-26T21:37:01.745+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-9] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
-2026-02-26T21:37:01.747+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-9] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
-2026-02-26T21:37:07.405+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-2] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
-2026-02-26T21:37:07.460+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-2] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
-2026-02-26T21:37:07.472+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-2] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
-2026-02-26T21:42:31.516+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
-2026-02-26T21:42:31.569+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
-2026-02-26T21:42:31.576+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
-2026-02-26T21:44:28.573+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-5] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
-2026-02-26T21:44:28.820+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-5] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
-2026-02-26T21:44:28.824+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-5] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
-2026-02-26T21:49:43.247+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-3] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
-2026-02-26T21:49:43.349+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-3] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
-2026-02-26T21:49:43.367+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-3] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
-2026-02-26T22:00:45.764+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-7] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
-2026-02-26T22:00:45.812+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-7] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
-2026-02-26T22:00:45.815+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-7] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
-2026-02-26T22:06:04.215+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-4] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
-2026-02-26T22:06:04.270+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-4] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
-2026-02-26T22:06:04.274+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-4] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
-2026-02-26T22:06:15.862+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-8] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
-2026-02-26T22:06:15.892+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-8] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
-2026-02-26T22:06:15.896+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-8] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
-2026-02-26T22:13:21.630+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-2] c.wipro.demp.controller.UserController   : User login attempt for email: alaikyayemul5@gmail.com
-2026-02-26T22:13:21.743+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-2] c.wipro.demp.controller.UserController   : User Alaikya Yemul logged in successfully
-2026-02-26T22:13:21.760+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-2] com.wipro.demp.config.JwtUtil            :  Generated JWT Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGFpa3lheWVtdWw1QGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3NzIxMjQyMDEsImV4cCI6MTc3MjE2MDIwMX0.zDNqv-v4LX7QOtwuQVADt6rD0FbzNhtkwcO6o26Gh94
-2026-02-26T22:13:34.074+05:30 DEBUG 2688 --- [DEMP] [http-nio-8080-exec-6] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGFpa3lheWVtdWw1QGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3NzIxMjQyMDEsImV4cCI6MTc3MjE2MDIwMX0.zDNqv-v4LX7QOtwuQVADt6rD0FbzNhtkwcO6o26Gh94
-2026-02-26T22:13:34.175+05:30 DEBUG 2688 --- [DEMP] [http-nio-8080-exec-6] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGFpa3lheWVtdWw1QGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3NzIxMjQyMDEsImV4cCI6MTc3MjE2MDIwMX0.zDNqv-v4LX7QOtwuQVADt6rD0FbzNhtkwcO6o26Gh94
-2026-02-26T22:13:34.209+05:30  WARN 2688 --- [DEMP] [http-nio-8080-exec-6] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' is not supported]
-2026-02-26T22:13:40.292+05:30 DEBUG 2688 --- [DEMP] [http-nio-8080-exec-7] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGFpa3lheWVtdWw1QGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3NzIxMjQyMDEsImV4cCI6MTc3MjE2MDIwMX0.zDNqv-v4LX7QOtwuQVADt6rD0FbzNhtkwcO6o26Gh94
-2026-02-26T22:13:40.292+05:30 DEBUG 2688 --- [DEMP] [http-nio-8080-exec-7] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGFpa3lheWVtdWw1QGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3NzIxMjQyMDEsImV4cCI6MTc3MjE2MDIwMX0.zDNqv-v4LX7QOtwuQVADt6rD0FbzNhtkwcO6o26Gh94
-2026-02-26T22:13:40.301+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-7] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
-2026-02-26T22:13:40.337+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-7] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
-2026-02-26T22:13:40.337+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-7] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
-2026-02-26T22:17:49.014+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-4] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
-2026-02-26T22:17:49.050+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-4] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
-2026-02-26T22:17:49.051+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-4] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
-2026-02-26T22:35:13.489+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-9] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
-2026-02-26T22:35:13.527+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-9] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
-2026-02-26T22:35:13.528+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-9] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
-2026-02-26T22:39:21.530+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-6] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
-2026-02-26T22:39:21.563+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-6] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
-2026-02-26T22:39:21.563+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-6] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
-2026-02-26T23:05:16.862+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : Fetching all events
-2026-02-26T23:05:16.872+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : All events fetched successfully
-2026-02-26T23:05:17.229+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : Fetching all events
-2026-02-26T23:05:17.281+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : All events fetched successfully
-2026-02-26T23:07:29.472+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-8] c.wipro.demp.controller.EventController  : Fetching event with ID: 3
-2026-02-26T23:07:29.474+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-8] c.wipro.demp.controller.EventController  : Retrieving event with ID: 3
-2026-02-26T23:07:29.583+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-8] c.wipro.demp.controller.EventController  : Event with ID fetched successfully: com.wipro.demp.entity.Event@5d3379a2
-2026-02-26T23:07:29.641+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-9] c.wipro.demp.controller.EventController  : Fetching event with ID: 3
-2026-02-26T23:07:29.655+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-9] c.wipro.demp.controller.EventController  : Retrieving event with ID: 3
-2026-02-26T23:07:29.672+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-9] c.wipro.demp.controller.EventController  : Event with ID fetched successfully: com.wipro.demp.entity.Event@56079792
-2026-02-26T23:07:34.796+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-3] c.wipro.demp.controller.EventController  : Fetching all events
-2026-02-26T23:07:34.798+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-3] c.wipro.demp.controller.EventController  : All events fetched successfully
-2026-02-26T23:07:34.851+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-2] c.wipro.demp.controller.EventController  : Fetching all events
-2026-02-26T23:07:34.852+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-2] c.wipro.demp.controller.EventController  : All events fetched successfully
-2026-02-26T23:09:43.218+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : Fetching event with ID: 3
-2026-02-26T23:09:43.222+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : Retrieving event with ID: 3
-2026-02-26T23:09:43.276+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : Event with ID fetched successfully: com.wipro.demp.entity.Event@4f43f80f
-2026-02-26T23:09:43.296+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : Fetching event with ID: 3
-2026-02-26T23:09:43.298+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : Retrieving event with ID: 3
-2026-02-26T23:09:43.310+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : Event with ID fetched successfully: com.wipro.demp.entity.Event@1cb200bb
-2026-02-26T23:09:54.884+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-4] c.wipro.demp.controller.EventController  : Fetching all events
-2026-02-26T23:09:54.890+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-4] c.wipro.demp.controller.EventController  : All events fetched successfully
-2026-02-26T23:09:54.962+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-5] c.wipro.demp.controller.EventController  : Fetching all events
-2026-02-26T23:09:54.964+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-5] c.wipro.demp.controller.EventController  : All events fetched successfully
-2026-02-26T23:10:11.414+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-9] c.wipro.demp.controller.UserController   : User login attempt for email: pranathichandragiri@gmail.com
-2026-02-26T23:10:11.746+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-9] c.wipro.demp.controller.UserController   : User Pranathi logged in successfully
-2026-02-26T23:10:11.754+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-9] com.wipro.demp.config.JwtUtil            :  Generated JWT Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcmFuYXRoaWNoYW5kcmFnaXJpQGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3NzIxMjc2MTEsImV4cCI6MTc3MjE2MzYxMX0.8eJ_7nNNTvBJivfuw8XL-GEwKRcS38xInahLj-nHf3o
-2026-02-26T23:10:16.071+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-2] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 5
-2026-02-26T23:10:16.108+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-2] c.w.d.controller.RegistrationController  : Registrations for user ID 5 found: 2
-2026-02-26T23:10:16.110+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-2] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 5
-2026-02-26T23:10:23.129+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-6] c.wipro.demp.controller.EventController  : Fetching all events
-2026-02-26T23:10:23.133+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-6] c.wipro.demp.controller.EventController  : All events fetched successfully
-2026-02-26T23:10:23.219+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-7] c.wipro.demp.controller.EventController  : Fetching all events
-2026-02-26T23:10:23.223+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-7] c.wipro.demp.controller.EventController  : All events fetched successfully
-2026-02-26T23:10:28.190+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : Fetching event with ID: 3
-2026-02-26T23:10:28.195+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : Retrieving event with ID: 3
-2026-02-26T23:10:28.228+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : Event with ID fetched successfully: com.wipro.demp.entity.Event@39215b28
-2026-02-26T23:10:28.245+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : Fetching event with ID: 3
-2026-02-26T23:10:28.247+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : Retrieving event with ID: 3
-2026-02-26T23:10:28.266+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : Event with ID fetched successfully: com.wipro.demp.entity.Event@42688fcc
-2026-02-26T23:10:30.747+05:30 DEBUG 2688 --- [DEMP] [http-nio-8080-exec-5] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcmFuYXRoaWNoYW5kcmFnaXJpQGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3NzIxMjc2MTEsImV4cCI6MTc3MjE2MzYxMX0.8eJ_7nNNTvBJivfuw8XL-GEwKRcS38xInahLj-nHf3o
-2026-02-26T23:10:30.754+05:30 DEBUG 2688 --- [DEMP] [http-nio-8080-exec-5] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcmFuYXRoaWNoYW5kcmFnaXJpQGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3NzIxMjc2MTEsImV4cCI6MTc3MjE2MzYxMX0.8eJ_7nNNTvBJivfuw8XL-GEwKRcS38xInahLj-nHf3o
-2026-02-26T23:10:30.925+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-5] c.w.d.controller.RegistrationController  : Creating registration: com.wipro.demp.entity.Registrations@16af171f
-2026-02-26T23:10:37.858+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-5] c.w.d.service.RegistrationServiceImpl    : Confirmation email sent to pranathichandragiri@gmail.com
-2026-02-26T23:10:42.352+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-5] c.w.d.service.RegistrationServiceImpl    : Calendar invite sent to pranathichandragiri@gmail.com
-2026-02-26T23:10:42.374+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-5] c.w.d.controller.RegistrationController  : Registration created successfully: com.wipro.demp.entity.Registrations@16af171f
-2026-02-26T23:10:49.251+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-8] c.wipro.demp.controller.EventController  : Fetching all events
-2026-02-26T23:10:49.260+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-8] c.wipro.demp.controller.EventController  : All events fetched successfully
-2026-02-26T23:10:49.326+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-9] c.wipro.demp.controller.EventController  : Fetching all events
-2026-02-26T23:10:49.326+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-9] c.wipro.demp.controller.EventController  : All events fetched successfully
-2026-02-26T23:10:53.429+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-2] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 5
-2026-02-26T23:10:53.513+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-2] c.w.d.controller.RegistrationController  : Registrations for user ID 5 found: 3
-2026-02-26T23:10:53.519+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-2] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 5
-2026-02-26T23:13:57.195+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : Fetching all events
-2026-02-26T23:13:57.200+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : All events fetched successfully
-2026-02-26T23:13:57.267+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : Fetching all events
-2026-02-26T23:13:57.269+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : All events fetched successfully
-2026-02-26T23:14:24.319+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-5] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 5
-2026-02-26T23:14:24.388+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-5] c.w.d.controller.RegistrationController  : Registrations for user ID 5 found: 3
-2026-02-26T23:14:24.390+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-5] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 5
-2026-02-26T23:15:07.349+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-3] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 5
-2026-02-26T23:15:07.398+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-3] c.w.d.controller.RegistrationController  : Registrations for user ID 5 found: 3
-2026-02-26T23:15:07.398+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-3] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 5
-2026-02-26T23:29:11.969+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-7] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 5
-2026-02-26T23:29:12.060+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-7] c.w.d.controller.RegistrationController  : Registrations for user ID 5 found: 3
-2026-02-26T23:29:12.062+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-7] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 5
-2026-02-26T23:29:14.552+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : Fetching all events
-2026-02-26T23:29:14.556+05:30  INFO 2688 --- [DEMP] [http-nio-8080-exec-10] c.wipro.demp.controller.EventController  : All events fetched successfully
-2026-02-26T23:29:30.366+05:30  INFO 2688 --- [DEMP] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
-2026-02-26T23:29:30.385+05:30  INFO 2688 --- [DEMP] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
-2026-02-26T23:29:30.424+05:30  INFO 2688 --- [DEMP] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2026-02-26T23:29:30.449+05:30  INFO 2688 --- [DEMP] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
-2026-02-26T23:29:30.466+05:30  INFO 2688 --- [DEMP] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-03-02T11:58:47.595+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-6] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:58:47.597+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-6] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T11:58:47.600+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-6] c.w.demp.controller.AddressController    : Fetching all addresses
+2026-03-02T11:58:47.611+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-6] c.w.demp.controller.AddressController    : All addresses fetched successfully, count: 3
+2026-03-02T12:06:19.560+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-4] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T12:06:19.564+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-4] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T12:06:19.568+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-4] c.w.demp.controller.AddressController    : Fetching all addresses
+2026-03-02T12:06:19.583+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-4] c.w.demp.controller.AddressController    : All addresses fetched successfully, count: 3
+2026-03-02T12:06:19.600+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-7] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T12:06:19.600+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-7] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T12:06:19.609+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-7] c.w.demp.controller.SpeakerController    : Fetching all speakers
+2026-03-02T12:06:19.628+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-7] c.w.demp.controller.SpeakerController    : Total speakers found: 3
+2026-03-02T12:06:24.548+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-2] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T12:06:24.548+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-2] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T12:06:24.553+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-2] c.w.demp.controller.AddressController    : Creating address: com.wipro.demp.entity.Address@4a219d38
+2026-03-02T12:06:24.639+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-2] c.w.demp.controller.AddressController    : Address created successfully: com.wipro.demp.entity.Address@4a219d38
+2026-03-02T12:06:24.660+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-10] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T12:06:24.662+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-10] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T12:06:24.662+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-10] c.w.demp.controller.AddressController    : Fetching all addresses
+2026-03-02T12:06:24.677+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-10] c.w.demp.controller.AddressController    : All addresses fetched successfully, count: 4
+2026-03-02T12:08:03.476+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-3] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T12:08:03.479+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-3] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T12:08:03.488+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-3] c.w.demp.controller.SpeakerController    : Creating speaker: com.wipro.demp.entity.Speaker@6a152a10
+2026-03-02T12:08:03.488+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-3] c.w.demp.controller.SpeakerController    : Speaker data is valid, proceeding to create speaker
+2026-03-02T12:08:03.488+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-3] c.w.demp.controller.SpeakerController    : Creating speaker in the service
+2026-03-02T12:08:03.488+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-3] c.w.demp.controller.SpeakerController    : Calling speakerService to create speaker
+2026-03-02T12:08:03.488+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-3] c.w.demp.controller.SpeakerController    : Speaker details: com.wipro.demp.entity.Speaker@6a152a10
+2026-03-02T12:08:03.520+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-4] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T12:08:03.520+05:30 DEBUG 11260 --- [DEMP] [http-nio-8080-exec-4] com.wipro.demp.config.JwtUtil            : Extracting claims from token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MjQzMjM2NiwiZXhwIjoxNzcyNDY4MzY2fQ.GRceaF0p3gu4NUpEpA90OtYHBKs7znbRXfIHRnADwTk
+2026-03-02T12:08:03.520+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-4] c.w.demp.controller.SpeakerController    : Fetching all speakers
+2026-03-02T12:08:03.551+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-4] c.w.demp.controller.SpeakerController    : Total speakers found: 4
+2026-03-02T12:08:30.969+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-7] c.wipro.demp.controller.UserController   : User login attempt for email: alaikyayemul5@gmail.com
+2026-03-02T12:08:31.072+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-7] c.wipro.demp.controller.UserController   : User Alaikya Yemul logged in successfully
+2026-03-02T12:08:31.073+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-7] com.wipro.demp.config.JwtUtil            :  Generated JWT Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGFpa3lheWVtdWw1QGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3NzI0MzM1MTEsImV4cCI6MTc3MjQ2OTUxMX0.0Wy0GYS5dD9JARiJ_Y8hMG1ygi4PK8KC_TOoEHiKY50
+2026-03-02T12:08:34.059+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-2] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
+2026-03-02T12:08:34.099+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-2] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
+2026-03-02T12:08:34.099+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-2] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
+2026-03-02T12:19:24.730+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-6] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
+2026-03-02T12:19:24.763+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-6] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
+2026-03-02T12:19:24.763+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-6] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
+2026-03-02T12:19:30.780+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-3] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
+2026-03-02T12:19:30.806+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-3] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
+2026-03-02T12:19:30.806+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-3] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
+2026-03-02T12:20:46.176+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : Fetching all events
+2026-03-02T12:20:46.177+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-03-02T12:20:46.218+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-7] c.wipro.demp.controller.EventController  : Fetching all events
+2026-03-02T12:20:46.218+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-7] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-03-02T12:20:48.723+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-2] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
+2026-03-02T12:20:48.744+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-2] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
+2026-03-02T12:20:48.745+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-2] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
+2026-03-02T12:26:18.002+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-6] c.wipro.demp.controller.EventController  : Fetching all events
+2026-03-02T12:26:18.002+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-6] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-03-02T12:26:18.032+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-8] c.wipro.demp.controller.EventController  : Fetching all events
+2026-03-02T12:26:18.036+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-8] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-03-02T12:26:20.591+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-4] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
+2026-03-02T12:26:20.616+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-4] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
+2026-03-02T12:26:20.617+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-4] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
+2026-03-02T16:02:53.432+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-2] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
+2026-03-02T16:02:53.969+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-2] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
+2026-03-02T16:02:53.982+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-2] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
+2026-03-02T16:03:57.367+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-6] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
+2026-03-02T16:03:57.593+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-6] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
+2026-03-02T16:03:57.597+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-6] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
+2026-03-02T16:08:43.094+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-4] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
+2026-03-02T16:08:43.414+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-4] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
+2026-03-02T16:08:43.429+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-4] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
+2026-03-02T16:10:02.009+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-5] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
+2026-03-02T16:10:02.268+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-5] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
+2026-03-02T16:10:02.297+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-5] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
+2026-03-02T16:10:07.652+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-2] c.wipro.demp.controller.EventController  : Fetching all events
+2026-03-02T16:10:07.654+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-2] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-03-02T16:10:07.745+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-9] c.wipro.demp.controller.EventController  : Fetching all events
+2026-03-02T16:10:07.752+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-9] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-03-02T16:10:10.889+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-6] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
+2026-03-02T16:10:10.959+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-6] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
+2026-03-02T16:10:10.961+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-6] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
+2026-03-02T16:10:43.101+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-8] c.wipro.demp.controller.EventController  : Fetching all events
+2026-03-02T16:10:43.121+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-8] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-03-02T16:10:43.289+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-3] c.wipro.demp.controller.EventController  : Fetching all events
+2026-03-02T16:10:43.356+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-3] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-03-02T16:11:04.255+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-4] c.wipro.demp.controller.EventController  : Fetching all events
+2026-03-02T16:11:04.292+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-4] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-03-02T16:11:08.289+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-7] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
+2026-03-02T16:11:08.402+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-7] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
+2026-03-02T16:11:08.405+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-7] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
+2026-03-02T16:13:45.408+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-10] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
+2026-03-02T16:13:45.570+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-10] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
+2026-03-02T16:13:45.585+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-10] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
+2026-03-02T16:13:51.909+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-6] c.wipro.demp.controller.EventController  : Fetching all events
+2026-03-02T16:13:51.912+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-6] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-03-02T16:13:52.015+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-8] c.wipro.demp.controller.EventController  : Fetching all events
+2026-03-02T16:13:52.046+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-8] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-03-02T16:13:54.495+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-4] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
+2026-03-02T16:13:54.666+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-4] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
+2026-03-02T16:13:54.666+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-4] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
+2026-03-02T16:13:55.953+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : Fetching all events
+2026-03-02T16:13:55.956+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-03-02T16:13:56.040+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-7] c.wipro.demp.controller.EventController  : Fetching all events
+2026-03-02T16:13:56.049+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-7] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-03-02T16:14:13.721+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-2] c.wipro.demp.controller.UserController   : User login attempt for email: alaikyayemul5@gmail.com
+2026-03-02T16:14:14.363+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-2] c.wipro.demp.controller.UserController   : User Alaikya Yemul logged in successfully
+2026-03-02T16:14:14.371+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-2] com.wipro.demp.config.JwtUtil            :  Generated JWT Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGFpa3lheWVtdWw1QGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3NzI0NDgyNTQsImV4cCI6MTc3MjQ4NDI1NH0.6cRtSVJNrg_9ipneQOcUNzYP6gyQEnTLuzgXVBxdsn8
+2026-03-02T16:14:17.593+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-10] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
+2026-03-02T16:14:17.652+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-10] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
+2026-03-02T16:14:17.656+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-10] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
+2026-03-02T16:14:44.527+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-6] c.wipro.demp.controller.EventController  : Fetching all events
+2026-03-02T16:14:44.531+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-6] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-03-02T16:14:44.640+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-8] c.wipro.demp.controller.EventController  : Fetching all events
+2026-03-02T16:14:44.644+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-8] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-03-02T16:15:47.475+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : Fetching all events
+2026-03-02T16:15:47.509+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-1] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-03-02T16:15:47.645+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-7] c.wipro.demp.controller.EventController  : Fetching all events
+2026-03-02T16:15:47.647+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-7] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-03-02T16:16:47.683+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-2] c.wipro.demp.controller.UserController   : User login attempt for email: alaikyayemul5@gmail.com
+2026-03-02T16:16:47.981+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-2] c.wipro.demp.controller.UserController   : User Alaikya Yemul logged in successfully
+2026-03-02T16:16:47.981+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-2] com.wipro.demp.config.JwtUtil            :  Generated JWT Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGFpa3lheWVtdWw1QGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3NzI0NDg0MDcsImV4cCI6MTc3MjQ4NDQwN30.UM1TiSNqAih52pTax1eP3zxijrF1jqaGqhsC_tkeB4o
+2026-03-02T16:16:51.652+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-6] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
+2026-03-02T16:16:51.759+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-6] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
+2026-03-02T16:16:51.774+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-6] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
+2026-03-02T16:17:01.669+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-8] c.wipro.demp.controller.EventController  : Fetching all events
+2026-03-02T16:17:01.669+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-8] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-03-02T16:17:01.753+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-4] c.wipro.demp.controller.EventController  : Fetching all events
+2026-03-02T16:17:01.753+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-4] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-03-02T16:17:05.105+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-1] c.w.d.controller.RegistrationController  : Fetching registrations for user ID: 3
+2026-03-02T16:17:05.148+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-1] c.w.d.controller.RegistrationController  : Registrations for user ID 3 found: 3
+2026-03-02T16:17:05.148+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-1] c.w.d.controller.RegistrationController  : Returning registrations for user ID: 3
+2026-03-02T16:17:07.200+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-7] c.wipro.demp.controller.EventController  : Fetching all events
+2026-03-02T16:17:07.202+05:30  INFO 11260 --- [DEMP] [http-nio-8080-exec-7] c.wipro.demp.controller.EventController  : All events fetched successfully
+2026-03-02T16:17:56.783+05:30  INFO 11260 --- [DEMP] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2026-03-02T16:17:57.754+05:30  INFO 11260 --- [DEMP] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2026-03-02T16:17:57.816+05:30  INFO 11260 --- [DEMP] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-03-02T16:17:57.917+05:30  INFO 11260 --- [DEMP] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-03-02T16:17:57.994+05:30  INFO 11260 --- [DEMP] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
