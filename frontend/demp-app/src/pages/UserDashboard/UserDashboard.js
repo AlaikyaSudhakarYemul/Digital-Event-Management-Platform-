@@ -95,6 +95,7 @@ const UserDashboard = () => {
   const [userData, setUserData] = useState(null);
   const [registeredEvents, setRegisteredEvents] = useState([]); 
   const [activeTab, setActiveTab] = useState("home");
+  const [showTicketProfile,setTicketProfile] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState("");
@@ -385,11 +386,17 @@ const UserDashboard = () => {
               </div>
             </div>
           )}
-
+            {/*TICKETS*/}
           {activeTab === "tickets" && (
             <div className="dashboard-card">
               <h4>My Tickets</h4>
-              <p>[Tickets content goes here]</p>
+              <button
+              className="view-btn"
+              onClick={() => setTicketProfile(true)}
+              disabled={!hasUser}
+              title={!hasUser ? "Sign in to view profile" : "Open ticket profile"}>
+              View
+            </button>
             </div>
           )}
 
@@ -423,6 +430,28 @@ const UserDashboard = () => {
             </div>
           </div>
         )}
+
+{showTicketProfile && (
+  <div className="ticket-backdrop" onClick={() => setTicketProfile(false)}>
+    <div className="ticket-card" onClick={(e) => e.stopPropagation()}>   
+      <button className="ticket-close" onClick={() => setTicketProfile(false)} aria-label="Close ticket">
+        x
+      </button>
+  
+      <div className="ticket-left">
+        <h2 className="ticket-title">Event Name</h2>
+        <p className="ticket-row"><strong>Date:</strong> 12 March 2026</p>
+        <p className="ticket-row"><strong>Venue:</strong> Hyderabad</p>
+      </div>
+      <div className="ticket-divider" aria-hidden="true" />
+      <div className="ticket-right">
+        <p className="ticket-row"><strong>Seat Type: </strong>PREMIUM</p>
+        <p className="ticket-row"><strong>Ticket ID: </strong> #12345</p>
+        <p className="ticket-row"><strong>Payment Status: </strong>Not Paid</p>
+      </div>
+    </div>
+  </div>
+)}
       </main>
     </div>
   );
