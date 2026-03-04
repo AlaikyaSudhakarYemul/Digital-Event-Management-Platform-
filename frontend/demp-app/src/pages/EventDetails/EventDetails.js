@@ -26,6 +26,9 @@ const EventDetails = () => {
   const [registerMessage, setRegisterMessage] = useState('');
   const [isRegistered, setIsRegistered] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [registrationInfo, setRegistrationInfo] = useState(null);
+
+  const DEFAULT_PAYMENT_AMOUNT_RUPEES = 499;
 
   // ----- Fetch the event (HOOK #1) -----
   useEffect(() => {
@@ -181,7 +184,8 @@ const EventDetails = () => {
     setRegisterLoading(true);
     setRegisterMessage('');
     try {
-      await registerForEvent(eventId, user);
+      const registration = await registerForEvent(eventId, user);
+      setRegistrationInfo(registration);
       setIsRegistered(true);
       setShowSuccessPopup(true);
     } catch (e) {
@@ -194,6 +198,17 @@ const EventDetails = () => {
   const handlePopupClose = () => {
     setShowSuccessPopup(false);
     navigate('/');
+  };
+
+  const handleProceedToPayment = () => {
+    setShowSuccessPopup(false);
+    navigate('/payments', {
+      state: {
+        registrationId: registrationInfo?.registrationId ?? null,
+        eventId: Number(eventId),
+        amountRupees: DEFAULT_PAYMENT_AMOUNT_RUPEES,
+      },
+    });
   };
 
   // Safely compute full address only if event.address is present
@@ -380,10 +395,16 @@ const EventDetails = () => {
                   <h2 className="text-2xl font-bold text-green-600 mb-4">Success!</h2>
                   <p className="text-gray-600 mb-6">You have successfully registered for the event.</p>
                   <button
-                    onClick={handlePopupClose}
+                    onClick={handleProceedToPayment}
                     className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300"
                   >
-                    OK
+                    Proceed to Payment
+                  </button>
+                  <button
+                    onClick={handlePopupClose}
+                    className="w-full mt-3 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300"
+                  >
+                    Later
                   </button>
                 </div>
               </div>

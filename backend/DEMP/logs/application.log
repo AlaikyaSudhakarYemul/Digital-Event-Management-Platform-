@@ -1,0 +1,32 @@
+2026-03-04T00:06:44.527+05:30  INFO 25604 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : Starting DempApplication using Java 22.0.1 with PID 25604 (C:\Users\ED20580878\Digital-Event-Management-Platform-\backend\DEMP\target\classes started by ED20580878 in C:\Users\ED20580878\Digital-Event-Management-Platform-\backend\DEMP)
+2026-03-04T00:06:44.535+05:30 DEBUG 25604 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : Running with Spring Boot v3.5.5, Spring v6.2.10
+2026-03-04T00:06:44.535+05:30  INFO 25604 --- [DEMP] [restartedMain] com.wipro.demp.DempApplication           : No active profile set, falling back to 1 default profile: "default"
+2026-03-04T00:06:44.602+05:30  INFO 25604 --- [DEMP] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-03-04T00:06:44.602+05:30  INFO 25604 --- [DEMP] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-03-04T00:06:46.263+05:30  INFO 25604 --- [DEMP] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-04T00:06:46.426+05:30  INFO 25604 --- [DEMP] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 147 ms. Found 7 JPA repository interfaces.
+2026-03-04T00:06:47.671+05:30  INFO 25604 --- [DEMP] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-03-04T00:06:47.945+05:30  INFO 25604 --- [DEMP] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3343 ms
+2026-03-04T00:06:48.130+05:30  INFO 25604 --- [DEMP] [restartedMain] com.wipro.demp.config.JwtUtil            : JWT Secret Key initialized successfully.
+2026-03-04T00:06:48.204+05:30 DEBUG 25604 --- [DEMP] [restartedMain] com.wipro.demp.config.JwtFilter          : Filter 'jwtFilter' configured for use
+2026-03-04T00:06:48.473+05:30  INFO 25604 --- [DEMP] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-03-04T00:06:48.606+05:30  INFO 25604 --- [DEMP] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.26.Final
+2026-03-04T00:06:48.690+05:30  INFO 25604 --- [DEMP] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-03-04T00:06:49.202+05:30  INFO 25604 --- [DEMP] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-04T00:06:49.256+05:30  INFO 25604 --- [DEMP] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-03-04T00:06:49.583+05:30  INFO 25604 --- [DEMP] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4d319fc1
+2026-03-04T00:06:49.586+05:30  INFO 25604 --- [DEMP] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-03-04T00:06:49.705+05:30  WARN 25604 --- [DEMP] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-03-04T00:06:49.705+05:30  WARN 25604 --- [DEMP] [restartedMain] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2026-03-04T00:06:49.733+05:30  INFO 25604 --- [DEMP] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-03-04T00:06:51.424+05:30  INFO 25604 --- [DEMP] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-04T00:06:51.903+05:30  INFO 25604 --- [DEMP] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-04T00:06:52.124+05:30  INFO 25604 --- [DEMP] [restartedMain] c.w.demp.controller.AddressController    : Initializing AddressController with AddressService
+2026-03-04T00:06:52.313+05:30  INFO 25604 --- [DEMP] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
