@@ -3,6 +3,7 @@ import React, { useEffect, useState, useContext, useMemo, useCallback } from 're
 import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
 import { registerForEvent } from '../../services/eventService';
+import { getToken } from '../../services/authService';
 
 const API_BASE = process.env.REACT_APP_API_BASE_URL ?? "http://localhost:8080";
 
@@ -195,9 +196,28 @@ const EventDetails = () => {
     }
   };
 
-  const handlePopupClose = () => {
-    setShowSuccessPopup(false);
-    navigate('/');
+  const handlePopupClose = async () => {
+    try {
+      const token = getToken();
+      if (token && registrationInfo?.registrationId) {
+        await fetch(`${API_BASE}/api/payments/pending`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            registrationId: registrationInfo.registrationId,
+            amountRupees: DEFAULT_PAYMENT_AMOUNT_RUPEES,
+          }),
+        });
+      }
+    } catch (e) {
+      console.error("Failed to mark pay-later status:", e);
+    } finally {
+      setShowSuccessPopup(false);
+      navigate('/');
+    }
   };
 
   const handleProceedToPayment = () => {

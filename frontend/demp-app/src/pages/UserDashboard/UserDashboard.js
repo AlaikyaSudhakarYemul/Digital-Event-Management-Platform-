@@ -57,14 +57,14 @@ const formatTime = (val) => {
 
 const normalizeRegistration = (reg) => ({
   registrationId: reg.registrationId,
-  eventName: reg.event.eventName,
-  date: reg.event.date,
-  time: reg.event.time,
+  eventName: reg?.event?.eventName ?? "-",
+  date: reg?.event?.date ?? null,
+  time: reg?.event?.time ?? null,
   location: [
-    reg.event.address.address,
-    reg.event.address.state,
-    reg.event.address.pincode,
-    reg.event.address.country,
+    reg?.event?.address?.address,
+    reg?.event?.address?.state,
+    reg?.event?.address?.pincode,
+    reg?.event?.address?.country,
   ]
     .filter(Boolean)
     .join(", "),
@@ -153,9 +153,13 @@ const UserDashboard = () => {
         const url = `${API_BASE}/api/registrations/user/${encodeURIComponent(
           userData.id
         )}`;
+        const token = localStorage.getItem("auth_token");
 
         const response = await fetch(url, {
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
         });
 
         if (!response.ok) {

@@ -162,13 +162,23 @@ export default function RegistrationPay({ registrationId: propRegistrationId, ev
 
         {error && <p className="text-red-400 mb-4">{error}</p>}
 
-        <button
-          onClick={handlePay}
-          disabled={busy || !sdkReady}
-          className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 text-white font-bold py-2 px-4 rounded"
-        >
-          {busy ? "Processing..." : "Pay & Register"}
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={handlePay}
+            disabled={busy || !sdkReady}
+            className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 text-white font-bold py-2 px-4 rounded"
+          >
+            {busy ? "Processing..." : "Proceed to Pay"}
+          </button>
+
+          <button
+            onClick={() => navigate(-1)}
+            type="button"
+            className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Back
+          </button>
+        </div>
       </div>
     </div>
   );

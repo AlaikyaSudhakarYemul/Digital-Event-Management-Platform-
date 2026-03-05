@@ -14,16 +14,19 @@ export const login = async (email, password) => {
   }
 
   const data = await response.json();
+  const user = data.user ?? data;
   localStorage.setItem('auth_token', data.token);
 
-  if (data.userName && data.email && data.contactNo) {
+  if (user?.userName && user?.email && user?.contactNo) {
     localStorage.setItem(
       'user',
       JSON.stringify({
-        userName: data.userName,
-        email: data.email,
-        contactNo: data.contactNo,
-        role: data.role,
+        id: user.id ?? user.userId ?? null,
+        userId: user.userId ?? user.id ?? null,
+        userName: user.userName,
+        email: user.email,
+        contactNo: user.contactNo,
+        role: user.role,
       })
     );
   }
@@ -51,15 +54,22 @@ export const signup = async (name, email, role, password, contactNo) => {
 
   const text = await response.text();
   const data = text ? JSON.parse(text) : {};
+  const user = data.user ?? data;
 
-  if (data.userName && data.email && data.contactNo) {
+  if (data.token) {
+    localStorage.setItem('auth_token', data.token);
+  }
+
+  if (user?.userName && user?.email && user?.contactNo) {
     localStorage.setItem(
       'user',
       JSON.stringify({
-        userName: data.userName,
-        email: data.email,
-        contactNo: data.contactNo,
-        role: data.role,
+        id: user.id ?? user.userId ?? null,
+        userId: user.userId ?? user.id ?? null,
+        userName: user.userName,
+        email: user.email,
+        contactNo: user.contactNo,
+        role: user.role,
       })
     );
   }

@@ -16,7 +16,6 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.Base64;
 import java.util.Map;
 
 @RestController
@@ -88,13 +87,18 @@ public class PaymentController {
     String rzpPaymentId = body.get("razorpay_payment_id");
     String rzpSignature = body.get("razorpay_signature");
 
+    if (rzpOrderId == null || rzpPaymentId == null || rzpSignature == null) {
+      return ResponseEntity.badRequest().body(Map.of("error", "Missing payment verification fields"));
+    }
+
     // Generate signature HMAC_SHA256(orderId|paymentId)
     String payload = rzpOrderId + "|" + rzpPaymentId;
     Mac mac = Mac.getInstance("HmacSHA256");
     mac.init(new SecretKeySpec(keySecret.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
-    String generatedSig = Base64.getEncoder().encodeToString(mac.doFinal(payload.getBytes(StandardCharsets.UTF_8)));
+    byte[] digest = mac.doFinal(payload.getBytes(StandardCharsets.UTF_8));
+    String generatedSig = bytesToHex(digest);
 
-    boolean valid = generatedSig.equals(rzpSignature);
+    boolean valid = generatedSig.equalsIgnoreCase(rzpSignature);
 
     // Load order row to know amount and registration link
     Order order = ordersRepo.findByRazorpayOrderId(rzpOrderId)
@@ -120,5 +124,41 @@ public class PaymentController {
     }
 
     return ResponseEntity.ok(Map.of("signatureValid", valid));
+  }
+
+  // Persist pending payment row when user chooses pay later
+  @PostMapping("/pending")
+  public ResponseEntity<?> markPending(@RequestBody Map<String, Object> body) {
+    Long registrationId = body.get("registrationId") == null ? null : Long.valueOf(body.get("registrationId").toString());
+    Integer amountRupees = body.get("amountRupees") == null ? null : Integer.valueOf(body.get("amountRupees").toString());
+
+    if (registrationId == null || amountRupees == null || amountRupees <= 0) {
+      return ResponseEntity.badRequest().body(Map.of("error", "registrationId and valid amountRupees are required"));
+    }
+
+    String suffix = String.valueOf(System.currentTimeMillis());
+
+    Payment p = new Payment();
+    p.setRegistrationId(registrationId);
+    p.setAmountPaise(amountRupees * 100);
+    p.setCurrency("INR");
+    p.setRazorpayOrderId("PAY_LATER_ORDER_" + suffix);
+    p.setRazorpayPaymentId("PAY_LATER_PAYMENT_" + suffix);
+    p.setStatus(PaymentStatus.PENDING);
+    p.setSignatureValid(false);
+    p.setMethod("PAY_LATER");
+    p.setCreated_at(LocalDateTime.now());
+
+    paymentsRepo.save(p);
+
+    return ResponseEntity.ok(Map.of("status", "PENDING", "registrationId", registrationId));
+  }
+
+  private String bytesToHex(byte[] bytes) {
+    StringBuilder hex = new StringBuilder(bytes.length * 2);
+    for (byte b : bytes) {
+      hex.append(String.format("%02x", b));
+    }
+    return hex.toString();
   }
 }	

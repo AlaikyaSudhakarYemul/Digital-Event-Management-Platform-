@@ -44,6 +44,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST,"/api/registrations/**").hasRole("USER")
                                 .requestMatchers(HttpMethod.POST, "/api/payments/orders").hasRole("USER")
                                 .requestMatchers(HttpMethod.POST, "/api/payments/verify").hasRole("USER")
+                                .requestMatchers(HttpMethod.POST, "/api/payments/pending").hasRole("USER")
                                 .requestMatchers("/api/registrations/event/{eventId}").hasRole("ORGANIZER")
                                 .requestMatchers("/api/registrations/**").permitAll()
                 .anyRequest().authenticated()

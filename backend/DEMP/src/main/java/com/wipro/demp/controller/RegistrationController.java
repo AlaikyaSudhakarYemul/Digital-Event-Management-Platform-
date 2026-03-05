@@ -77,8 +77,7 @@ public class RegistrationController {
         List<Registrations> registrations = registrationService.getRegistrationsByUserId(userId);
         logger.info("Registrations for user ID {} found: {}", userId, registrations.size());
         if (registrations.isEmpty()) {
-            logger.warn("No registrations found for user ID: {}", userId);
-            return ResponseEntity.notFound().build();
+            logger.info("No registrations found for user ID: {}", userId);
         }
         logger.info("Returning registrations for user ID: {}", userId);
         return ResponseEntity.ok(registrations);
@@ -95,8 +94,7 @@ public class RegistrationController {
         List<Registrations> registrations = registrationService.getRegistrationsByEventId(eventId);
         logger.info("Registrations for event ID {} found: {}", eventId, registrations.size());
         if (registrations.isEmpty()) {
-            logger.warn("No registrations found for event ID: {}", eventId);
-            return ResponseEntity.notFound().build();
+            logger.info("No registrations found for event ID: {}", eventId);
         }
         logger.info("Returning registrations for event ID: {}", eventId);
         return ResponseEntity.ok(registrations);
