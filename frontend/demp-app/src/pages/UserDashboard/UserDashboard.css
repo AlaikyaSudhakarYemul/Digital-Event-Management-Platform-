@@ -26,8 +26,35 @@
 .sidebar-menu li {
   margin: 20px 0;
   cursor: pointer;
+  padding: 8px 10px;
+  color: #e5e7eb;
+  position: relative;
+  border-radius: 6px;
 }
 
+.sidebar-menu li:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-menu li.active {
+  font-weight: 600;
+  color: #ffffff;
+  position: relative;
+}
+
+.sidebar-menu li.active::before {
+  content: "";
+  position: absolute;
+  left: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 70%;
+  background: #9ca3af;
+  border-radius: 4px;
+}
+
+/* MAIN SECTION */
 .dashboard-main {
   flex: 1;
   padding: 30px;
@@ -122,7 +149,7 @@
   margin-left: 10px;
 }
 
-/* Modal styles */
+
 .profile-modal {
   position: fixed;
   top: 0;
@@ -153,4 +180,310 @@
   padding: 8px 18px;
   border-radius: 5px;
   cursor: pointer;
+}
+
+
+.dashboard-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card-header {
+  background: #eef2f7;
+  padding: 12px 16px;
+  font-weight: 600;
+  text-align: center;
+  color: #111827;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.card-body {
+  padding: 16px 18px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 6px;
+}
+
+.events-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  background: #fff;
+}
+
+.events-table th,
+.events-table td {
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.events-table thead th {
+  background: #f3f4f6;
+  font-weight: 600;
+}
+
+.events-table tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+
+.muted {
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.numbered-list {
+  list-style: decimal;
+  padding-left: 1.25rem;  
+  margin: 0;
+}
+
+.numbered-list li {
+  margin-bottom: 10px;
+}
+
+.numbered-list li::marker {
+  font-weight: 600;
+  color: #374151; 
+}
+
+.upcoming-inline {
+  list-style: none;              
+  padding-left: 0;
+  margin: 0;
+}
+
+.upcoming-inline__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 10px 0;
+  line-height: 1.4;
+  white-space: nowrap;           
+  overflow: hidden;             
+  text-overflow: ellipsis;       
+  border-radius: 6px;           
+  padding: 2px 4px;            
+  transition: background 0.15s ease-in-out;
+}
+
+.upcoming-inline__item:hover {
+  background: rgba(0, 0, 0, 0.03);  
+}
+
+.upcoming-inline__item:focus-visible {
+  outline: 2px solid #9ca3af;        
+  outline-offset: 2px;
+}
+
+.upcoming-inline__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;                   
+  border-radius: 999px;
+  background: #eef2f7;               
+  color: #111827;
+  font-weight: 600;
+  font-size: 12px;
+  flex: 0 0 auto;
+}
+
+.upcoming-inline__title {
+  font-weight: 600;
+  color: #111827;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.upcoming-inline__sep {
+  color: #6b7280;
+  flex: 0 0 auto;
+}
+
+.upcoming-inline__meta {
+  color: #374151;                  
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 560px) {
+  .upcoming-inline__item {
+    white-space: normal;          
+  }
+  .upcoming-inline__meta {
+    display: inline;               
+    white-space: normal;
+  }
+}
+
+.sidebar--with-bottom {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.sidebar--with-bottom {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  padding: 12px 16px;
+}
+
+.sidebar-bottom.no-sep {
+  border-top: none !important; 
+}
+
+.sidebar-bottom .home-btn + .logout-btn {
+  margin-top: 10px;
+}
+
+.home-btn {
+  width: 100%;
+  display: inline-block;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 0;
+  background: #06b6d4; 
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease-in-out, transform 0.05s ease;
+}
+.home-btn:hover { background: #0891b2; } 
+.home-btn:active { transform: translateY(1px); }
+
+.logout-btn {
+  width: 100%;
+  display: inline-block;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 0;
+  background: #06b6d4; 
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease-in-out, transform 0.05s ease;
+}
+.logout-btn:hover { background: #0891b2; } 
+.logout-btn:active { transform: translateY(1px); }
+
+.dashboard-container {
+  min-height: 100vh;
+}
+
+.view-btn{
+   width: 20%;
+  display: inline-block;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 0;
+  background: #06b6d4; 
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease-in-out, transform 0.05s ease;
+}
+
+.ticket-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 24, 39, 0.45); /* gray-900 at ~45% */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.ticket-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  display: flex;
+  gap: 24px;
+  padding: 24px 28px;
+  min-width: 560px;  /* adjust as you like */
+  max-width: 90vw;
+  min-height: 220px;
+}
+
+.ticket-left,
+.ticket-right {
+  background: transparent;       /* <-- important (remove white bg) */
+  padding: 4px 0;
+  border-radius: 0;              /* <-- no rounded individual corners */
+  min-width: 240px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1 1 auto;
+}
+
+.ticket-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin: 0 0 6px;
+  color: #111827; /* gray-900 */
+}
+
+.ticket-row {
+  margin: 0;
+  color: #374151; /* gray-700 */
+  font-size: 0.98rem;
+}
+
+.ticket-divider {
+  align-self: stretch;         /* make it grow vertically */
+  width: 0;                    /* we use border-left to draw the line */
+  border-left: 2px dashed #9CA3AF; /* gray-400 */
+  opacity: 0.9;
+  margin: 0 4px;
+}
+
+/* Close button inside the card (top-right) */
+.ticket-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  border: 0;
+  background: #111827;
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  font-size: 18px;
+  line-height: 28px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.15s ease-in-out, transform 0.05s ease;
+}
+.ticket-close:hover { background: #0f172a; } 
+.ticket-close:active { transform: translateY(1px); }
+
+@media (max-width: 640px) {
+  .ticket-card {
+    flex-direction: column;
+    gap: 16px;
+    min-width: 320px;
+  }
+  .ticket-divider {
+    border-left: none;
+    border-top: 2px dashed #9CA3AF;
+    width: 100%;
+    height: 0;
+    margin: 6px 0;
+  }
 }

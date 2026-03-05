@@ -136,7 +136,7 @@ public class EventController {
     @GetMapping("/paginated")
     public ResponseEntity<?> getPaginatedEvents(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "3") int size,
             @RequestParam(required = false) String eventName) {
                 logger.info("Fetching paginated events: page={}, size={}, eventName={}", page, size, eventName);
         if (page < 0 || size <= 0) {
