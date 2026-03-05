@@ -1,3 +1,16 @@
 {
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+
+  "cucumber-quick.features": [
+    "src/test/resources/features"
+  ],
+  "cucumber-quick.glue": [
+    "src/test/java/testdefinitions"
+  ],
+  "cucumber-quick.strict": true,
+  "cucumber-quick.dryRun": false,
+  "cucumber-quick.monochrome": true,
+  "cucumber-quick.format": [
+    "pretty"
+  ]
 }
