@@ -177,7 +177,25 @@ const EventDetails = () => {
     return isNaN(dt) ? t : dt.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
   };
 
+  const isEventCompleted = (() => {
+    if (String(event?.activeStatus || '').toUpperCase() === 'COMPLETED') return true;
+    if (!event?.date) return false;
+    const eventDate = new Date(event.date);
+    if (isNaN(eventDate)) return false;
+    const today = new Date();
+    eventDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+    return eventDate < today;
+  })();
+
   const handleRegister = async () => {
+    if (isEventCompleted) {
+      const completedMessage = 'Event is completed. Registration is closed.';
+      setRegisterMessage(completedMessage);
+      window.alert(completedMessage);
+      return;
+    }
+
     if (!user) {
       setRegisterMessage('Please log in to register.');
       return;
