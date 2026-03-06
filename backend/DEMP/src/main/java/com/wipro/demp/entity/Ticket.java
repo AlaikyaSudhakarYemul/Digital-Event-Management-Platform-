@@ -24,10 +24,15 @@ public class Ticket {
     private int ticketId;
 
     @Enumerated(EnumType.STRING)
+
     private TicketType ticketType;
+    
     private double price;
+    
     private int eventId;
+    
     private int userId;
+    
     private int registrationId;
 
     private LocalDate createdOn;
