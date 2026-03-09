@@ -2,14 +2,12 @@ package com.wipro.demp.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,19 +18,32 @@ import lombok.Setter;
 public class Ticket {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "ticket_gen")
+    @TableGenerator(
+        name = "ticket_gen",
+        table = "id_generator",
+        pkColumnName = "gen_name",
+        valueColumnName = "gen_val",
+        pkColumnValue = "ticket_id",
+        initialValue = 10001,
+        allocationSize = 1
+    )
     private int ticketId;
 
-    @Enumerated(EnumType.STRING)
-
+    @NotNull(message = "Ticket type cannot be null")
     private TicketType ticketType;
     
-    private double price;
+    @NotNull(message = "Price cannot be null")
+    @DecimalMin(value = "0.00", message = "Price must be greater than or equal to 0.00")
+    @Digits(integer = 10, fraction = 2, message = "Price must be a valid monetary amount")
+    @Column(precision = 10, scale = 2, nullable = false)
+    private BigDecimal price;
     
     private int eventId;
     
     private int userId;
     
+    @Column(unique = true)
     private int registrationId;
 
     private LocalDate createdOn;
