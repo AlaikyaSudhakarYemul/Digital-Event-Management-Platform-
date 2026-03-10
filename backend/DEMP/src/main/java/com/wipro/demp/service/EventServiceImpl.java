@@ -89,6 +89,15 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public List<Event> findAllEventsByUserId(Integer userId) {
+        List<Event> events = eventRepository.findByUserUserId(userId);
+        if (events == null || events.isEmpty()) {
+            throw new EventNotFoundException("No events found for organizer with id: " + userId);
+        }
+        return events;
+    }
+
+    @Override
     public List<Event> getAllEvents() {
         List<Event> events = eventRepository.findAllInReverse();
         if (events.isEmpty()) {

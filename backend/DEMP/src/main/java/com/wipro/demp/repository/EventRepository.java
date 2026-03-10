@@ -22,6 +22,8 @@ public interface EventRepository extends JpaRepository <Event, Integer> {
     Page<Event> findByEventNameContainingIgnoreCase(String eventName, Pageable pageable);
  
     List<Event> findByUser(Users user);
+
+    List<Event> findByUserUserId(Integer userId);
  
     @Query("SELECT e FROM Event e ORDER BY e.id DESC")
     List<Event> findAllInReverse();

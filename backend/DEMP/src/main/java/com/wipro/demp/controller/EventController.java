@@ -9,7 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-// import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 // import org.springframework.security.core.Authentication;
 // import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -59,6 +59,18 @@ public class EventController {
         logger.info("Event with ID fetched successfully: {}",event);
         return new ResponseEntity<>(event, HttpStatus.OK);
     }
+
+    @PreAuthorize("hasRole('ORGANIZER')")
+    @GetMapping("/organizer/{userId}")
+    public ResponseEntity<?> getEventsByOrganizerId(@PathVariable Integer userId) {
+        
+        if (userId == null || userId < 0) {
+           
+            return ResponseEntity.badRequest().body("Invalid organizer ID.");
+        }
+       
+        return new ResponseEntity<>(eventService.findAllEventsByUserId(userId), HttpStatus.OK);
+    }
  
     @GetMapping("/all")
     public ResponseEntity<?> getAllEvents() {
@@ -105,6 +117,8 @@ public class EventController {
         logger.info("Events with name '{}' fetched successfully", eventName);
         return new ResponseEntity<>(eventService.findByEventName(eventName), HttpStatus.OK);
     }
+
+    
  
     // @PreAuthorize("hasRole('USER')")
     // @PostMapping("/{id}/register")

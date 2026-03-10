@@ -11,6 +11,7 @@ public interface EventService {
       Event createEvent(Event event);
       Event getEventById(int id);
       List<Event> getAllEvents();
+      List<Event> findAllEventsByUserId(Integer userId);
       Event updateEvent(int id, Event updatedEvent);
       void deleteEvent (int id);
       List<Event> findByEventName(String eventName);
