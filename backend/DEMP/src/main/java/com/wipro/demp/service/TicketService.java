@@ -12,5 +12,6 @@ public interface TicketService {
     public Ticket getTicketById(int id);
     public List<Ticket> getAllTickets();
     public List<Ticket> getTicketsByEventId(int eventId);
+    public List<Ticket> getTicketsByUserId(int userId);
     
 }

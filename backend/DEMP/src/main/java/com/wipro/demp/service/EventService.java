@@ -14,5 +14,6 @@ public interface EventService {
       Event updateEvent(int id, Event updatedEvent);
       void deleteEvent (int id);
       List<Event> findByEventName(String eventName);
+      List<Event> findAllEventsByUserId(Integer userId);
       Page<Event> getPaginatedEvents(String eventName, Pageable pageable);
 }

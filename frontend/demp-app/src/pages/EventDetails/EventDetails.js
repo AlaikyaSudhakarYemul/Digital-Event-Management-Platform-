@@ -472,30 +472,30 @@ const EventDetails = () => {
             {/* Ticket form popup shown immediately after registration */}
             {showTicketForm && (
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
-                <form onSubmit={submitTicket} className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full mx-4">
-                  <h2 className="text-2xl font-bold mb-4">Create Ticket</h2>
-                  <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Ticket Type</label>
-                    <select
-                      value={ticketType}
-                      onChange={(e) => setTicketType(e.target.value)}
-                      className="w-full px-3 py-2 border rounded bg-gray-100"
-                      required
-                    >
+                <form onSubmit={submitTicket} className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full mx-4 text-black">
+                    <h2 className="text-2xl font-bold mb-4 text-black">Create Ticket</h2>
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium text-black mb-2">Ticket Type</label>
+                      <select
+                        value={ticketType}
+                        onChange={(e) => setTicketType(e.target.value)}
+                        className="w-full px-3 py-2 border rounded bg-gray-100 text-black"
+                        required
+                      >
                       <option value="FIRST_CLASS">First Class</option>
                       <option value="SECOND_CLASS">Second Class</option>
                       <option value="ECONOMY_CLASS">Economy Class</option>
                     </select>
                   </div>
                   <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Price (INR)</label>
+                    <label className="block text-sm font-medium text-black mb-2">Price (INR)</label>
                     <input
                       type="number"
                       step="0.01"
                       min="0"
                       value={ticketPrice}
                       onChange={(e) => setTicketPrice(e.target.value)}
-                      className="w-full px-3 py-2 border rounded bg-gray-100"
+                      className="w-full px-3 py-2 border rounded bg-gray-100 text-black"
                       required
                     />
                   </div>

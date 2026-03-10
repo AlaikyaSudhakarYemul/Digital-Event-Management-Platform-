@@ -9,5 +9,7 @@ import com.wipro.demp.entity.Ticket;
 public interface TicketRepository extends JpaRepository<Ticket, Integer> {
 
     public List<Ticket> findByEventId(int eventId);
+
+    public List<Ticket> findByUserId(int userId);
     
 }

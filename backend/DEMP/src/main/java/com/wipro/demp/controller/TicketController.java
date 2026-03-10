@@ -79,4 +79,12 @@ public class TicketController {
         return new ResponseEntity<>(ticketService.getTicketsByEventId(eventId), HttpStatus.OK);
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<?> getTicketsByUserId(@PathVariable int userId) {
+        if (userId < 0) {
+            return ResponseEntity.badRequest().body("User ID must be a positive integer");
+        }
+        return new ResponseEntity<>(ticketService.getTicketsByUserId(userId), HttpStatus.OK);
+    }
+
 }

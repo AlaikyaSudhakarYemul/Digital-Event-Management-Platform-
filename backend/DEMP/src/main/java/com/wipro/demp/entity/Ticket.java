@@ -25,7 +25,7 @@ public class Ticket {
         pkColumnName = "gen_name",
         valueColumnName = "gen_val",
         pkColumnValue = "ticket_id",
-        initialValue = 10001,
+        initialValue = 10000,
         allocationSize = 1
     )
     private int ticketId;

@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 // import org.springframework.security.access.prepost.PreAuthorize;
 // import org.springframework.security.core.Authentication;
 // import org.springframework.security.core.context.SecurityContextHolder;
@@ -152,6 +153,18 @@ public class EventController {
         logger.info("Paginated events fetched successfully: page={}, size={}, totalElements={}",
                     page, size, eventPage.getTotalElements());
         return new ResponseEntity<>(eventPage, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ORGANIZER')")
+    @GetMapping("/organizer/{userId}")
+    public ResponseEntity<?> getEventsByOrganizerId(@PathVariable Integer userId) {
+        // logger.info("Fetching events for organizer with ID: {}", userId);
+        if (userId == null || userId < 0) {
+            // logger.error("Invalid organizer ID: {}", userId);
+            return ResponseEntity.badRequest().body("Invalid organizer ID.");
+        }
+        // logger.info("Events for organizer with ID {} fetched successfully", userId);
+        return new ResponseEntity<>(eventService.findAllEventsByUserId(userId), HttpStatus.OK);
     }
  
 }

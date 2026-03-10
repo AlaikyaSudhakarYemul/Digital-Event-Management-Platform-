@@ -104,4 +104,14 @@ public class TicketServiceImpl implements TicketService {
             return tickets;
     }
 
+    @Override
+    public List<Ticket> getTicketsByUserId(int userId) {
+        // TODO Auto-generated method stub
+        List<Ticket> tickets = ticketRepository.findByUserId(userId);
+        if (tickets.isEmpty()) {
+            throw new RuntimeException("No tickets found for user id: " + userId);
+        }
+        return tickets;
+    }
+
 }
