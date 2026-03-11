@@ -21,7 +21,6 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public Ticket createTicket(Ticket ticket) {
-        // TODO Auto-generated method stub
 
         ticket.setCreatedOn(LocalDate.now());
         ticket.setCreationTime(LocalDateTime.now());
@@ -33,9 +32,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public Ticket updateTicket(int id, Ticket ticket) {
-        // TODO Auto-generated method stub
-
-        if (ticketRepository.findById(id).isEmpty()) {
+          if (ticketRepository.findById(id).isEmpty()) {
             throw new RuntimeException("Ticket not found with id: " + id);
         }
 
@@ -55,7 +52,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public void deleteTicket(int id) {
-        // TODO Auto-generated method stub
+       
         if (ticketRepository.findById(id).isEmpty()) {
             throw new RuntimeException("Ticket not found with id: " + id);
         }
@@ -71,7 +68,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public Ticket getTicketById(int id) {
-        // TODO Auto-generated method stub
+       
         if (ticketRepository.findById(id).isEmpty()) {
             throw new RuntimeException("Ticket not found with id: " + id);
         }
@@ -85,7 +82,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public List<Ticket> getAllTickets() {
-        // TODO Auto-generated method stub
+       
         List<Ticket> tickets = ticketRepository.findAll();
         if (tickets.isEmpty()) {
             throw new RuntimeException("No tickets found.");
@@ -96,7 +93,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public List<Ticket> getTicketsByEventId(int eventId) {
-        // TODO Auto-generated method stub
+       
             List<Ticket> tickets = ticketRepository.findByEventId(eventId);
             if (tickets.isEmpty()) {
                 throw new RuntimeException("No tickets found for event id: " + eventId);
@@ -106,7 +103,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public List<Ticket> getTicketsByUserId(int userId) {
-        // TODO Auto-generated method stub
+        
         List<Ticket> tickets = ticketRepository.findByUserId(userId);
         if (tickets.isEmpty()) {
             throw new RuntimeException("No tickets found for user id: " + userId);

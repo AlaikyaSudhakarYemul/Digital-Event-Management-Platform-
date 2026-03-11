@@ -20,8 +20,6 @@ public class NotificationService {
     @Autowired
     private JavaMailSender mailSender;
 
-    @Autowired
-    private RestTemplate restTemplate;
 
     @Autowired
     private UserRepository userRepository;
@@ -31,9 +29,8 @@ public class NotificationService {
     public void sendCalendarInvite(Registrations registration) throws Exception {
         Event event = registration.getEvent();
 
-        // Fetch user from user microservice
         int userId = registration.getUser().getUserId();
-        // Users user = restTemplate.getForObject(USER_SERVICE_URL + userId, Users.class);
+        
         Users user = userRepository.getById(userId);
 
         String icsContent = CalendarInviteUtil.generateICS(event, null);

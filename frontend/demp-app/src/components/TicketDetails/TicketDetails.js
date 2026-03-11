@@ -25,9 +25,114 @@ const formatDate = (val) => {
   }
 };
 
+const formatOnlyDate = (val) => {
+  if (!val) return '-';
+  try {
+    const d = new Date(val);
+    if (Number.isNaN(d.getTime())) return val;
+    return d.toLocaleDateString();
+  } catch {
+    return val;
+  }
+};
+
+const formatTime = (val) => {
+  if (!val) return '-';
+  try {
+    if (typeof val === 'string') {
+      const isoLike = /\d{4}-\d{2}-\d{2}T/;
+      const timeOnly = /^\d{1,2}:\d{2}(:\d{2})?$/;
+      if (isoLike.test(val)) {
+        const d = new Date(val);
+        if (!Number.isNaN(d.getTime())) {
+          return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', second: '2-digit' });
+        }
+      }
+      if (timeOnly.test(val)) {
+        const parts = val.split(':').map((p) => Number(p));
+        const d = new Date();
+        d.setHours(parts[0] || 0, parts[1] || 0, parts[2] || 0, 0);
+        return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', second: '2-digit' });
+      }
+    }
+    const d = new Date(val);
+    if (Number.isNaN(d.getTime())) return val;
+    return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', second: '2-digit' });
+  } catch {
+    return val;
+  }
+};
+
+
+const parseLocalDateTimeString = (s) => {
+  if (!s || typeof s !== 'string') return null;
+  const m = s.trim().match(/^(\d{4})-(\d{2})-(\d{2})[ T](\d{1,2}):(\d{2})(?::(\d{2}))?/);
+  if (!m) return null;
+  const year = Number(m[1]);
+  const month = Number(m[2]);
+  const day = Number(m[3]);
+  const hour = Number(m[4]);
+  const minute = Number(m[5]);
+  const second = Number(m[6] || 0);
+
+  return new Date(year, month - 1, day, hour, minute, second);
+};
+
+const formatTimeFromDate = (date) => {
+  if (!date || !(date instanceof Date)) return '-';
+  return date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', second: '2-digit' });
+};
+
+const getEventTime = (eventObj, ticketObj) => {
+  
+  const candidates = [];
+  if (eventObj) {
+    candidates.push(eventObj.time, eventObj.eventTime, eventObj.startTime, eventObj.date, eventObj.startDateTime, eventObj.eventDateTime);
+  }
+  if (ticketObj && ticketObj.event) {
+    candidates.push(ticketObj.event.time, ticketObj.event.eventTime, ticketObj.event.startTime, ticketObj.event.date);
+  }
+
+  for (let candidate of candidates) {
+    if (candidate == null) continue;
+    if (typeof candidate === 'number' && Number.isFinite(candidate)) {
+      const d = new Date();
+      d.setHours(candidate, 0, 0, 0);
+      return formatTimeFromDate(d);
+    }
+    if (typeof candidate === 'string') {
+      const num = Number(candidate);
+      if (!Number.isNaN(num) && String(candidate).trim().length <= 2) {
+        const d = new Date();
+        d.setHours(num, 0, 0, 0);
+        return formatTimeFromDate(d);
+      }
+      
+      const parsed = parseLocalDateTimeString(candidate);
+      if (parsed) return formatTimeFromDate(parsed);
+      
+      const timeOnly = candidate.trim().match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?$/);
+      if (timeOnly) {
+        const h = Number(timeOnly[1]);
+        const m = Number(timeOnly[2]);
+        const s = Number(timeOnly[3] || 0);
+        const d = new Date();
+        d.setHours(h, m, s, 0);
+        return formatTimeFromDate(d);
+      }
+    }
+    
+    if (candidate instanceof Date) {
+      return formatTimeFromDate(candidate);
+    }
+  }
+
+  return formatTime(eventObj?.date ?? ticketObj?.event?.date ?? ticketObj?.createdOn);
+};
+
 const formatAddress = (addr) => {
   if (!addr) return '-';
-  // Normalize possible address fields and join non-empty parts
+  
   const parts = [];
   if (addr.address) parts.push(addr.address);
   if (addr.addressLine) parts.push(addr.addressLine);
@@ -38,6 +143,57 @@ const formatAddress = (addr) => {
   if (addr.zip) parts.push(addr.zip);
   if (addr.country) parts.push(addr.country);
   return parts.length ? parts.join(', ') : '-';
+};
+
+const loadHtml2Canvas = () => new Promise((resolve, reject) => {
+  if (typeof window === 'undefined') return reject(new Error('No window'));
+  if (window.html2canvas) return resolve(window.html2canvas);
+  const existing = document.querySelector('script[data-html2canvas]');
+  if (existing) {
+    existing.addEventListener('load', () => resolve(window.html2canvas));
+    existing.addEventListener('error', () => reject(new Error('Failed to load html2canvas')));
+    return;
+  }
+  const s = document.createElement('script');
+  s.src = 'https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js';
+  s.setAttribute('data-html2canvas', 'true');
+  s.onload = () => resolve(window.html2canvas);
+  s.onerror = () => reject(new Error('Failed to load html2canvas'));
+  document.body.appendChild(s);
+});
+
+
+const buildTicketElement = (ticket, event) => {
+  const wrapper = document.createElement('div');
+  wrapper.style.position = 'absolute';
+  wrapper.style.left = '-9999px';
+  wrapper.style.top = '0';
+  
+  wrapper.innerHTML = `
+    <div style="box-sizing:border-box; width:760px; padding:24px; border-radius:12px; background:#fff; box-shadow:0 8px 20px rgba(0,0,0,0.18); display:flex; gap:24px; font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; color:#111827;">
+      <div style="flex:1; text-align:left;">
+        <h2 style="margin:0 0 8px; font-size:28px; font-weight:800;">${(event?.eventName ?? ticket?.event?.eventName ?? '-')}</h2>
+        <div style="margin:8px 0; font-weight:700">Date: ${(formatOnlyDate(event?.date ?? ticket?.event?.date ?? ticket?.createdOn))}</div>
+        <div style="margin:8px 0; font-weight:700">Time: ${(getEventTime(event, ticket))}</div>
+        <div style="margin:8px 0; font-weight:700">Venue: ${(formatAddress(event?.address ?? ticket?.event?.address))}</div>
+      </div>
+      <div style="flex:1; text-align:left;">
+        <div style="margin:0 0 12px; font-weight:700">Seat Type: ${ticket?.ticketType ?? '-'}</div>
+        <div style="margin:0 0 12px; font-weight:700">Ticket ID: #${ticket?.ticketId ?? '-'}</div>
+        <div style="margin:0 0 12px; font-weight:700">Payment Status: ${ticket?.isPaid ? 'Paid' : 'Not Paid'}</div>
+      </div>
+    </div>
+  `;
+  return wrapper;
+};
+
+const downloadCanvasAsPng = (canvas, filename) => {
+  const link = document.createElement('a');
+  link.download = filename || 'ticket.png';
+  link.href = canvas.toDataURL('image/png');
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
 };
 
 const TicketDetails = () => {
@@ -133,6 +289,28 @@ const TicketDetails = () => {
     return () => { cancelled = true; };
   }, [selectedTicket]);
 
+  const handleDownload = async (t) => {
+    try {
+      let ev = t.event ?? null;
+      if (!ev && t.eventId) {
+        const token = localStorage.getItem('auth_token');
+        const res = await fetch(`${API_BASE}/api/events/${encodeURIComponent(t.eventId)}`, {
+          headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+        });
+        if (res.ok) ev = await res.json();
+      }
+      const el = buildTicketElement(t, ev);
+      document.body.appendChild(el);
+      await loadHtml2Canvas();
+      const canvas = await window.html2canvas(el, { useCORS: true, scale: 2 });
+      downloadCanvasAsPng(canvas, `ticket-${t.ticketId || 'download'}.png`);
+      el.remove();
+    } catch (err) {
+      console.error('Download failed', err);
+      alert('Failed to download ticket image');
+    }
+  };
+
   const closeModal = () => {
     setShowTicketProfile(false);
     setSelectedTicket(null);
@@ -162,6 +340,7 @@ const TicketDetails = () => {
                   <th>Price</th>
                   <th>Created</th>
                   <th>View</th>
+                  <th>Download</th>
                 </tr>
               </thead>
               <tbody>
@@ -173,8 +352,9 @@ const TicketDetails = () => {
                     <td>{t.price != null ? String(t.price) : '-'}</td>
                     <td>{formatDate(t.creationTime ?? t.createdOn)}</td>
                     <td>
+                    <div className="flex justify-center">
                       <button
-                        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md shadow"
+                        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md shadow mx-auto"
                         onClick={() => { setSelectedTicket(t); setShowTicketProfile(true); }}
                         disabled={!hasUser}
                         title={!hasUser ? 'Sign in to view profile' : 'Open ticket'}
@@ -182,6 +362,14 @@ const TicketDetails = () => {
                       >
                         View
                       </button>
+                      </div>
+                    </td>
+                    <td>
+                        <div className="flex justify-center">
+                            <button className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-md shadow" onClick={() => handleDownload(t)}>
+                            Download
+                            </button>
+                        </div>
                     </td>
                   </tr>
                 ))}
@@ -199,7 +387,8 @@ const TicketDetails = () => {
 
               <div className="ticket-left flex-1 text-center px-4">
                 <h2 className="ticket-title text-2xl font-bold mb-2">{selectedEvent?.eventName ?? selectedTicket?.event?.eventName ?? '-'}</h2>
-                <p className="ticket-row mb-1 text-sm"><strong>Date:</strong> {formatDate(selectedEvent?.date ?? selectedTicket?.event?.date)}</p>
+                <p className="ticket-row mb-1 text-sm"><strong>Date:</strong> {formatOnlyDate(selectedEvent?.date ?? selectedTicket?.event?.date ?? selectedTicket?.createdOn)}</p>
+                <p className="ticket-row mb-1 text-sm"><strong>Time:</strong> {getEventTime(selectedEvent, selectedTicket)}</p>
                 <p className="ticket-row text-sm"><strong>Venue:</strong> {formatAddress(selectedEvent?.address ?? selectedTicket?.event?.address)}</p>
               </div>
               <div className="ticket-divider" aria-hidden="true" />
