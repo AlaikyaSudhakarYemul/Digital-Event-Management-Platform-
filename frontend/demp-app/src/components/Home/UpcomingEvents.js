@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
 // If you want the whole card clickable later, you can also import Link:
 // import { Link } from 'react-router-dom';
-import { deleteEvent } from '../../services/eventService';
+import { fetchCopiedEventDetails } from '../../services/eventService';
 
 const API_BASE = process.env.REACT_APP_API_BASE_URL ?? 'http://localhost:8080';
 
@@ -26,7 +26,7 @@ const UpcomingEvents = ({ navigate }) => {
     last: true,
   });
 
-  const [deletingId, setDeletingId] = useState(null);
+  const [copyingId, setCopyingId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [noContent, setNoContent] = useState(false);
@@ -118,6 +118,29 @@ const UpcomingEvents = ({ navigate }) => {
   const goToDetails = (id) => {
     if (!id) return;
     navigate(`/events/${id}`);
+  };
+
+  const handleCopyEvent = async (id) => {
+    if (!id) return;
+    try {
+      setCopyingId(id);
+      const copiedEvent = await fetchCopiedEventDetails(id);
+      if (!copiedEvent) {
+        throw new Error('No event data received from copy API');
+      }
+
+      navigate('/CreateEvent', {
+        state: {
+          copiedEvent,
+          sourceEventId: id,
+        },
+      });
+    } catch (err) {
+      console.error('Copy event failed:', err);
+      alert(err?.message || 'Failed to copy event details');
+    } finally {
+      setCopyingId(null);
+    }
   };
 
   // Pagination handlers
@@ -233,6 +256,15 @@ const UpcomingEvents = ({ navigate }) => {
                           aria-label={`View details for ${event.eventName}`}
                         >
                           Register
+                        </button>
+
+                        <button
+                          className="mb-2 px-6 py-2 bg-emerald-700 text-white font-bold rounded-full shadow hover:bg-emerald-900 transition-colors disabled:opacity-60"
+                          onClick={() => handleCopyEvent(id)}
+                          disabled={copyingId === id}
+                          aria-label={`Copy ${event.eventName}`}
+                        >
+                          {copyingId === id ? 'COPYING...' : 'COPY EVENT'}
                         </button>
 
                         {/* Countdown */}

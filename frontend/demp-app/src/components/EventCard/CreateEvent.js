@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Calendar, ImageIcon, BookText
 } from 'lucide-react';
 
 const EventCreatePage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const copiedEvent = location?.state?.copiedEvent;
+  const sourceEventId = location?.state?.sourceEventId;
+  const isCopyMode = Boolean(copiedEvent);
 
   const [formData, setFormData] = useState({
     eventName: '',
@@ -37,6 +41,36 @@ const EventCreatePage = () => {
       .catch(err => console.error('Error fetching addresses:', err));
   }, []);
 
+  useEffect(() => {
+    if (!copiedEvent) return;
+
+    const eventTypeMap = {
+      IN_PERSON: '1',
+      VIRTUAL: '2',
+      HYBRID: '3',
+    };
+
+    const firstSpeakerId = copiedEvent?.speakers?.[0]?.speakerId || '';
+    const addressId = copiedEvent?.address?.addressId || '';
+
+    setFormData((prev) => ({
+      ...prev,
+      eventName: copiedEvent.eventName || '',
+      description: copiedEvent.description || '',
+      date: copiedEvent.date || '',
+      time: copiedEvent.time || '',
+      speakerId: firstSpeakerId,
+      addressId,
+      eventTypeId: eventTypeMap[copiedEvent.eventType] || '',
+      maxAttendees: copiedEvent.maxAttendees || '',
+    }));
+
+    if (copiedEvent.image) {
+      setImageBase64(copiedEvent.image);
+      setImagePreview(copiedEvent.image);
+    }
+  }, [copiedEvent]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -63,7 +97,7 @@ const EventCreatePage = () => {
   else if (new Date(formData.date) < new Date().setHours(0, 0, 0, 0)) newErrors.date = 'Event date cannot be in the past';
   if (!formData.time) newErrors.time = 'Event time is required';
   if (!formData.speakerId) newErrors.speakerId = 'Speaker selection is required';
-  if (!formData.addressId) newErrors.addressId = 'Address selection is required';
+  if (formData.eventTypeId !== '2' && !formData.addressId) newErrors.addressId = 'Address selection is required';
   if (!formData.eventTypeId) newErrors.eventTypeId = 'Event type selection is required';
   if (!formData.maxAttendees) newErrors.maxAttendees = 'Max attendees is required';
   else if (isNaN(formData.maxAttendees) || formData.maxAttendees < 10 || formData.maxAttendees > 500) newErrors.maxAttendees = 'Max attendees must be between 10 and 500';
@@ -105,6 +139,13 @@ const EventCreatePage = () => {
       maxAttendees: parseInt(formData.maxAttendees, 10)
     };
 
+    if (isCopyMode) {
+      const copiedSourceEventId = copiedEvent?.eventId || sourceEventId;
+      if (copiedSourceEventId) {
+        payload.eventId = copiedSourceEventId;
+      }
+    }
+
     console.log('Payload:', payload);
 
     try {
@@ -112,7 +153,11 @@ const EventCreatePage = () => {
       const token = localStorage.getItem('auth_token');
       payload.user = { userId: userObj?.userId };
 
-      const response = await fetch('http://localhost:8080/api/events/create', {
+      const apiUrl = isCopyMode
+        ? 'http://localhost:8080/api/copied/events/create'
+        : 'http://localhost:8080/api/events/create';
+
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -128,7 +173,7 @@ const EventCreatePage = () => {
         return;
       }
 
-      console.log('Event created successfully, showing popup');
+      console.log('Saved successfully, showing popup');
       setShowSuccessPopup(true);
     } catch (error) {
       console.error('Error:', error);
@@ -145,7 +190,9 @@ const EventCreatePage = () => {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
       <div className="bg-white rounded-lg shadow-lg p-8 max-w-sm w-full mx-4">
         <h2 className="text-2xl font-bold text-green-600 mb-4">Success!</h2>
-        <p className="text-gray-600 mb-6">Your event has been created successfully.</p>
+        <p className="text-gray-600 mb-6">
+          {isCopyMode ? 'Copied event has been saved successfully.' : 'Your event has been created successfully.'}
+        </p>
         <button
           onClick={handlePopupClose}
           className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300"
@@ -181,7 +228,7 @@ const EventCreatePage = () => {
       <div className="absolute inset-0 bg-black bg-opacity-60 z-0"></div>
       <div className="relative z-10 max-w-4xl mx-auto px-6 py-12">
         <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 shadow-2xl text-white">
-          <h2 className="text-3xl font-bold mb-6 text-center text-cyan-300">Create New Event</h2>
+          <h2 className="text-3xl font-bold mb-6 text-center text-cyan-300">{isCopyMode ? 'Copy Event' : 'Create New Event'}</h2>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {renderInput('eventName', 'Event Name', <BookText />)}
@@ -218,7 +265,7 @@ const EventCreatePage = () => {
                   value={formData.addressId}
                   onChange={handleChange}
                   className="bg-gray-800 text-white border border-gray-700 rounded-lg px-3 py-2"
-                  required
+                  required={formData.eventTypeId !== '2'}
                 >
                   <option value="">-- Select an Address --</option>
                   {addresses.map(address => (
@@ -275,7 +322,7 @@ const EventCreatePage = () => {
               type="submit"
               className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-2 px-4 rounded-lg mt-4"
             >
-              Create Event
+              {isCopyMode ? 'Save Copied Event' : 'Create Event'}
             </button>
           </form>
         </div>

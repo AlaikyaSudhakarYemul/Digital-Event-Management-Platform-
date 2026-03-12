@@ -5,11 +5,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
  
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
  
@@ -21,8 +20,11 @@ public class CopiedEvents {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int copiedEventId;
-    
-    private int eventId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "event_id", nullable = false)
+    @JsonIgnore
+    private Event event;
  
     private String eventName;
  
@@ -34,12 +36,21 @@ public class CopiedEvents {
  
     private String image;
  
+    @Enumerated(EnumType.STRING)
     private EventType eventType;
  
+    @ManyToOne
+    @JoinColumn(name = "address_id")
     private Address address;
     
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(name = "copied_event_speaker",
+        joinColumns = @JoinColumn(name = "copied_event_id"),
+        inverseJoinColumns = @JoinColumn(name = "speaker_id"))
     private List<Speaker> speakers;
  
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private Users user;
  
     @Enumerated(EnumType.STRING)
@@ -57,5 +68,21 @@ public class CopiedEvents {
  
     @Version
     private Integer version;
+
+    @JsonProperty("eventId")
+    public Integer getEventId() {
+        return event != null ? event.getEventId() : null;
+    }
+
+    @JsonProperty("eventId")
+    public void setEventId(Integer eventId) {
+        if (eventId == null) {
+            this.event = null;
+            return;
+        }
+        Event eventRef = new Event();
+        eventRef.setEventId(eventId);
+        this.event = eventRef;
+    }
 }
  

@@ -41,6 +41,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/speakers/**").permitAll()
                                 .requestMatchers("/api/speakers/**").hasRole("ADMIN")
                                 .requestMatchers("/api/events/**").permitAll()
+                                .requestMatchers("/api/copied/events/**").permitAll()
                                 .requestMatchers(HttpMethod.POST,"/api/registrations/**").hasRole("USER")
                                 .requestMatchers(HttpMethod.POST, "/api/payments/orders").hasRole("USER")
                                 .requestMatchers(HttpMethod.POST, "/api/payments/verify").hasRole("USER")

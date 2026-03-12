@@ -70,6 +70,26 @@ const normalizeRegistration = (reg) => ({
     .join(", "),
 });
 
+const normalizeCopiedEvent = (event) => ({
+  copiedEventId: event?.copiedEventId,
+  sourceEventId: event?.eventId ?? event?.event?.eventId ?? null,
+  eventName: event?.eventName ?? "-",
+  date: event?.date ?? null,
+  time: event?.time ?? null,
+  eventType: event?.eventType ?? "-",
+  maxAttendees: event?.maxAttendees ?? "-",
+  location: [
+    event?.address?.address,
+    event?.address?.state,
+    event?.address?.pincode,
+    event?.address?.country,
+  ]
+    .filter(Boolean)
+    .join(", "),
+  userId: event?.user?.userId ?? event?.user?.id ?? null,
+  raw: event,
+});
+
 
 const isUpcoming = (isoDate) => {
   if (!isoDate) return false;
@@ -94,11 +114,25 @@ const UserDashboard = () => {
   const [showProfile, setShowProfile] = useState(false);
   const [userData, setUserData] = useState(null);
   const [registeredEvents, setRegisteredEvents] = useState([]); 
+  const [copiedEvents, setCopiedEvents] = useState([]);
   const [activeTab, setActiveTab] = useState("home");
   const [showTicketProfile,setTicketProfile] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState("");
+  const [copyLoading, setCopyLoading] = useState(false);
+  const [copyLoadError, setCopyLoadError] = useState("");
+  const [editingCopiedEvent, setEditingCopiedEvent] = useState(null);
+  const [editCopiedForm, setEditCopiedForm] = useState({
+    eventName: "",
+    description: "",
+    date: "",
+    time: "",
+    eventType: "IN_PERSON",
+    maxAttendees: "",
+  });
+  const [editSaving, setEditSaving] = useState(false);
+  const [editError, setEditError] = useState("");
 
   const handleLogout = useCallback(() => {
   try {
@@ -193,6 +227,146 @@ const UserDashboard = () => {
     };
   }, [userData?.id]);
 
+  const fetchCopiedEvents = useCallback(async () => {
+    if (!userData?.id) return;
+    setCopyLoading(true);
+    setCopyLoadError("");
+    try {
+      const url = `${API_BASE}/api/copied/events/all`;
+      const token = localStorage.getItem("auth_token");
+      const response = await fetch(url, {
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      });
+
+      if (!response.ok) {
+        const msg = `Failed to fetch copied events (HTTP ${response.status})`;
+        setCopyLoadError(msg);
+        return;
+      }
+
+      const raw = await response.json();
+      const arr = Array.isArray(raw) ? raw : raw ? [raw] : [];
+      const normalized = arr.map(normalizeCopiedEvent).filter(Boolean);
+      const mine = normalized.filter((e) =>
+        e.userId ? Number(e.userId) === Number(userData.id) : true
+      );
+      setCopiedEvents(mine);
+    } catch (err) {
+      console.error("Error fetching copied events:", err);
+      setCopyLoadError("Could not load copied events. Please try again.");
+    } finally {
+      setCopyLoading(false);
+    }
+  }, [userData?.id]);
+
+  useEffect(() => {
+    fetchCopiedEvents();
+  }, [fetchCopiedEvents]);
+
+  const openEditCopiedEvent = (eventRow) => {
+    setEditingCopiedEvent(eventRow);
+    setEditError("");
+    setEditCopiedForm({
+      eventName: eventRow?.raw?.eventName || "",
+      description: eventRow?.raw?.description || "",
+      date: eventRow?.raw?.date || "",
+      time: eventRow?.raw?.time || "",
+      eventType: eventRow?.raw?.eventType || "IN_PERSON",
+      maxAttendees: String(eventRow?.raw?.maxAttendees ?? ""),
+    });
+  };
+
+  const handleEditCopiedFieldChange = (e) => {
+    const { name, value } = e.target;
+    setEditCopiedForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const closeEditCopiedEvent = () => {
+    if (editSaving) return;
+    setEditingCopiedEvent(null);
+    setEditError("");
+  };
+
+  const saveCopiedEventEdit = async () => {
+    if (!editingCopiedEvent?.copiedEventId) return;
+    setEditError("");
+
+    if (!editCopiedForm.eventName.trim()) {
+      setEditError("Event name is required.");
+      return;
+    }
+    if (!editCopiedForm.date) {
+      setEditError("Date is required.");
+      return;
+    }
+    if (!editCopiedForm.time) {
+      setEditError("Time is required.");
+      return;
+    }
+
+    const max = Number(editCopiedForm.maxAttendees);
+    if (!Number.isFinite(max) || max < 10 || max > 500) {
+      setEditError("Max attendees must be between 10 and 500.");
+      return;
+    }
+
+    const sourceEventId =
+      editingCopiedEvent?.sourceEventId ?? editingCopiedEvent?.raw?.eventId ?? null;
+    if (!sourceEventId) {
+      setEditError("Source event id is missing for this copied event.");
+      return;
+    }
+
+    const base = editingCopiedEvent.raw || {};
+    const payload = {
+      ...base,
+      eventId: sourceEventId,
+      eventName: editCopiedForm.eventName.trim(),
+      description: editCopiedForm.description,
+      date: editCopiedForm.date,
+      time: editCopiedForm.time,
+      eventType: editCopiedForm.eventType,
+      maxAttendees: max,
+    };
+
+    if (payload.eventType === "VIRTUAL") {
+      payload.address = null;
+    }
+
+    try {
+      setEditSaving(true);
+      const token = localStorage.getItem("auth_token");
+      const response = await fetch(
+        `${API_BASE}/api/copied/events/${editingCopiedEvent.copiedEventId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        setEditError(errorText || "Failed to update copied event.");
+        return;
+      }
+
+      closeEditCopiedEvent();
+      await fetchCopiedEvents();
+    } catch (err) {
+      console.error("Error updating copied event:", err);
+      setEditError("Could not update copied event. Please try again.");
+    } finally {
+      setEditSaving(false);
+    }
+  };
+
   const hasUser = !!userData?.id;
 
 
@@ -226,6 +400,12 @@ const UserDashboard = () => {
               onClick={() => setActiveTab("tickets")}
             >
               My Tickets
+            </li>
+            <li
+              className={activeTab === "copiedEvents" ? "active" : ""}
+              onClick={() => setActiveTab("copiedEvents")}
+            >
+              My Copied Events
             </li>
             <li
               className={activeTab === "settings" ? "active" : ""}
@@ -376,7 +556,7 @@ const UserDashboard = () => {
                                 <td>{r.eventName}</td>
                                 <td>{formatDate(r.date)}</td>
                                 <td>{r.time ? formatTime(r.time) : "-"}</td>
-                                <td>{r.location || "-"}</td>
+                                <td className="location-cell">{r.location || "-"}</td>
                               </tr>
                             ))}
                           </tbody>
@@ -401,6 +581,75 @@ const UserDashboard = () => {
               title={!hasUser ? "Sign in to view profile" : "Open ticket profile"}>
               View
             </button>
+            </div>
+          )}
+
+          {activeTab === "copiedEvents" && (
+            <div className="dashboard-card">
+              <div className="card-header">Copied Events</div>
+              <div className="card-body">
+                {!hasUser && (
+                  <p className="muted">
+                    Please sign in again-user ID missing in localStorage.
+                  </p>
+                )}
+
+                {copyLoading && <p>Loading copied events...</p>}
+                {copyLoadError && <p className="muted">{copyLoadError}</p>}
+
+                {hasUser && !copyLoading && !copyLoadError && (
+                  <>
+                    {copiedEvents.length > 0 ? (
+                      <div className="table-wrapper">
+                        <table className="events-table">
+                          <thead>
+                            <tr>
+                              <th>S.No.</th>
+                              <th>Source Event ID</th>
+                              <th>Copied Event Name</th>
+                              <th>Schedule</th>
+                              <th>Details</th>
+                              <th>Location</th>
+                              <th>Edit</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {copiedEvents.map((e, idx) => (
+                              <tr key={e.copiedEventId ?? `${e.eventName}-${idx}`}>
+                                <td>{idx + 1}</td>
+                                <td>{e.sourceEventId ?? "-"}</td>
+                                <td>{e.eventName}</td>
+                                <td>
+                                  {formatDate(e.date)}
+                                  <br />
+                                  <span className="muted">{e.time ? formatTime(e.time) : "-"}</span>
+                                </td>
+                                <td>
+                                  {e.eventType || "-"}
+                                  <br />
+                                  <span className="muted">Max: {e.maxAttendees ?? "-"}</span>
+                                </td>
+                                <td className="location-cell">{e.location || "-"}</td>
+                                <td>
+                                  <button
+                                    type="button"
+                                    className="table-edit-btn"
+                                    onClick={() => openEditCopiedEvent(e)}
+                                  >
+                                    Edit
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    ) : (
+                      <p>No copied events found.</p>
+                    )}
+                  </>
+                )}
+              </div>
             </div>
           )}
 
@@ -431,6 +680,90 @@ const UserDashboard = () => {
               <button className="close-btn" onClick={() => setShowProfile(false)}>
                 Close
               </button>
+            </div>
+          </div>
+        )}
+
+        {editingCopiedEvent && (
+          <div className="profile-modal" onClick={closeEditCopiedEvent}>
+            <div className="profile-modal-content edit-modal" onClick={(e) => e.stopPropagation()}>
+              <h3>Edit Copied Event</h3>
+
+              <div className="edit-grid">
+                <label>
+                  Event Name
+                  <input
+                    name="eventName"
+                    value={editCopiedForm.eventName}
+                    onChange={handleEditCopiedFieldChange}
+                  />
+                </label>
+
+                <label>
+                  Description
+                  <input
+                    name="description"
+                    value={editCopiedForm.description}
+                    onChange={handleEditCopiedFieldChange}
+                  />
+                </label>
+
+                <label>
+                  Date
+                  <input
+                    type="date"
+                    name="date"
+                    value={editCopiedForm.date}
+                    onChange={handleEditCopiedFieldChange}
+                  />
+                </label>
+
+                <label>
+                  Time
+                  <input
+                    type="time"
+                    name="time"
+                    value={editCopiedForm.time}
+                    onChange={handleEditCopiedFieldChange}
+                  />
+                </label>
+
+                <label>
+                  Event Type
+                  <select
+                    name="eventType"
+                    value={editCopiedForm.eventType}
+                    onChange={handleEditCopiedFieldChange}
+                  >
+                    <option value="IN_PERSON">IN_PERSON</option>
+                    <option value="VIRTUAL">VIRTUAL</option>
+                    <option value="HYBRID">HYBRID</option>
+                  </select>
+                </label>
+
+                <label>
+                  Max Attendees
+                  <input
+                    type="number"
+                    name="maxAttendees"
+                    min="10"
+                    max="500"
+                    value={editCopiedForm.maxAttendees}
+                    onChange={handleEditCopiedFieldChange}
+                  />
+                </label>
+              </div>
+
+              {editError && <p className="muted">{editError}</p>}
+
+              <div className="edit-actions">
+                <button className="edit-action-btn" onClick={closeEditCopiedEvent} disabled={editSaving}>
+                  Cancel
+                </button>
+                <button className="edit-action-btn" onClick={saveCopiedEventEdit} disabled={editSaving}>
+                  {editSaving ? "Saving..." : "Update"}
+                </button>
+              </div>
             </div>
           </div>
         )}

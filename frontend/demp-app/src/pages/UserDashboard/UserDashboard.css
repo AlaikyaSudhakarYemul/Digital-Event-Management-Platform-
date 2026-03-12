@@ -223,6 +223,23 @@
   white-space: nowrap;
 }
 
+.events-table td.location-cell {
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.4;
+  min-width: 260px;
+  max-width: 420px;
+}
+
+.events-table th:last-child,
+.events-table td:last-child {
+  text-align: center;
+}
+
+.events-table td .muted {
+  font-size: 12px;
+}
+
 .events-table thead th {
   background: #f3f4f6;
   font-weight: 600;
@@ -485,5 +502,85 @@
     width: 100%;
     height: 0;
     margin: 6px 0;
+  }
+}
+
+.table-edit-btn {
+  border: 0;
+  border-radius: 8px;
+  background: #0ea5e9;
+  color: #fff;
+  font-weight: 600;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.table-edit-btn:hover {
+  background: #0284c7;
+}
+
+.edit-modal {
+  min-width: 520px;
+  max-width: 680px;
+}
+
+.edit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.edit-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  color: #111827;
+}
+
+.edit-grid input,
+.edit-grid select {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
+.edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.edit-action-btn {
+  min-width: 120px;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 10px;
+  background: #232b39;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.edit-action-btn:hover {
+  background: #37405a;
+}
+
+.edit-action-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+@media (max-width: 760px) {
+  .edit-modal {
+    min-width: 0;
+    width: 92vw;
+  }
+
+  .edit-grid {
+    grid-template-columns: 1fr;
   }
 }
