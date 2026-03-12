@@ -227,6 +227,7 @@ const UserDashboard = () => {
     };
   }, [userData?.id]);
 
+  //fetch copied Events
   const fetchCopiedEvents = useCallback(async () => {
     if (!userData?.id) return;
     setCopyLoading(true);
