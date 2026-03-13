@@ -76,8 +76,21 @@ const AuthPopup = ({ onClose, onLoginSuccess }) => {
     });
  
     if (!response.ok) {
-      const errorData = await response.json();
-      setApiError(errorData.message || 'Login failed');
+      const contentType = response.headers.get('content-type') || '';
+      let errorMessage = '';
+
+      if (contentType.includes('application/json')) {
+        const errorData = await response.json();
+        errorMessage = errorData?.message || errorData?.error || '';
+      } else {
+        errorMessage = await response.text();
+      }
+
+      if (response.status === 401 || response.status === 403) {
+        setApiError('Invalid username or password');
+      } else {
+        setApiError(errorMessage || 'Login failed');
+      }
       setSubmitting(false);
       return;
     }
@@ -94,7 +107,7 @@ const AuthPopup = ({ onClose, onLoginSuccess }) => {
     if (onLoginSuccess) onLoginSuccess();
     setSubmitted(true);
   } catch (error) {
-    setApiError('Network error');
+    setApiError('Unable to reach server. Please try again.');
   }
  
   setSubmitting(false);
