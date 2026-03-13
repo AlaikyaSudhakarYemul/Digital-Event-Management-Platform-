@@ -18,6 +18,8 @@ import com.wipro.demp.entity.Users;
 import com.wipro.demp.repository.EventRepository;
 import com.wipro.demp.repository.TicketRepository;
 import com.wipro.demp.repository.UserRepository;
+import com.wipro.demp.repository.PaymentsRepository;
+import com.wipro.demp.entity.PaymentStatus;
 
 @Service
 public class TicketServiceImpl implements TicketService {
@@ -28,6 +30,7 @@ public class TicketServiceImpl implements TicketService {
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
     private final JavaMailSender mailSender;
+    private final PaymentsRepository paymentsRepository;
 
     @Value("${app.base-url:http://localhost:8080}")
     private String backendBaseUrl;
@@ -38,11 +41,13 @@ public class TicketServiceImpl implements TicketService {
     public TicketServiceImpl(TicketRepository ticketRepository,
                              UserRepository userRepository,
                              EventRepository eventRepository,
-                             JavaMailSender mailSender) {
+                             JavaMailSender mailSender,
+                             PaymentsRepository paymentsRepository) {
         this.ticketRepository = ticketRepository;
         this.userRepository = userRepository;
         this.eventRepository = eventRepository;
         this.mailSender = mailSender;
+        this.paymentsRepository = paymentsRepository;
     }
 
     @Override
@@ -145,7 +150,13 @@ public class TicketServiceImpl implements TicketService {
         }
         Optional<Ticket> ticketOpt = ticketRepository.findById(id);
         if (ticketOpt.isPresent()) {
-            return ticketOpt.get();
+            Ticket t = ticketOpt.get();
+            // populate latest payment status if available
+            if (t.getRegistrationId() > 0) {
+                paymentsRepository.findTopByRegistrationIdOrderByIdDesc((long) t.getRegistrationId())
+                    .ifPresent(p -> t.setPaymentStatus(p.getStatus()));
+            }
+            return t;
         } else {
             throw new RuntimeException("Ticket not found with id: " + id);
         }
@@ -158,6 +169,13 @@ public class TicketServiceImpl implements TicketService {
         if (tickets.isEmpty()) {
             throw new RuntimeException("No tickets found.");
         }
+        // populate payment status for each ticket
+        tickets.forEach(t -> {
+            if (t.getRegistrationId() > 0) {
+                paymentsRepository.findTopByRegistrationIdOrderByIdDesc((long) t.getRegistrationId())
+                    .ifPresent(p -> t.setPaymentStatus(p.getStatus()));
+            }
+        });
         return tickets;
 
     }
@@ -169,6 +187,12 @@ public class TicketServiceImpl implements TicketService {
             if (tickets.isEmpty()) {
                 throw new RuntimeException("No tickets found for event id: " + eventId);
             }
+            tickets.forEach(t -> {
+                if (t.getRegistrationId() > 0) {
+                    paymentsRepository.findTopByRegistrationIdOrderByIdDesc((long) t.getRegistrationId())
+                        .ifPresent(p -> t.setPaymentStatus(p.getStatus()));
+                }
+            });
             return tickets;
     }
 
@@ -179,6 +203,12 @@ public class TicketServiceImpl implements TicketService {
         if (tickets.isEmpty()) {
             throw new RuntimeException("No tickets found for user id: " + userId);
         }
+        tickets.forEach(t -> {
+            if (t.getRegistrationId() > 0) {
+                paymentsRepository.findTopByRegistrationIdOrderByIdDesc((long) t.getRegistrationId())
+                    .ifPresent(p -> t.setPaymentStatus(p.getStatus()));
+            }
+        });
         return tickets;
     }
 
