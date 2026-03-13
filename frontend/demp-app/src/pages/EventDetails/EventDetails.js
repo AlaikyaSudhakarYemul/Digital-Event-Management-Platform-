@@ -3,6 +3,7 @@ import React, { useEffect, useState, useContext, useMemo, useCallback } from 're
 import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
 import { registerForEvent } from '../../services/eventService';
+import { getToken } from '../../services/authService';
 
 const API_BASE = process.env.REACT_APP_API_BASE_URL ?? "http://localhost:8080";
 
@@ -26,6 +27,13 @@ const EventDetails = () => {
   const [registerMessage, setRegisterMessage] = useState('');
   const [isRegistered, setIsRegistered] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [showTicketForm, setShowTicketForm] = useState(false);
+  const [ticketType, setTicketType] = useState('ECONOMY_CLASS');
+  const [ticketPrice, setTicketPrice] = useState(499);
+  const [ticketCreated, setTicketCreated] = useState(null);
+  const [registrationInfo, setRegistrationInfo] = useState(null);
+
+  const DEFAULT_PAYMENT_AMOUNT_RUPEES = 499;
 
   // ----- Fetch the event (HOOK #1) -----
   useEffect(() => {
@@ -173,7 +181,25 @@ const EventDetails = () => {
     return isNaN(dt) ? t : dt.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
   };
 
+  const isEventCompleted = (() => {
+    if (String(event?.activeStatus || '').toUpperCase() === 'COMPLETED') return true;
+    if (!event?.date) return false;
+    const eventDate = new Date(event.date);
+    if (isNaN(eventDate)) return false;
+    const today = new Date();
+    eventDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+    return eventDate < today;
+  })();
+
   const handleRegister = async () => {
+    if (isEventCompleted) {
+      const completedMessage = 'Event is completed. Registration is closed.';
+      setRegisterMessage(completedMessage);
+      window.alert(completedMessage);
+      return;
+    }
+
     if (!user) {
       setRegisterMessage('Please log in to register.');
       return;
@@ -181,9 +207,10 @@ const EventDetails = () => {
     setRegisterLoading(true);
     setRegisterMessage('');
     try {
-      await registerForEvent(eventId, user);
+      const registration = await registerForEvent(eventId, user);
+      setRegistrationInfo(registration);
       setIsRegistered(true);
-      setShowSuccessPopup(true);
+      setShowTicketForm(true);
     } catch (e) {
       setRegisterMessage(e.message);
     } finally {
@@ -191,9 +218,77 @@ const EventDetails = () => {
     }
   };
 
-  const handlePopupClose = () => {
+  const handlePopupClose = async () => {
+    try {
+      const token = getToken();
+      if (token && registrationInfo?.registrationId) {
+        await fetch(`${API_BASE}/api/payments/pending`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            registrationId: registrationInfo.registrationId,
+            amountRupees: DEFAULT_PAYMENT_AMOUNT_RUPEES,
+          }),
+        });
+      }
+    } catch (e) {
+      console.error("Failed to mark pay-later status:", e);
+    } finally {
+      setShowSuccessPopup(false);
+      navigate('/');
+    }
+  };
+
+  const handleProceedToPayment = () => {
     setShowSuccessPopup(false);
-    navigate('/');
+    navigate('/payments', {
+      state: {
+        registrationId: registrationInfo?.registrationId ?? null,
+        eventId: Number(eventId),
+        amountRupees: DEFAULT_PAYMENT_AMOUNT_RUPEES,
+      },
+    });
+  };
+
+  const submitTicket = async (e) => {
+    e?.preventDefault?.();
+    try {
+      const token = getToken();
+      if (!token) throw new Error('Not authenticated');
+      const body = {
+        ticketType,
+        price: Number(ticketPrice),
+        eventId: Number(eventId),
+        userId: user?.userId ?? null,
+        registrationId: registrationInfo?.registrationId ?? null,
+      };
+
+      const res = await fetch(`${API_BASE}/api/tickets/create`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!res.ok) {
+        const txt = await res.text();
+        throw new Error(txt || `HTTP ${res.status}`);
+      }
+
+      const created = await res.json();
+      setTicketCreated(created);
+      setShowTicketForm(false);
+      setShowSuccessPopup(true);
+      setRegisterMessage('Ticket created successfully');
+    } catch (err) {
+      console.error('Failed to create ticket:', err);
+      setRegisterMessage(err?.message || 'Failed to create ticket');
+    }
   };
 
   // Safely compute full address only if event.address is present
@@ -253,6 +348,7 @@ const EventDetails = () => {
               >
                 {isRegistered ? 'Registered' : registerLoading ? 'Registering...' : 'Register'}
               </button>
+              
               {registerMessage && (
                 <p className={`mt-4 text-sm ${registerMessage.includes('Successfully') ? 'text-green-400' : 'text-red-400'}`}>
                   {registerMessage}
@@ -373,6 +469,44 @@ const EventDetails = () => {
 
           {/* Sidebar */}
           <div className="space-y-6">
+            {/* Ticket form popup shown immediately after registration */}
+            {showTicketForm && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+                <form onSubmit={submitTicket} className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full mx-4 text-black">
+                    <h2 className="text-2xl font-bold mb-4 text-black">Create Ticket</h2>
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium text-black mb-2">Ticket Type</label>
+                      <select
+                        value={ticketType}
+                        onChange={(e) => setTicketType(e.target.value)}
+                        className="w-full px-3 py-2 border rounded bg-gray-100 text-black"
+                        required
+                      >
+                      <option value="FIRST_CLASS">First Class</option>
+                      <option value="SECOND_CLASS">Second Class</option>
+                      <option value="ECONOMY_CLASS">Economy Class</option>
+                    </select>
+                  </div>
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-black mb-2">Price (INR)</label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      value={ticketPrice}
+                      onChange={(e) => setTicketPrice(e.target.value)}
+                      className="w-full px-3 py-2 border rounded bg-gray-100 text-black"
+                      required
+                    />
+                  </div>
+                  <div className="flex gap-3">
+                    <button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Create Ticket</button>
+                    <button type="button" onClick={() => { setShowTicketForm(false); setShowSuccessPopup(true); }} className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg">Skip</button>
+                  </div>
+                </form>
+              </div>
+            )}
+
             {/* Success Popup */}
             {showSuccessPopup && (
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
@@ -380,10 +514,16 @@ const EventDetails = () => {
                   <h2 className="text-2xl font-bold text-green-600 mb-4">Success!</h2>
                   <p className="text-gray-600 mb-6">You have successfully registered for the event.</p>
                   <button
-                    onClick={handlePopupClose}
+                    onClick={handleProceedToPayment}
                     className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300"
                   >
-                    OK
+                    Proceed to Payment
+                  </button>
+                  <button
+                    onClick={handlePopupClose}
+                    className="w-full mt-3 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300"
+                  >
+                    Later
                   </button>
                 </div>
               </div>

@@ -207,4 +207,13 @@ public class EventServiceImpl implements EventService {
     return eventRepository.findByActiveStatusOrderByCreationTimeDesc(active, pageable);
 }
 
+    @Override
+    public List<Event> findAllEventsByUserId(Integer userId) {
+        List<Event> events = eventRepository.findByUserUserId(userId);
+        if (events == null || events.isEmpty()) {
+            throw new EventNotFoundException("No events found for organizer with id: " + userId);
+        }
+        return events;
+    }
+
 }

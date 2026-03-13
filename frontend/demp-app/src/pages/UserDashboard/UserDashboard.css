@@ -383,7 +383,7 @@
   min-height: 100vh;
 }
 
-.view-btn{
+/* .view-btn{
    width: 20%;
   display: inline-block;
   padding: 12px 16px;
@@ -394,12 +394,12 @@
   font-weight: 700;
   cursor: pointer;
   transition: background 0.15s ease-in-out, transform 0.05s ease;
-}
+} */
 
 .ticket-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(17, 24, 39, 0.45); /* gray-900 at ~45% */
+  background: rgba(17, 24, 39, 0.45); 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -409,21 +409,22 @@
 .ticket-card {
   position: relative;
   background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
   display: flex;
-  gap: 24px;
-  padding: 24px 28px;
-  min-width: 560px;  /* adjust as you like */
-  max-width: 90vw;
-  min-height: 220px;
+  gap: 20px;
+  padding: 16px 18px;
+  min-width: 480px;
+  max-width: 640px; 
+  width: auto;
+  min-height: 220px; 
 }
 
 .ticket-left,
 .ticket-right {
-  background: transparent;       /* <-- important (remove white bg) */
+  background: transparent;      
   padding: 4px 0;
-  border-radius: 0;              /* <-- no rounded individual corners */
+  border-radius: 0;              
   min-width: 240px;
   text-align: left;
   display: flex;
@@ -436,24 +437,25 @@
   font-size: 1.6rem;
   font-weight: 800;
   margin: 0 0 6px;
-  color: #111827; /* gray-900 */
+  color: #111827;
 }
 
 .ticket-row {
   margin: 0;
-  color: #374151; /* gray-700 */
+  color: #374151; 
   font-size: 0.98rem;
+  font-weight: 700;
 }
 
 .ticket-divider {
-  align-self: stretch;         /* make it grow vertically */
-  width: 0;                    /* we use border-left to draw the line */
-  border-left: 2px dashed #9CA3AF; /* gray-400 */
-  opacity: 0.9;
+  align-self: stretch;         
+  width: 0%;                    
+  border-left: 2px dashed #9CA3AF; 
+  opacity: 0.7;
   margin: 0 4px;
+  box-sizing:content-box;
 }
 
-/* Close button inside the card (top-right) */
 .ticket-close {
   position: absolute;
   top: 10px;

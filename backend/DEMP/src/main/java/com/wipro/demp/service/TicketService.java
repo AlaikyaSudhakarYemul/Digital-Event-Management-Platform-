@@ -1,10 +1,17 @@
 package com.wipro.demp.service;
 
-import org.springframework.stereotype.Service;
+import java.util.List;
 
-@Service
+import com.wipro.demp.entity.Ticket;
+
 public interface TicketService {
 
-    
+    public Ticket createTicket(Ticket ticket);
+    public Ticket updateTicket(int id, Ticket ticket);
+    public void deleteTicket(int id);
+    public Ticket getTicketById(int id);
+    public List<Ticket> getAllTickets();
+    public List<Ticket> getTicketsByEventId(int eventId);
+    public List<Ticket> getTicketsByUserId(int userId);
     
 }

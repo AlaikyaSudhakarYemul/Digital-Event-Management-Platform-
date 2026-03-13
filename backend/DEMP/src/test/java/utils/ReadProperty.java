@@ -13,10 +13,10 @@
                 prop = new Properties();
                 prop.load(fis);
             } catch(FileNotFoundException e) {
-                // TODO Auto-generated catch block
+                
                 System.out.println("File name or file path is not correct");
             } catch (IOException e) {
-                // TODO Auto-generated catch block
+                
                 e.printStackTrace();
             }
             return prop;

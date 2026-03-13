@@ -35,5 +35,27 @@ export const registerForEvent = async (eventId, user) => {
     const error = await response.text();
     throw new Error(error || 'Failed to register for event');
   }
-  return await response.text();
+
+  const contentType = response.headers.get('content-type') || '';
+  if (contentType.includes('application/json')) {
+    return await response.json();
+  }
+
+  const text = await response.text();
+  let parsed = null;
+  try {
+    parsed = JSON.parse(text);
+  } catch (e) {
+    parsed = null;
+  }
+
+  if (parsed) {
+    return parsed;
+  }
+
+  const idMatch = text.match(/\d+/);
+  return {
+    registrationId: idMatch ? Number(idMatch[0]) : null,
+    message: text,
+  };
 };

@@ -9,6 +9,9 @@ import OrganizerDashboard from './pages/OrganizerDashboard/OrganizerDashboard';
 import './App.css';
 import EventCreatePage from './components/EventCard/CreateEvent';
 import EventDetails from './pages/EventDetails/EventDetails';
+import RegistrationPay from './pages/Payments/RegistrationPay';
+import PaymentSuccess from './pages/Payments/PaymentSuccess';
+import PaymentFailed from './pages/Payments/PaymentFailed';
 
 // PrivateRoute for user
 function PrivateRoute({ children }) {
@@ -27,6 +30,9 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/CreateEvent" element={<EventCreatePage />} />
       <Route path="/events/:eventId" element={<EventDetails />} />
+      <Route path="/payments" element={<RegistrationPay />} />
+      <Route path="/payment-success" element={<PaymentSuccess />} />
+      <Route path="/payment-failed" element={<PaymentFailed />} />
 
       {/* User Protected Route */}
       <Route

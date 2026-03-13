@@ -2,6 +2,7 @@ package com.wipro.demp.service;
 
 import com.wipro.demp.entity.Address;
 import com.wipro.demp.entity.Event;
+import com.wipro.demp.entity.EventStatus;
 import com.wipro.demp.entity.RegistrationStatus;
 import com.wipro.demp.entity.Registrations;
 import com.wipro.demp.entity.Users;
@@ -65,6 +66,11 @@ public class RegistrationServiceImpl implements RegistrationService {
         Event event = eventRepository.findById(registration.getEvent().getEventId())
                 .orElseThrow(() -> new IllegalArgumentException("Event not found"));
         registration.setEvent(event);
+
+        if (event.getActiveStatus() == EventStatus.COMPLETED
+            || (event.getDate() != null && event.getDate().isBefore(LocalDate.now()))) {
+            throw new IllegalArgumentException("Event is completed. Registration is closed.");
+        }
 
         // 3) Capacity check + optimistic lock save on Event
         if (event.getCurrentAttendees() >= event.getMaxAttendees()) {

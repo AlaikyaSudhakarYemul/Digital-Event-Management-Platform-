@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
+import TicketDetails from '../../components/TicketDetails/TicketDetails';
 import { useNavigate } from "react-router-dom";
 import "./UserDashboard.css";
 
@@ -57,14 +58,14 @@ const formatTime = (val) => {
 
 const normalizeRegistration = (reg) => ({
   registrationId: reg.registrationId,
-  eventName: reg.event.eventName,
-  date: reg.event.date,
-  time: reg.event.time,
+  eventName: reg?.event?.eventName ?? "-",
+  date: reg?.event?.date ?? null,
+  time: reg?.event?.time ?? null,
   location: [
-    reg.event.address.address,
-    reg.event.address.state,
-    reg.event.address.pincode,
-    reg.event.address.country,
+    reg?.event?.address?.address,
+    reg?.event?.address?.state,
+    reg?.event?.address?.pincode,
+    reg?.event?.address?.country,
   ]
     .filter(Boolean)
     .join(", "),
@@ -95,7 +96,6 @@ const UserDashboard = () => {
   const [userData, setUserData] = useState(null);
   const [registeredEvents, setRegisteredEvents] = useState([]); 
   const [activeTab, setActiveTab] = useState("home");
-  const [showTicketProfile,setTicketProfile] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState("");
@@ -153,9 +153,13 @@ const UserDashboard = () => {
         const url = `${API_BASE}/api/registrations/user/${encodeURIComponent(
           userData.id
         )}`;
+        const token = localStorage.getItem("auth_token");
 
         const response = await fetch(url, {
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
         });
 
         if (!response.ok) {
@@ -388,16 +392,7 @@ const UserDashboard = () => {
           )}
             {/*TICKETS*/}
           {activeTab === "tickets" && (
-            <div className="dashboard-card">
-              <h4>My Tickets</h4>
-              <button
-              className="view-btn"
-              onClick={() => setTicketProfile(true)}
-              disabled={!hasUser}
-              title={!hasUser ? "Sign in to view profile" : "Open ticket profile"}>
-              View
-            </button>
-            </div>
+            <TicketDetails />
           )}
 
           {activeTab === "settings" && (
@@ -431,27 +426,6 @@ const UserDashboard = () => {
           </div>
         )}
 
-{showTicketProfile && (
-  <div className="ticket-backdrop" onClick={() => setTicketProfile(false)}>
-    <div className="ticket-card" onClick={(e) => e.stopPropagation()}>   
-      <button className="ticket-close" onClick={() => setTicketProfile(false)} aria-label="Close ticket">
-        x
-      </button>
-  
-      <div className="ticket-left">
-        <h2 className="ticket-title">Event Name</h2>
-        <p className="ticket-row"><strong>Date:</strong> 12 March 2026</p>
-        <p className="ticket-row"><strong>Venue:</strong> Hyderabad</p>
-      </div>
-      <div className="ticket-divider" aria-hidden="true" />
-      <div className="ticket-right">
-        <p className="ticket-row"><strong>Seat Type: </strong>PREMIUM</p>
-        <p className="ticket-row"><strong>Ticket ID: </strong> #12345</p>
-        <p className="ticket-row"><strong>Payment Status: </strong>Not Paid</p>
-      </div>
-    </div>
-  </div>
-)}
       </main>
     </div>
   );
