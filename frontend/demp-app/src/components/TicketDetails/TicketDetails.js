@@ -168,19 +168,52 @@ const buildTicketElement = (ticket, event) => {
   wrapper.style.position = 'absolute';
   wrapper.style.left = '-9999px';
   wrapper.style.top = '0';
-  
+
+  const title = (event?.eventName ?? ticket?.event?.eventName ?? '-');
+  const date = formatOnlyDate(event?.date ?? ticket?.event?.date ?? ticket?.createdOn);
+  const time = getEventTime(event, ticket);
+  const venue = formatAddress(event?.address ?? ticket?.event?.address);
+  const seat = ticket?.ticketType ?? '-';
+  const id = ticket?.ticketId ?? '-';
+  const paid = ticket?.isPaid ? 'Paid' : 'Not Paid';
+
   wrapper.innerHTML = `
-    <div style="box-sizing:border-box; width:760px; padding:24px; border-radius:12px; background:#fff; box-shadow:0 8px 20px rgba(0,0,0,0.18); display:flex; gap:24px; font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; color:#111827;">
-      <div style="flex:1; text-align:left;">
-        <h2 style="margin:0 0 8px; font-size:28px; font-weight:800;">${(event?.eventName ?? ticket?.event?.eventName ?? '-')}</h2>
-        <div style="margin:8px 0; font-weight:700">Date: ${(formatOnlyDate(event?.date ?? ticket?.event?.date ?? ticket?.createdOn))}</div>
-        <div style="margin:8px 0; font-weight:700">Time: ${(getEventTime(event, ticket))}</div>
-        <div style="margin:8px 0; font-weight:700">Venue: ${(formatAddress(event?.address ?? ticket?.event?.address))}</div>
+    <div style="box-sizing:border-box; width:820px; height:340px; padding:20px; border-radius:18px; background:linear-gradient(90deg,#0f172a,#1e3a8a); color:#fff; display:flex; gap:18px; font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;">
+      <div style="flex:2; padding:18px; background:rgba(255,255,255,0.04); border-radius:12px; display:flex; flex-direction:column; justify-content:space-between;">
+        <div>
+          <div style="font-size:30px; font-weight:800; margin-bottom:6px;">${title}</div>
+          <div style="font-weight:600; opacity:0.92; margin-bottom:6px;">${date} · ${time}</div>
+          <div style="font-size:14px; opacity:0.9;">${venue}</div>
+        </div>
+        <div style="display:flex; gap:12px; align-items:center; margin-top:12px;">
+          <div style="background:rgba(255,255,255,0.06); padding:10px 14px; border-radius:8px;">
+            <div style="font-size:12px; opacity:0.9;">Seat</div>
+            <div style="font-weight:800; font-size:18px;">${seat}</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.06); padding:10px 14px; border-radius:8px;">
+            <div style="font-size:12px; opacity:0.9;">Status</div>
+            <div style="font-weight:800; font-size:18px;">${paid}</div>
+          </div>
+          <div style="margin-left:auto; text-align:right; font-size:12px; opacity:0.9;">
+            <div>Issued to</div>
+            <div style="font-weight:700;">${(ticket?.userName ?? ticket?.buyerName ?? 'Attendee')}</div>
+            <div style="margin-top:6px;">${ticket?.email ?? ''}</div>
+          </div>
+        </div>
       </div>
-      <div style="flex:1; text-align:left;">
-        <div style="margin:0 0 12px; font-weight:700">Seat Type: ${ticket?.ticketType ?? '-'}</div>
-        <div style="margin:0 0 12px; font-weight:700">Ticket ID: #${ticket?.ticketId ?? '-'}</div>
-        <div style="margin:0 0 12px; font-weight:700">Payment Status: ${ticket?.isPaid ? 'Paid' : 'Not Paid'}</div>
+
+      <div style="width:260px; padding:18px; background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); border-radius:12px; display:flex; flex-direction:column; justify-content:space-between; align-items:center;">
+        <div style="text-align:center;">
+          <div style="font-size:12px; opacity:0.85;">Ticket</div>
+          <div style="font-weight:900; font-size:20px; letter-spacing:1px; margin-top:6px;">#${id}</div>
+        </div>
+        <div style="width:100%; display:flex; justify-content:center; align-items:center;">
+          <svg width="200" height="80" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80">
+            <rect width="200" height="80" rx="8" fill="#fff" opacity="0.06" />
+            <text x="100" y="45" font-size="12" fill="#ffffff" font-weight="700" text-anchor="middle">TICKET-${id}</text>
+          </svg>
+        </div>
+        <div style="width:100%; text-align:center; font-size:12px; opacity:0.85;">Present this at entry</div>
       </div>
     </div>
   `;
@@ -379,23 +412,50 @@ const TicketDetails = () => {
         )}
 
         {showTicketProfile && selectedTicket && (
-          <div className="ticket-backdrop flex items-center justify-center" onClick={closeModal}>
-            <div className="ticket-card relative flex items-center justify-center max-w-2xl w-full p-4" onClick={(e) => e.stopPropagation()}>
-              <button className="ticket-close absolute top-3 right-3 rounded-full bg-black text-white w-7 h-7 flex items-center justify-center text-sm" onClick={closeModal} aria-label="Close ticket">
-                x
-              </button>
+          <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50" onClick={closeModal}>
+            <div className="relative w-full max-w-4xl mx-4" onClick={(e) => e.stopPropagation()}>
+              <button className="absolute top-3 right-3 rounded-full bg-white/10 text-white w-8 h-8 flex items-center justify-center text-sm" onClick={closeModal} aria-label="Close ticket">✕</button>
 
-              <div className="ticket-left flex-1 text-center px-4">
-                <h2 className="ticket-title text-2xl font-bold mb-2">{selectedEvent?.eventName ?? selectedTicket?.event?.eventName ?? '-'}</h2>
-                <p className="ticket-row mb-1 text-sm"><strong>Date:</strong> {formatOnlyDate(selectedEvent?.date ?? selectedTicket?.event?.date ?? selectedTicket?.createdOn)}</p>
-                <p className="ticket-row mb-1 text-sm"><strong>Time:</strong> {getEventTime(selectedEvent, selectedTicket)}</p>
-                <p className="ticket-row text-sm"><strong>Venue:</strong> {formatAddress(selectedEvent?.address ?? selectedTicket?.event?.address)}</p>
-              </div>
-              <div className="ticket-divider" aria-hidden="true" />
-              <div className="ticket-right flex-1 text-center px-4">
-                <p className="ticket-row mb-2 text-sm"><strong>Seat Type: </strong>{selectedTicket?.ticketType ?? '-'}</p>
-                <p className="ticket-row mb-2 text-sm"><strong>Ticket ID: </strong> #{selectedTicket?.ticketId ?? '-'}</p>
-                <p className="ticket-row text-sm"><strong>Payment Status: </strong>{selectedTicket?.isPaid ? 'Paid' : 'Not Paid'}</p>
+              <div className="rounded-xl overflow-hidden shadow-2xl bg-gradient-to-r from-slate-900 to-indigo-700 text-white flex">
+                <div className="flex-1 p-8 bg-[rgba(255,255,255,0.03)]">
+                  <div className="text-3xl font-extrabold mb-2">{selectedEvent?.eventName ?? selectedTicket?.event?.eventName ?? '-'}</div>
+                  <div className="text-sm font-semibold opacity-90 mb-4">{formatOnlyDate(selectedEvent?.date ?? selectedTicket?.event?.date ?? selectedTicket?.createdOn)} · {getEventTime(selectedEvent, selectedTicket)}</div>
+                  <div className="text-sm opacity-90">{formatAddress(selectedEvent?.address ?? selectedTicket?.event?.address)}</div>
+
+                  <div className="mt-6 flex gap-3 items-center">
+                    <div className="bg-white/6 rounded-md p-3">
+                      <div className="text-xs opacity-80">Seat</div>
+                      <div className="font-bold text-lg">{selectedTicket?.ticketType ?? '-'}</div>
+                    </div>
+                    <div className="bg-white/6 rounded-md p-3">
+                      <div className="text-xs opacity-80">Status</div>
+                      <div className="font-bold text-lg">{selectedTicket?.isPaid ? 'Paid' : 'Not Paid'}</div>
+                    </div>
+                    <div className="ml-auto text-right text-xs opacity-90">
+                      <div className="uppercase text-[11px]">Issued to</div>
+                      <div className="font-semibold">{selectedTicket?.userName ?? selectedTicket?.buyerName ?? 'Attendee'}</div>
+                      <div className="text-xs mt-1 opacity-80">{selectedTicket?.email ?? ''}</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="w-72 p-6 flex flex-col items-center justify-between bg-gradient-to-b from-transparent to-black/10">
+                  <div className="text-xs opacity-80">Ticket</div>
+                  <div className="font-extrabold text-2xl tracking-wide">#{selectedTicket?.ticketId ?? '-'}</div>
+
+                  <div className="w-full flex justify-center">
+                    <svg width="180" height="72" viewBox="0 0 180 72" xmlns="http://www.w3.org/2000/svg" className="rounded-md">
+                      <rect width="180" height="72" rx="8" fill="rgba(255,255,255,0.06)" />
+                      <text x="90" y="42" fontSize="12" fill="#fff" fontWeight="700" textAnchor="middle">TICKET-{selectedTicket?.ticketId ?? '-'}</text>
+                    </svg>
+                  </div>
+
+                  <div className="text-[12px] opacity-80 text-center">Show this QR / barcode at entry</div>
+                  <div className="w-full mt-3 flex gap-2">
+                    <button className="flex-1 px-3 py-2 bg-white text-slate-900 font-semibold rounded-md" onClick={() => handleDownload(selectedTicket)}>Download</button>
+                    <button className="px-3 py-2 border border-white/20 rounded-md" onClick={closeModal}>Close</button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
