@@ -2,6 +2,7 @@ package com.wipro.demp.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import com.wipro.demp.entity.PaymentStatus;
 import java.math.BigDecimal;
 
 import jakarta.persistence.*;
@@ -51,5 +52,8 @@ public class Ticket {
     private LocalDate updatedOn;
     private LocalDate deletedOn;
     private boolean isDeleted;
+
+    @Transient
+    private PaymentStatus paymentStatus;
 
 }
