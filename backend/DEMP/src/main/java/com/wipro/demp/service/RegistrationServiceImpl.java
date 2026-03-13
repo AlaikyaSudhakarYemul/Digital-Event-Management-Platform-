@@ -67,6 +67,10 @@ public class RegistrationServiceImpl implements RegistrationService {
                 .orElseThrow(() -> new IllegalArgumentException("Event not found"));
         registration.setEvent(event);
 
+        if (registrationsRepository.existsActiveRegistration(user.getUserId(), event.getEventId())) {
+            throw new IllegalArgumentException("You are already registered for this event.");
+        }
+
         if (event.getActiveStatus() == EventStatus.COMPLETED
             || (event.getDate() != null && event.getDate().isBefore(LocalDate.now()))) {
             throw new IllegalArgumentException("Event is completed. Registration is closed.");
