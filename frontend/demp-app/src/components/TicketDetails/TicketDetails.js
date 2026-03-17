@@ -145,6 +145,17 @@ const formatAddress = (addr) => {
   return parts.length ? parts.join(', ') : '-';
 };
 
+const mapPaymentStatus = (s) => {
+  if (!s) return 'Not Paid';
+  try {
+    const str = String(s);
+    if (str === 'SUCCESS') return 'Paid';
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  } catch {
+    return String(s);
+  }
+};
+
 const loadHtml2Canvas = () => new Promise((resolve, reject) => {
   if (typeof window === 'undefined') return reject(new Error('No window'));
   if (window.html2canvas) return resolve(window.html2canvas);
@@ -175,7 +186,7 @@ const buildTicketElement = (ticket, event) => {
   const venue = formatAddress(event?.address ?? ticket?.event?.address);
   const seat = ticket?.ticketType ?? '-';
   const id = ticket?.ticketId ?? '-';
-  const paid = ticket?.isPaid ? 'Paid' : 'Not Paid';
+  const paid = mapPaymentStatus(ticket?.paymentStatus ?? (ticket?.isPaid ? 'SUCCESS' : null));
 
   wrapper.innerHTML = `
     <div style="box-sizing:border-box; width:820px; height:340px; padding:20px; border-radius:18px; background:linear-gradient(90deg,#0f172a,#1e3a8a); color:#fff; display:flex; gap:18px; font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;">
@@ -429,7 +440,7 @@ const TicketDetails = () => {
                     </div>
                     <div className="bg-white/6 rounded-md p-3">
                       <div className="text-xs opacity-80">Status</div>
-                      <div className="font-bold text-lg">{selectedTicket?.isPaid ? 'Paid' : 'Not Paid'}</div>
+                      <div className="font-bold text-lg">{mapPaymentStatus(selectedTicket?.paymentStatus ?? (selectedTicket?.isPaid ? 'SUCCESS' : null))}</div>
                     </div>
                     <div className="ml-auto text-right text-xs opacity-90">
                       <div className="uppercase text-[11px]">Issued to</div>
