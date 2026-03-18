@@ -4,11 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.web.client.RestTemplate;
 
 import com.wipro.demp.entity.Event;
+import com.wipro.demp.entity.EventType;
 import com.wipro.demp.entity.Registrations;
 import com.wipro.demp.entity.Users;
 import com.wipro.demp.repository.UserRepository;
@@ -16,6 +19,8 @@ import com.wipro.demp.util.CalendarInviteUtil;
 
 @Service
 public class NotificationService {
+
+    private static final Logger log = LoggerFactory.getLogger(NotificationService.class);
 
     @Autowired
     private JavaMailSender mailSender;
@@ -29,11 +34,19 @@ public class NotificationService {
     public void sendCalendarInvite(Registrations registration) throws Exception {
         Event event = registration.getEvent();
 
+        // Send invites only for virtual and hybrid events.
+        if (event == null ||
+            !(EventType.VIRTUAL.equals(event.getEventType()) || EventType.HYBRID.equals(event.getEventType()))) {
+            log.info("Skipping calendar invite for non-virtual/non-hybrid event registration {}",
+                    registration != null ? registration.getRegistrationId() : null);
+            return;
+        }
+
         int userId = registration.getUser().getUserId();
         
         Users user = userRepository.getById(userId);
 
-        String icsContent = CalendarInviteUtil.generateICS(event, null);
+        String icsContent = CalendarInviteUtil.generateICS(event, event.getAddress());
 
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);

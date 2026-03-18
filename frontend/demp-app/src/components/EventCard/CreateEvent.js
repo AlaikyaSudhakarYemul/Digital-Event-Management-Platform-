@@ -39,7 +39,14 @@ const EventCreatePage = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => {
+      const next = { ...prev, [name]: value };
+      // If event type switches to VIRTUAL, location should not be required.
+      if (name === 'eventTypeId' && value === '2') {
+        next.addressId = '';
+      }
+      return next;
+    });
     setErrors((prev) => ({ ...prev, [name]: '' }));
   };
 
@@ -57,13 +64,14 @@ const EventCreatePage = () => {
 
   const validateForm = () => {
     const newErrors = {};
+  const isVirtual = formData.eventTypeId === '2';
   if (!formData.eventName.trim()) newErrors.eventName = 'Event name is required';
   if (!formData.description.trim()) newErrors.description = 'Description is required';
   if (!formData.date) newErrors.date = 'Event date is required';
   else if (new Date(formData.date) < new Date().setHours(0, 0, 0, 0)) newErrors.date = 'Event date cannot be in the past';
   if (!formData.time) newErrors.time = 'Event time is required';
   if (!formData.speakerId) newErrors.speakerId = 'Speaker selection is required';
-  if (!formData.addressId) newErrors.addressId = 'Address selection is required';
+  if (!isVirtual && !formData.addressId) newErrors.addressId = 'Address selection is required';
   if (!formData.eventTypeId) newErrors.eventTypeId = 'Event type selection is required';
   if (!formData.maxAttendees) newErrors.maxAttendees = 'Max attendees is required';
   else if (isNaN(formData.maxAttendees) || formData.maxAttendees < 10 || formData.maxAttendees > 500) newErrors.maxAttendees = 'Max attendees must be between 10 and 500';
@@ -81,9 +89,10 @@ const EventCreatePage = () => {
     }
     console.log('Form validation passed');
 
-    const selectedAddress = addresses.find(
-      (addr) => addr.addressId.toString() === formData.addressId.toString()
-    );
+    const isVirtual = formData.eventTypeId === '2';
+    const selectedAddress = isVirtual
+      ? null
+      : addresses.find((addr) => addr.addressId.toString() === formData.addressId.toString());
 
     const eventTypeMap = {
       "1": "IN_PERSON",
@@ -218,9 +227,12 @@ const EventCreatePage = () => {
                   value={formData.addressId}
                   onChange={handleChange}
                   className="bg-gray-800 text-white border border-gray-700 rounded-lg px-3 py-2"
-                  required
+                  required={formData.eventTypeId !== '2'}
+                  disabled={formData.eventTypeId === '2'}
                 >
-                  <option value="">-- Select an Address --</option>
+                  <option value="">
+                    {formData.eventTypeId === '2' ? '-- Not required for VIRTUAL --' : '-- Select an Address --'}
+                  </option>
                   {addresses.map(address => (
                     <option key={address.addressId} value={address.addressId}>
                       {address.address}, {address.state}, {address.country} - {address.pincode}

@@ -49,6 +49,9 @@ public class EventServiceImpl implements EventService {
         if (EventType.VIRTUAL.equals(event.getEventType())) {
             event.setAddress(null);
         } else {
+            if (event.getAddress() == null || event.getAddress().getAddressId() <= 0) {
+                throw new IllegalArgumentException("Address is required for IN_PERSON and HYBRID events.");
+            }
             Address address = addressService.getAddress(event.getAddress().getAddressId());
             if (address == null) {
                 throw new AddressNotFoundException("Invalid address ID: " + event.getAddress().getAddressId());
@@ -145,6 +148,9 @@ public class EventServiceImpl implements EventService {
         if (EventType.VIRTUAL.equals(updatedEvent.getEventType())) {
             existing.setAddress(null);
         } else {
+            if (updatedEvent.getAddress() == null || updatedEvent.getAddress().getAddressId() <= 0) {
+                throw new IllegalArgumentException("Address is required for IN_PERSON and HYBRID events.");
+            }
             Address address = addressService.getAddress(updatedEvent.getAddress().getAddressId());
             if (address == null) {
                 throw new AddressNotFoundException("Invalid address ID: " + updatedEvent.getAddress().getAddressId());
