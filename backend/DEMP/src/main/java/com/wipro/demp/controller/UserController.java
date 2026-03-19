@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -88,12 +89,67 @@ public class UserController {
     }
  
     @GetMapping("/user/profile")
-    public Users getProfile(@RequestParam String email) {
-        if (email == null || email.isEmpty()) {
-            logger.warn("Profile request with missing or empty email");
-            throw new IllegalArgumentException("Email is required to fetch profile");
+    public ResponseEntity<?> getProfile(@RequestParam int userId, Authentication authentication) {
+        if (authentication == null || authentication.getName() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
         }
-        return userService.findByEmail(email);
+
+        Users user = userService.findById(userId);
+        if (!authentication.getName().equalsIgnoreCase(user.getEmail())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Forbidden");
+        }
+
+        user.setPassword(null);
+        return ResponseEntity.ok(user);
+    }
+
+    @PutMapping("/user/{id}/contact")
+    public ResponseEntity<?> updateContactNo(@PathVariable int id,
+                                             @RequestBody Map<String, String> payload,
+                                             Authentication authentication) {
+        if (authentication == null || authentication.getName() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        }
+
+        String contactNo = payload.get("contactNo");
+        if (contactNo == null || !contactNo.matches("\\d{10}")) {
+            return ResponseEntity.badRequest().body("Contact number must be exactly 10 digits");
+        }
+
+        try {
+            Users updated = userService.updateContactNo(id, contactNo, authentication.getName());
+            updated.setPassword(null);
+            return ResponseEntity.ok(updated);
+        } catch (SecurityException ex) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @PutMapping("/user/{id}/password")
+    public ResponseEntity<?> changePassword(@PathVariable int id,
+                                            @RequestBody Map<String, String> payload,
+                                            Authentication authentication) {
+        if (authentication == null || authentication.getName() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        }
+
+        String currentPassword = payload.get("currentPassword");
+        String newPassword = payload.get("newPassword");
+
+        if (currentPassword == null || currentPassword.isBlank() || newPassword == null || newPassword.length() < 6) {
+            return ResponseEntity.badRequest().body("Current password is required and new password must be at least 6 characters");
+        }
+
+        try {
+            userService.changePassword(id, currentPassword, newPassword, authentication.getName());
+            return ResponseEntity.ok(Map.of("message", "Password changed successfully. Please login again."));
+        } catch (SecurityException ex) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
     }
  
     @PutMapping("/user/{id}")

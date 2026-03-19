@@ -96,6 +96,68 @@ export const getUser = () => {
   return user ? JSON.parse(user) : null;
 };
 
+export const fetchUserProfile = async (userId) => {
+  const token = getToken();
+  if (!token) throw new Error('Unauthorized');
+
+  const response = await fetch(`http://localhost:8080/api/user/profile?userId=${encodeURIComponent(userId)}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(text || 'Failed to fetch profile');
+  }
+
+  return response.json();
+};
+
+export const updateUserContactNo = async (userId, contactNo) => {
+  const token = getToken();
+  if (!token) throw new Error('Unauthorized');
+
+  const response = await fetch(`http://localhost:8080/api/user/${encodeURIComponent(userId)}/contact`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ contactNo }),
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(text || 'Failed to update contact number');
+  }
+
+  return response.json();
+};
+
+export const updateUserPassword = async (userId, currentPassword, newPassword) => {
+  const token = getToken();
+  if (!token) throw new Error('Unauthorized');
+
+  const response = await fetch(`http://localhost:8080/api/user/${encodeURIComponent(userId)}/password`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ currentPassword, newPassword }),
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(text || 'Failed to update password');
+  }
+
+  return response.json();
+};
+
 // ADMIN TOKEN MANAGEMENT
 
 export const setAdminToken = (token) => {

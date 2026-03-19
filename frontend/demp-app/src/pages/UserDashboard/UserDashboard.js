@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import TicketDetails from '../../components/TicketDetails/TicketDetails';
 import { useNavigate } from "react-router-dom";
+import {
+  fetchUserProfile,
+  updateUserContactNo,
+  updateUserPassword,
+} from "../../services/authService";
 import "./UserDashboard.css";
 
 const getUser = () => {
@@ -55,6 +60,12 @@ const formatTime = (val) => {
   }
 };
 
+const maskMobile = (val) => {
+  const digits = (val || "").toString().replace(/\D/g, "");
+  if (digits.length < 2) return "Hidden";
+  return `*******${digits.slice(-2)}`;
+};
+
 
 const normalizeRegistration = (reg) => ({
   registrationId: reg.registrationId,
@@ -96,6 +107,18 @@ const UserDashboard = () => {
   const [userData, setUserData] = useState(null);
   const [registeredEvents, setRegisteredEvents] = useState([]); 
   const [activeTab, setActiveTab] = useState("home");
+  const [isEditingMobile, setIsEditingMobile] = useState(false);
+  const [mobileInput, setMobileInput] = useState("");
+  const [contactActionMessage, setContactActionMessage] = useState("");
+  const [isSavingContact, setIsSavingContact] = useState(false);
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+  const [passwordMessage, setPasswordMessage] = useState("");
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [showPasswordForm, setShowPasswordForm] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState("");
@@ -103,7 +126,7 @@ const UserDashboard = () => {
   const handleLogout = useCallback(() => {
   try {
     
-    ['user','userToken','token','adminToken','access_token','refresh_token']
+    ['user','userToken','token','authToken','auth_token','adminToken','access_token','refresh_token']
       .forEach(k => localStorage.removeItem(k));
     sessionStorage.clear();
     document.cookie.split(';').forEach(c => {
@@ -140,6 +163,48 @@ const UserDashboard = () => {
       id: u.id,
     });
   }, []);
+
+  useEffect(() => {
+    if (!userData?.id) return;
+    let isCancelled = false;
+
+    const loadUserProfile = async () => {
+      try {
+        const profile = await fetchUserProfile(userData.id);
+        if (isCancelled || !profile) return;
+        const resolved = {
+          userName: profile.userName ?? userData.userName ?? "",
+          email: profile.email ?? userData.email ?? "",
+          contactNo: profile.contactNo ?? userData.contactNo ?? "",
+          id: profile.userId ?? profile.id ?? userData.id,
+        };
+        setUserData(resolved);
+        setMobileInput(resolved.contactNo ?? "");
+
+        const localUser = getUser();
+        if (localUser) {
+          localStorage.setItem(
+            "user",
+            JSON.stringify({
+              ...localUser,
+              contactNo: resolved.contactNo,
+              id: resolved.id,
+              userId: resolved.id,
+            })
+          );
+        }
+      } catch (error) {
+        if (!isCancelled) {
+          console.error("Failed to load user profile", error);
+        }
+      }
+    };
+
+    loadUserProfile();
+    return () => {
+      isCancelled = true;
+    };
+  }, [userData?.id]);
 
 
   useEffect(() => {
@@ -194,6 +259,90 @@ const UserDashboard = () => {
   }, [userData?.id]);
 
   const hasUser = !!userData?.id;
+
+  const openProfileModal = useCallback(() => {
+    setShowProfile(true);
+  }, []);
+
+  const handleContactUpdate = useCallback(async () => {
+    const cleaned = (mobileInput || "").trim();
+    if (!/^\d{10}$/.test(cleaned)) {
+      setContactActionMessage("Mobile number must be exactly 10 digits.");
+      return;
+    }
+
+    if (!userData?.id) {
+      setContactActionMessage("User session not found. Please login again.");
+      return;
+    }
+
+    setIsSavingContact(true);
+    setContactActionMessage("");
+    try {
+      const updated = await updateUserContactNo(userData.id, cleaned);
+      const nextData = {
+        ...userData,
+        contactNo: updated?.contactNo ?? cleaned,
+      };
+      setUserData(nextData);
+      setMobileInput(nextData.contactNo ?? "");
+      setIsEditingMobile(false);
+      setContactActionMessage("Mobile number updated successfully.");
+
+      const localUser = getUser();
+      if (localUser) {
+        localStorage.setItem(
+          "user",
+          JSON.stringify({ ...localUser, contactNo: nextData.contactNo })
+        );
+      }
+    } catch (error) {
+      setContactActionMessage(error?.message || "Unable to update mobile number.");
+    } finally {
+      setIsSavingContact(false);
+    }
+  }, [mobileInput, userData]);
+
+  const handlePasswordChange = useCallback(async () => {
+    const currentPassword = passwordForm.currentPassword.trim();
+    const newPassword = passwordForm.newPassword.trim();
+    const confirmPassword = passwordForm.confirmPassword.trim();
+
+    if (!currentPassword) {
+      setPasswordMessage("Current password is required.");
+      return;
+    }
+    if (newPassword.length < 6) {
+      setPasswordMessage("New password must be at least 6 characters.");
+      return;
+    }
+    if (!confirmPassword) {
+      setPasswordMessage("Confirm password is required.");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setPasswordMessage("New password and confirm password must match.");
+      return;
+    }
+    if (!userData?.id) {
+      setPasswordMessage("User session not found. Please login again.");
+      return;
+    }
+
+    setIsChangingPassword(true);
+    setPasswordMessage("");
+    try {
+      await updateUserPassword(userData.id, currentPassword, newPassword);
+      setPasswordMessage("Password changed. Logging you out...");
+      setTimeout(() => {
+        handleLogout();
+      }, 700);
+    } catch (error) {
+      setPasswordMessage(error?.message || "Unable to change password.");
+    } finally {
+      setIsChangingPassword(false);
+    }
+  }, [passwordForm, userData?.id, handleLogout]);
 
 
   const upcomingMyEvents = useMemo(() => {
@@ -266,7 +415,7 @@ const UserDashboard = () => {
           </div>
           <button
             className="profile-btn"
-            onClick={() => setShowProfile(true)}
+            onClick={openProfileModal}
             disabled={!hasUser}
             title={!hasUser ? "Sign in to view profile" : "Open profile"}
           >
@@ -397,8 +546,132 @@ const UserDashboard = () => {
 
           {activeTab === "settings" && (
             <div className="dashboard-card">
-              <h4>Settings</h4>
-              <p>[Settings content goes here]</p>
+              <div className="card-header">Settings</div>
+              <div className="card-body settings-panel">
+                <div className="settings-grid">
+                  <div className="settings-section">
+                    <h4 className="profile-subtitle">Mobile Number</h4>
+                    <div className="profile-field-group">
+                      {/* <label htmlFor="settingsMobileInput"><strong>Contact</strong></label> */}
+                      {isEditingMobile ? (
+                        <div className="profile-row">
+                          <input
+                            id="settingsMobileInput"
+                            className="profile-input compact-input"
+                            value={mobileInput}
+                            maxLength={10}
+                            onChange={(e) => setMobileInput(e.target.value.replace(/\D/g, ""))}
+                            placeholder="Enter 10 digit mobile"
+                          />
+                          <button
+                            type="button"
+                            className="profile-action-btn"
+                            onClick={handleContactUpdate}
+                            disabled={isSavingContact}
+                          >
+                            {isSavingContact ? "Saving..." : "Save"}
+                          </button>
+                          <button
+                            type="button"
+                            className="profile-action-btn muted-btn"
+                            onClick={() => {
+                              setIsEditingMobile(false);
+                              setMobileInput(userData?.contactNo ?? "");
+                              setContactActionMessage("");
+                            }}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="profile-row">
+                          <span>{maskMobile(userData?.contactNo)}</span>
+                          <button
+                            type="button"
+                            className="profile-action-btn small-password-btn"
+                            onClick={() => {
+                              setIsEditingMobile(true);
+                              setContactActionMessage("");
+                            }}
+                            disabled={!hasUser}
+                          >
+                            Edit Mobile
+                          </button>
+                        </div>
+                      )}
+                      {contactActionMessage && <p className="profile-message">{contactActionMessage}</p>}
+                    </div>
+                  </div>
+
+                  <div className="settings-section">
+                    <h4 className="profile-subtitle">Change Password</h4>
+                    <div className="profile-field-group">
+                      {!showPasswordForm ? (
+                        <button
+                          type="button"
+                          className="profile-action-btn small-password-btn"
+                          onClick={() => {
+                            setShowPasswordForm(true);
+                            setPasswordMessage("");
+                          }}
+                          disabled={!hasUser}
+                        >
+                          Change Password
+                        </button>
+                      ) : (
+                        <div className="compact-password-form">
+                          <input
+                            type="password"
+                            className="profile-input compact-input"
+                            placeholder="Current password"
+                            value={passwordForm.currentPassword}
+                            onChange={(e) => setPasswordForm((prev) => ({ ...prev, currentPassword: e.target.value }))}
+                            disabled={!hasUser}
+                          />
+                          <input
+                            type="password"
+                            className="profile-input compact-input"
+                            placeholder="New password"
+                            value={passwordForm.newPassword}
+                            onChange={(e) => setPasswordForm((prev) => ({ ...prev, newPassword: e.target.value }))}
+                            disabled={!hasUser}
+                          />
+                          <input
+                            type="password"
+                            className="profile-input compact-input"
+                            placeholder="Confirm password"
+                            value={passwordForm.confirmPassword}
+                            onChange={(e) => setPasswordForm((prev) => ({ ...prev, confirmPassword: e.target.value }))}
+                            disabled={!hasUser}
+                          />
+                          <div className="profile-row">
+                            <button
+                              type="button"
+                              className="profile-action-btn small-password-btn"
+                              onClick={handlePasswordChange}
+                              disabled={isChangingPassword || !hasUser}
+                            >
+                              {isChangingPassword ? "Updating..." : "Change Password"}
+                            </button>
+                            <button
+                              type="button"
+                              className="profile-action-btn muted-btn small-password-btn"
+                              onClick={() => {
+                                setShowPasswordForm(false);
+                                setPasswordMessage("");
+                                setPasswordForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
+                              }}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                      {passwordMessage && <p className="profile-message">{passwordMessage}</p>}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
         </section>
@@ -417,8 +690,9 @@ const UserDashboard = () => {
                 <strong>Email:</strong> {userData?.email || "-"}
               </p>
               <p>
-                <strong>Contact No:</strong> {userData?.contactNo || "-"}
+                <strong>Mobile:</strong> {userData?.contactNo || "-"}
               </p>
+
               <button className="close-btn" onClick={() => setShowProfile(false)}>
                 Close
               </button>

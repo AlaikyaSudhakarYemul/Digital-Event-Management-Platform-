@@ -117,6 +117,44 @@ public class UserServiceImpl implements UserService {
     public Users findByEmail(String email) {
         return userRepository.findByEmail(email).orElse(null);
     }
+
+    @Override
+    public Users findById(int id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
+    }
+
+    @Override
+    public Users updateContactNo(int id, String contactNo, String requesterEmail) {
+        Users existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
+
+        if (requesterEmail == null || !requesterEmail.equalsIgnoreCase(existingUser.getEmail())) {
+            throw new SecurityException("Unauthorized access - You can only update your own profile.");
+        }
+
+        existingUser.setContactNo(contactNo);
+        existingUser.setUpdatedOn(LocalDate.now());
+        return userRepository.save(existingUser);
+    }
+
+    @Override
+    public void changePassword(int id, String currentPassword, String newPassword, String requesterEmail) {
+        Users existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
+
+        if (requesterEmail == null || !requesterEmail.equalsIgnoreCase(existingUser.getEmail())) {
+            throw new SecurityException("Unauthorized access - You can only change your own password.");
+        }
+
+        if (!passwordEncoder.matches(currentPassword, existingUser.getPassword())) {
+            throw new IllegalArgumentException("Current password is incorrect.");
+        }
+
+        existingUser.setPassword(passwordEncoder.encode(newPassword));
+        existingUser.setUpdatedOn(LocalDate.now());
+        userRepository.save(existingUser);
+    }
  
     
 }
