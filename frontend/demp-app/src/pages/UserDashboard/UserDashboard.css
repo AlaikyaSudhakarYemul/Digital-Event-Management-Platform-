@@ -169,7 +169,97 @@
   border-radius: 10px;
   box-shadow: 0 2px 16px rgba(0,0,0,0.15);
   min-width: 300px;
+  max-width: 480px;
   text-align: left;
+}
+
+.settings-panel {
+  text-align: left;
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.settings-section {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.profile-field-group {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.profile-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.profile-input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.compact-password-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 340px;
+}
+
+.compact-input {
+  width: 100%;
+}
+
+.profile-action-btn {
+  background: #232b39;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.small-password-btn {
+  padding: 6px 10px;
+  font-size: 13px;
+}
+
+@media (max-width: 900px) {
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.profile-action-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.muted-btn {
+  background: #64748b;
+}
+
+.profile-message {
+  margin: 0;
+  font-size: 13px;
+  color: #0f172a;
+}
+
+.profile-subtitle {
+  margin: 0 0 4px;
 }
 
 .close-btn {
