@@ -5,7 +5,10 @@ import SpeakerManager from './SpeakerManagement';
 
 // Helper: safe fetch with auth and consistent error handling
 const authorizedFetch = async (url, options = {}) => {
-  const token = localStorage.getItem('adminToken');
+  const token = localStorage.getItem('adminToken') || localStorage.getItem('auth_token');
+  if (!token) {
+    throw new Error('No login token found. Please login again.');
+  }
   const res = await fetch(url, {
     ...options,
     headers: {
@@ -42,7 +45,52 @@ const authorizedFetch = async (url, options = {}) => {
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState('address');
   const [submitting, setSubmitting] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [organizers, setOrganizers] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [adminDataMessage, setAdminDataMessage] = useState('');
+  const [adminLoading, setAdminLoading] = useState(false);
   const navigate = useNavigate();
+
+  const loadAdminSummaryData = async () => {
+    setAdminLoading(true);
+    setAdminDataMessage('');
+
+    const failures = [];
+
+    try {
+      const usersData = await authorizedFetch('http://localhost:8080/api/user/all');
+      setUsers(Array.isArray(usersData) ? usersData : []);
+    } catch (e) {
+      console.error('Load users failed:', e);
+      setUsers([]);
+      failures.push(`Users: ${e.message}`);
+    }
+
+    try {
+      const organizersData = await authorizedFetch('http://localhost:8080/api/user/organizers');
+      setOrganizers(Array.isArray(organizersData) ? organizersData : []);
+    } catch (e) {
+      console.error('Load organizers failed:', e);
+      setOrganizers([]);
+      failures.push(`Organizers: ${e.message}`);
+    }
+
+    try {
+      const eventsData = await authorizedFetch('http://localhost:8080/api/events/all');
+      setEvents(Array.isArray(eventsData) ? eventsData : []);
+    } catch (e) {
+      console.error('Load events failed:', e);
+      setEvents([]);
+      failures.push(`Events: ${e.message}`);
+    }
+
+    if (failures.length > 0) {
+      setAdminDataMessage(failures.join(' | '));
+    }
+
+    setAdminLoading(false);
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
@@ -79,6 +127,8 @@ const AdminDashboard = () => {
       } catch (e) {
         console.error('Load speakers failed:', e);
       }
+
+      await loadAdminSummaryData();
     })();
   }, []);
 
@@ -251,6 +301,24 @@ const AdminDashboard = () => {
         >
           Speaker
         </button>
+        <button
+          className={`w-full text-left px-4 py-2 rounded ${activeSection === 'users' ? 'bg-cyan-600' : 'bg-gray-700'}`}
+          onClick={() => setActiveSection('users')}
+        >
+          Users
+        </button>
+        <button
+          className={`w-full text-left px-4 py-2 rounded ${activeSection === 'organizers' ? 'bg-cyan-600' : 'bg-gray-700'}`}
+          onClick={() => setActiveSection('organizers')}
+        >
+          Organizers
+        </button>
+        <button
+          className={`w-full text-left px-4 py-2 rounded ${activeSection === 'events' ? 'bg-cyan-600' : 'bg-gray-700'}`}
+          onClick={() => setActiveSection('events')}
+        >
+          Events
+        </button>
         <div className="flex-grow" />
         <button
           className="w-full mt-8 px-4 py-2 rounded bg-red-600 hover:bg-red-700 text-white font-semibold"
@@ -287,6 +355,74 @@ const AdminDashboard = () => {
             editingSpeakerId={editingSpeakerId}
             speakerMessage={speakerMessage}
           />
+        )}
+
+        {activeSection === 'users' && (
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold">All Users</h2>
+              <button
+                onClick={loadAdminSummaryData}
+                className="px-3 py-1 rounded bg-cyan-600 hover:bg-cyan-700 text-white"
+              >
+                Refresh
+              </button>
+            </div>
+            {adminLoading && <p className="text-cyan-300 mb-3">Loading data...</p>}
+            {adminDataMessage && <p className="text-yellow-400 mb-3">{adminDataMessage}</p>}
+            <div className="space-y-2">
+              {users.length === 0 && <p className="text-gray-300">No users found.</p>}
+              {users.map((u) => (
+                <div key={u.userId} className="bg-gray-700 p-3 rounded">
+                  <p><strong>ID:</strong> {u.userId}</p>
+                  <p><strong>Name:</strong> {u.userName}</p>
+                  <p><strong>Email:</strong> {u.email}</p>
+                  <p><strong>Role:</strong> {u.role}</p>
+                  <p><strong>Contact:</strong> {u.contactNo ?? '—'}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {activeSection === 'organizers' && (
+          <div>
+            <h2 className="text-xl font-semibold mb-4">All Organizers</h2>
+            {adminLoading && <p className="text-cyan-300 mb-3">Loading data...</p>}
+            {adminDataMessage && <p className="text-yellow-400 mb-3">{adminDataMessage}</p>}
+            <div className="space-y-2">
+              {organizers.length === 0 && <p className="text-gray-300">No organizers found.</p>}
+              {organizers.map((u) => (
+                <div key={u.userId} className="bg-gray-700 p-3 rounded">
+                  <p><strong>ID:</strong> {u.userId}</p>
+                  <p><strong>Name:</strong> {u.userName}</p>
+                  <p><strong>Email:</strong> {u.email}</p>
+                  <p><strong>Contact:</strong> {u.contactNo ?? '—'}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {activeSection === 'events' && (
+          <div>
+            <h2 className="text-xl font-semibold mb-4">All Events</h2>
+            {adminLoading && <p className="text-cyan-300 mb-3">Loading data...</p>}
+            {adminDataMessage && <p className="text-yellow-400 mb-3">{adminDataMessage}</p>}
+            <div className="space-y-2">
+              {events.length === 0 && <p className="text-gray-300">No events found.</p>}
+              {events.map((ev) => (
+                <div key={ev.eventId} className="bg-gray-700 p-3 rounded">
+                  <p><strong>ID:</strong> {ev.eventId}</p>
+                  <p><strong>Name:</strong> {ev.eventName}</p>
+                  <p><strong>Type:</strong> {ev.eventType ?? '—'}</p>
+                  <p><strong>Date:</strong> {ev.date ?? '—'}</p>
+                  <p><strong>Status:</strong> {ev.activeStatus ?? '—'}</p>
+                  <p><strong>Organizer:</strong> {ev.user?.userName ?? '—'}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
       </div>
     </div>

@@ -77,6 +77,25 @@ export default function RegistrationPay({ registrationId: propRegistrationId, ev
 
       const data = await res.json();
 
+      const notifyCancelled = async (cancelReason) => {
+        try {
+          await fetch(`${API_BASE}/api/payments/cancel`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              registrationId,
+              razorpayOrderId: data.razorpayOrderId,
+              reason: cancelReason,
+            }),
+          });
+        } catch (cancelErr) {
+          console.error("Failed to persist cancelled payment attempt:", cancelErr);
+        }
+      };
+
       if (!window.Razorpay) {
         throw new Error("Razorpay SDK unavailable.");
       }
@@ -132,7 +151,8 @@ export default function RegistrationPay({ registrationId: propRegistrationId, ev
           }
         },
         modal: {
-          ondismiss: function () {
+          ondismiss: async function () {
+            await notifyCancelled("USER_DISMISSED_CHECKOUT");
             setBusy(false);
           },
         },
@@ -140,7 +160,8 @@ export default function RegistrationPay({ registrationId: propRegistrationId, ev
 
       const rzp = new window.Razorpay(options);
 
-      rzp.on("payment.failed", function () {
+      rzp.on("payment.failed", async function () {
+        await notifyCancelled("PAYMENT_FAILED");
         navigate("/payment-failed", { state: { orderId: data.razorpayOrderId } });
       });
 

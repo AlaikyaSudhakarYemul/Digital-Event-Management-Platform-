@@ -52,6 +52,51 @@ const EventDetails = () => {
     return () => { cancelled = true; };
   }, [eventId]);
 
+  const syncExistingRegistration = useCallback(async () => {
+    const userId = user?.userId;
+    if (!userId || !eventId) return null;
+
+    const token = getToken();
+    if (!token) return null;
+
+    const res = await fetch(`${API_BASE}/api/registrations/user/${encodeURIComponent(userId)}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) return null;
+
+    const registrations = await res.json();
+    if (!Array.isArray(registrations)) return null;
+
+    return registrations.find((r) => {
+      const sameEvent = String(r?.event?.eventId) === String(eventId);
+      const notDeleted = !(r?.isDeleted || r?.deleted);
+      return sameEvent && notDeleted;
+    }) || null;
+  }, [eventId, user?.userId]);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const existing = await syncExistingRegistration();
+        if (!existing || cancelled) return;
+
+        setRegistrationInfo(existing);
+        setIsRegistered(true);
+      } catch (e) {
+        console.error('Failed to load existing registration:', e);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [syncExistingRegistration]);
+
   // ----- Pagination state for "More Events" -----
   const [pageIndex, setPageIndex] = useState(0);   // 0-based
   const [pageSize, setPageSize] = useState(2);
@@ -212,7 +257,23 @@ const EventDetails = () => {
       setIsRegistered(true);
       setShowTicketForm(true);
     } catch (e) {
-      setRegisterMessage(e.message);
+      const message = e?.message || 'Failed to register for event.';
+
+      if (/already registered/i.test(message)) {
+        try {
+          const existing = await syncExistingRegistration();
+          if (existing) {
+            setRegistrationInfo(existing);
+            setIsRegistered(true);
+            setRegisterMessage('Already registered. You can continue with Pay Now.');
+            return;
+          }
+        } catch (lookupError) {
+          console.error('Failed to sync existing registration after duplicate attempt:', lookupError);
+        }
+      }
+
+      setRegisterMessage(message);
     } finally {
       setRegisterLoading(false);
     }
@@ -243,6 +304,11 @@ const EventDetails = () => {
   };
 
   const handleProceedToPayment = () => {
+    if (!registrationInfo?.registrationId) {
+      setRegisterMessage('Registration not found for this event. Please register first.');
+      return;
+    }
+
     setShowSuccessPopup(false);
     navigate('/payments', {
       state: {
@@ -349,14 +415,24 @@ const EventDetails = () => {
               <p className="text-lg mb-4"><strong>Full Address:</strong> {fullAddress}</p>
               <p className="text-lg mb-6"><strong>Description:</strong> {event.description ?? '—'}</p>
 
-              {/* Register Button */}
-              <button
-                onClick={handleRegister}
-                disabled={registerLoading || isRegistered}
-                className={`bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ${isRegistered ? 'cursor-not-allowed' : ''}`}
-              >
-                {isRegistered ? 'Registered' : registerLoading ? 'Registering...' : 'Register'}
-              </button>
+              <div className="flex flex-wrap gap-3">
+                <button
+                  onClick={handleRegister}
+                  disabled={registerLoading || isRegistered}
+                  className={`bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ${isRegistered ? 'cursor-not-allowed' : ''}`}
+                >
+                  {isRegistered ? 'Registered' : registerLoading ? 'Registering...' : 'Register'}
+                </button>
+
+                {(isRegistered || registrationInfo?.registrationId) && (
+                  <button
+                    onClick={handleProceedToPayment}
+                    className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300"
+                  >
+                    Pay Now
+                  </button>
+                )}
+              </div>
               
               {registerMessage && (
                 <p className={`mt-4 text-sm ${registerMessage.includes('Successfully') ? 'text-green-400' : 'text-red-400'}`}>

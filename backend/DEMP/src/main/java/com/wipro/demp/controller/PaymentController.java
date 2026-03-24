@@ -17,6 +17,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/payments")
@@ -152,6 +153,63 @@ public class PaymentController {
     paymentsRepo.save(p);
 
     return ResponseEntity.ok(Map.of("status", "PENDING", "registrationId", registrationId));
+  }
+
+  // Update DB when user closes Razorpay checkout or payment fails on client side
+  @PostMapping("/cancel")
+  public ResponseEntity<?> markCancelled(@RequestBody Map<String, Object> body) {
+    Long registrationId = body.get("registrationId") == null ? null : Long.valueOf(body.get("registrationId").toString());
+    String razorpayOrderId = body.get("razorpayOrderId") == null ? null : body.get("razorpayOrderId").toString();
+    String reason = body.get("reason") == null ? "USER_CANCELLED" : body.get("reason").toString();
+
+    if (registrationId == null && (razorpayOrderId == null || razorpayOrderId.isBlank())) {
+      return ResponseEntity.badRequest().body(Map.of("error", "registrationId or razorpayOrderId is required"));
+    }
+
+    if (razorpayOrderId != null && !razorpayOrderId.isBlank()) {
+      ordersRepo.findByRazorpayOrderId(razorpayOrderId).ifPresent(order -> {
+        order.setStatus(OrderStatus.CANCELLED);
+        ordersRepo.save(order);
+      });
+
+      if (registrationId == null) {
+        Optional<Order> orderOpt = ordersRepo.findByRazorpayOrderId(razorpayOrderId);
+        if (orderOpt.isPresent()) {
+          registrationId = orderOpt.get().getRegistrationId();
+        }
+      }
+    }
+
+    if (registrationId != null) {
+      Optional<Payment> latestPayment = paymentsRepo.findTopByRegistrationIdOrderByIdDesc(registrationId);
+      if (latestPayment.isPresent()) {
+        Payment latest = latestPayment.get();
+        latest.setSignatureValid(false);
+        if (latest.getStatus() == PaymentStatus.CREATED) {
+          latest.setStatus(PaymentStatus.FAILED);
+        }
+        latest.setLastWebhookPayload("{\"event\":\"CHECKOUT_CANCELLED\",\"reason\":\"" + jsonEscape(reason) + "\",\"time\":\"" + LocalDateTime.now() + "\"}");
+        paymentsRepo.save(latest);
+
+        return ResponseEntity.ok(Map.of(
+            "status", latest.getStatus().name(),
+            "registrationId", registrationId,
+            "paymentId", latest.getId(),
+            "updated", true
+        ));
+      }
+    }
+
+    return ResponseEntity.ok(Map.of(
+        "status", "CANCELLED",
+        "registrationId", registrationId,
+        "updated", false
+    ));
+  }
+
+  private String jsonEscape(String value) {
+    if (value == null) return "";
+    return value.replace("\\", "\\\\").replace("\"", "\\\"");
   }
 
   private String bytesToHex(byte[] bytes) {
