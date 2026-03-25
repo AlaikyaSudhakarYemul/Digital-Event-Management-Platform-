@@ -30,10 +30,13 @@ const EventDetails = () => {
   const [showTicketForm, setShowTicketForm] = useState(false);
   const [ticketType, setTicketType] = useState('ECONOMY_CLASS');
   const [ticketPrice, setTicketPrice] = useState(499);
+  const [ticketQuantity, setTicketQuantity] = useState(1);
   const [ticketCreated, setTicketCreated] = useState(null);
   const [registrationInfo, setRegistrationInfo] = useState(null);
+  const [existingTicketCount, setExistingTicketCount] = useState(0);
 
   const DEFAULT_PAYMENT_AMOUNT_RUPEES = 499;
+  const MAX_TICKETS_PER_USER_PER_EVENT = 5;
 
   // ----- Fetch the event (HOOK #1) -----
   useEffect(() => {
@@ -96,6 +99,51 @@ const EventDetails = () => {
       cancelled = true;
     };
   }, [syncExistingRegistration]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadMyTicketCountForEvent = async () => {
+      const userId = user?.userId;
+      if (!userId || !eventId) {
+        setExistingTicketCount(0);
+        return;
+      }
+
+      try {
+        const token = getToken();
+        const res = await fetch(`${API_BASE}/api/tickets/all`, {
+          headers: {
+            "Content-Type": "application/json",
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+        });
+
+        if (!res.ok) {
+          if (!cancelled) setExistingTicketCount(0);
+          return;
+        }
+
+        const allTickets = await res.json();
+        const mine = (Array.isArray(allTickets) ? allTickets : []).filter((t) =>
+          Number(t?.userId) === Number(userId)
+          && Number(t?.eventId ?? t?.event?.eventId) === Number(eventId)
+          && !t?.isDeleted
+        );
+
+        if (!cancelled) {
+          setExistingTicketCount(mine.length);
+        }
+      } catch {
+        if (!cancelled) setExistingTicketCount(0);
+      }
+    };
+
+    loadMyTicketCountForEvent();
+    return () => {
+      cancelled = true;
+    };
+  }, [eventId, user?.userId]);
 
   // ----- Pagination state for "More Events" -----
   const [pageIndex, setPageIndex] = useState(0);   // 0-based
@@ -237,6 +285,8 @@ const EventDetails = () => {
     return eventDate < today;
   })();
 
+  const remainingTicketCount = Math.max(0, MAX_TICKETS_PER_USER_PER_EVENT - existingTicketCount);
+
   const handleRegister = async () => {
     if (isEventCompleted) {
       const completedMessage = 'Event is completed. Registration is closed.';
@@ -255,7 +305,6 @@ const EventDetails = () => {
       const registration = await registerForEvent(eventId, user);
       setRegistrationInfo(registration);
       setIsRegistered(true);
-      setShowTicketForm(true);
     } catch (e) {
       const message = e?.message || 'Failed to register for event.';
 
@@ -322,6 +371,22 @@ const EventDetails = () => {
   const submitTicket = async (e) => {
     e?.preventDefault?.();
     try {
+      if (remainingTicketCount <= 0) {
+        setRegisterMessage('Maximum limit reached. You can buy only 5 tickets for this event.');
+        setShowTicketForm(false);
+        return;
+      }
+
+      const quantity = Number(ticketQuantity);
+      if (!Number.isInteger(quantity) || quantity <= 0) {
+        setRegisterMessage('Please select a valid ticket quantity.');
+        return;
+      }
+      if (quantity > remainingTicketCount) {
+        setRegisterMessage(`You can buy only ${remainingTicketCount} more ticket(s) for this event. Maximum limit is 5.`);
+        return;
+      }
+
       const token = getToken();
       if (!token) throw new Error('Not authenticated');
       const body = {
@@ -330,9 +395,10 @@ const EventDetails = () => {
         eventId: Number(eventId),
         userId: user?.userId ?? null,
         registrationId: registrationInfo?.registrationId ?? null,
+        quantity,
       };
 
-      const res = await fetch(`${API_BASE}/api/tickets/create`, {
+      const res = await fetch(`${API_BASE}/api/tickets/create-multiple`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -347,10 +413,13 @@ const EventDetails = () => {
       }
 
       const created = await res.json();
-      setTicketCreated(created);
+      const createdTickets = Array.isArray(created) ? created : [created];
+      setTicketCreated(createdTickets[0] ?? null);
+      setExistingTicketCount((prev) => prev + createdTickets.length);
+      setTicketQuantity(1);
       setShowTicketForm(false);
       setShowSuccessPopup(true);
-      setRegisterMessage('Ticket created successfully');
+      setRegisterMessage(`${createdTickets.length} ticket(s) created successfully.`);
     } catch (err) {
       console.error('Failed to create ticket:', err);
       setRegisterMessage(err?.message || 'Failed to create ticket');
@@ -432,10 +501,25 @@ const EventDetails = () => {
                     Pay Now
                   </button>
                 )}
+
+                {(isRegistered || registrationInfo?.registrationId) && (
+                  <button
+                    onClick={() => {
+                      if (remainingTicketCount <= 0) {
+                        setRegisterMessage('Maximum limit reached. You can buy only 5 tickets for this event.');
+                        return;
+                      }
+                      setShowTicketForm(true);
+                    }}
+                    className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300"
+                  >
+                    Buy Tickets ({existingTicketCount}/5)
+                  </button>
+                )}
               </div>
-              
+
               {registerMessage && (
-                <p className={`mt-4 text-sm ${registerMessage.includes('Successfully') ? 'text-green-400' : 'text-red-400'}`}>
+                <p className={`mt-4 text-sm ${/success/i.test(registerMessage) ? 'text-green-400' : 'text-red-400'}`}>
                   {registerMessage}
                 </p>
               )}
@@ -584,9 +668,23 @@ const EventDetails = () => {
                       required
                     />
                   </div>
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-black mb-2">Number of Tickets</label>
+                    <select
+                      value={ticketQuantity}
+                      onChange={(e) => setTicketQuantity(Number(e.target.value))}
+                      className="w-full px-3 py-2 border rounded bg-gray-100 text-black"
+                      required
+                    >
+                      {Array.from({ length: remainingTicketCount }, (_, i) => i + 1).map((count) => (
+                        <option key={count} value={count}>{count}</option>
+                      ))}
+                    </select>
+                    <p className="text-xs text-gray-600 mt-1">Maximum 5 tickets per user per event.</p>
+                  </div>
                   <div className="flex gap-3">
                     <button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Create Ticket</button>
-                    <button type="button" onClick={() => { setShowTicketForm(false); setShowSuccessPopup(true); }} className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg">Skip</button>
+                    <button type="button" onClick={() => { setShowTicketForm(false); }} className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg">Back</button>
                   </div>
                 </form>
               </div>

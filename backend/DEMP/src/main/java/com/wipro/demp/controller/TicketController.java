@@ -1,5 +1,9 @@
 package com.wipro.demp.controller;
 
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wipro.demp.entity.Ticket;
+import com.wipro.demp.entity.TicketType;
 import com.wipro.demp.service.TicketService;
 
 @RestController
@@ -28,11 +33,42 @@ public class TicketController {
     
     @PostMapping("/create")
     public ResponseEntity<?> createTicket(@RequestBody Ticket ticket) {
-        Ticket createdTicket = ticketService.createTicket(ticket);
-        if (createdTicket == null) {
-            return ResponseEntity.badRequest().body("Invalid ticket data.");
+        try {
+            Ticket createdTicket = ticketService.createTicket(ticket);
+            if (createdTicket == null) {
+                return ResponseEntity.badRequest().body("Invalid ticket data.");
+            }
+            return new ResponseEntity<>(createdTicket, HttpStatus.CREATED);
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
         }
-        return new ResponseEntity<>(createdTicket, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/create-multiple")
+    public ResponseEntity<?> createMultipleTickets(@RequestBody Map<String, Object> payload) {
+        try {
+            if (payload == null) {
+                return ResponseEntity.badRequest().body("Request body is required.");
+            }
+
+            int quantity = payload.get("quantity") == null
+                    ? 1
+                    : Integer.parseInt(payload.get("quantity").toString());
+
+            Ticket ticket = new Ticket();
+            ticket.setTicketType(TicketType.valueOf(payload.get("ticketType").toString()));
+            ticket.setPrice(new BigDecimal(payload.get("price").toString()));
+            ticket.setEventId(Integer.parseInt(payload.get("eventId").toString()));
+            ticket.setUserId(Integer.parseInt(payload.get("userId").toString()));
+            ticket.setRegistrationId(Integer.parseInt(payload.get("registrationId").toString()));
+
+            List<Ticket> createdTickets = ticketService.createMultipleTickets(ticket, quantity);
+            return new ResponseEntity<>(createdTickets, HttpStatus.CREATED);
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body("Invalid ticket request payload.");
+        }
     }
 
     @PutMapping("/{id}")
