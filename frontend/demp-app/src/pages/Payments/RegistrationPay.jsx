@@ -37,6 +37,7 @@ export default function RegistrationPay({ registrationId: propRegistrationId, ev
   const state = location?.state;
   const registrationId = propRegistrationId ?? state?.registrationId ?? null;
   const eventId = propEventId ?? state?.eventId ?? null;
+  const ticketCount = Number(state?.ticketCount ?? 1);
   const amountRupees = Number(propAmountRupees ?? state?.amountRupees ?? 499);
 
   useEffect(() => {
@@ -179,6 +180,7 @@ export default function RegistrationPay({ registrationId: propRegistrationId, ev
         <h2 className="text-2xl font-bold mb-4">Registration Payment</h2>
         <p className="mb-2">Event ID: {eventId ?? "-"}</p>
         <p className="mb-2">Registration ID: {registrationId ?? "-"}</p>
+        <p className="mb-2">Tickets: {ticketCount}</p>
         <p className="mb-6">Amount: ₹{amountRupees}</p>
 
         {error && <p className="text-red-400 mb-4">{error}</p>}

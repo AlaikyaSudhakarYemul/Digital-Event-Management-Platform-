@@ -34,6 +34,10 @@ const EventDetails = () => {
   const [ticketCreated, setTicketCreated] = useState(null);
   const [registrationInfo, setRegistrationInfo] = useState(null);
   const [existingTicketCount, setExistingTicketCount] = useState(0);
+  const [latestTicketPurchase, setLatestTicketPurchase] = useState({
+    ticketCount: 1,
+    amountRupees: 499,
+  });
 
   const DEFAULT_PAYMENT_AMOUNT_RUPEES = 499;
   const MAX_TICKETS_PER_USER_PER_EVENT = 5;
@@ -86,7 +90,13 @@ const EventDetails = () => {
     (async () => {
       try {
         const existing = await syncExistingRegistration();
-        if (!existing || cancelled) return;
+        if (cancelled) return;
+
+        if (!existing) {
+          setRegistrationInfo(null);
+          setIsRegistered(false);
+          return;
+        }
 
         setRegistrationInfo(existing);
         setIsRegistered(true);
@@ -286,6 +296,9 @@ const EventDetails = () => {
   })();
 
   const remainingTicketCount = Math.max(0, MAX_TICKETS_PER_USER_PER_EVENT - existingTicketCount);
+  const currentTicketTotalAmount = Number.isFinite(Number(ticketPrice))
+    ? Number((Number(ticketPrice) * Number(ticketQuantity || 1)).toFixed(2))
+    : 0;
 
   const handleRegister = async () => {
     if (isEventCompleted) {
@@ -331,6 +344,7 @@ const EventDetails = () => {
   const handlePopupClose = async () => {
     try {
       const token = getToken();
+      const amountRupees = Number(latestTicketPurchase?.amountRupees ?? DEFAULT_PAYMENT_AMOUNT_RUPEES);
       if (token && registrationInfo?.registrationId) {
         await fetch(`${API_BASE}/api/payments/pending`, {
           method: "POST",
@@ -340,7 +354,7 @@ const EventDetails = () => {
           },
           body: JSON.stringify({
             registrationId: registrationInfo.registrationId,
-            amountRupees: DEFAULT_PAYMENT_AMOUNT_RUPEES,
+            amountRupees,
           }),
         });
       }
@@ -358,19 +372,64 @@ const EventDetails = () => {
       return;
     }
 
+    const amountRupees = Number(latestTicketPurchase?.amountRupees ?? DEFAULT_PAYMENT_AMOUNT_RUPEES);
+    const ticketCount = Number(latestTicketPurchase?.ticketCount ?? 1);
+
     setShowSuccessPopup(false);
     navigate('/payments', {
       state: {
         registrationId: registrationInfo?.registrationId ?? null,
         eventId: Number(eventId),
-        amountRupees: DEFAULT_PAYMENT_AMOUNT_RUPEES,
+        amountRupees,
+        ticketCount,
       },
     });
+  };
+
+  const handleBuyTicketsClick = async () => {
+    if (!user) {
+      setRegisterMessage('Please log in and register for this event before buying tickets.');
+      return;
+    }
+
+    let canBuy = Boolean(isRegistered || registrationInfo?.registrationId);
+
+    // Re-check registration from server to avoid false negative due stale/local state.
+    if (!canBuy) {
+      try {
+        const existing = await syncExistingRegistration();
+        if (existing?.registrationId) {
+          setRegistrationInfo(existing);
+          setIsRegistered(true);
+          canBuy = true;
+        }
+      } catch (e) {
+        console.error('Registration re-check failed before buying ticket:', e);
+      }
+    }
+
+    if (!canBuy) {
+      setRegisterMessage('Please register for this event before buying tickets.');
+      return;
+    }
+
+    if (remainingTicketCount <= 0) {
+      setRegisterMessage('Maximum limit reached. You can buy only 5 tickets for this event.');
+      return;
+    }
+
+    setShowTicketForm(true);
   };
 
   const submitTicket = async (e) => {
     e?.preventDefault?.();
     try {
+      if (!(isRegistered || registrationInfo?.registrationId)) {
+        setRegisterMessage('Please register for this event before buying tickets.');
+        setShowTicketForm(false);
+        return;
+      }
+
       if (remainingTicketCount <= 0) {
         setRegisterMessage('Maximum limit reached. You can buy only 5 tickets for this event.');
         setShowTicketForm(false);
@@ -414,8 +473,17 @@ const EventDetails = () => {
 
       const created = await res.json();
       const createdTickets = Array.isArray(created) ? created : [created];
+      const effectivePrice = Number(ticketPrice);
+      const totalAmountRupees = Number.isFinite(effectivePrice)
+        ? Number((effectivePrice * createdTickets.length).toFixed(2))
+        : DEFAULT_PAYMENT_AMOUNT_RUPEES;
+
       setTicketCreated(createdTickets[0] ?? null);
       setExistingTicketCount((prev) => prev + createdTickets.length);
+      setLatestTicketPurchase({
+        ticketCount: createdTickets.length,
+        amountRupees: totalAmountRupees,
+      });
       setTicketQuantity(1);
       setShowTicketForm(false);
       setShowSuccessPopup(true);
@@ -504,13 +572,7 @@ const EventDetails = () => {
 
                 {(isRegistered || registrationInfo?.registrationId) && (
                   <button
-                    onClick={() => {
-                      if (remainingTicketCount <= 0) {
-                        setRegisterMessage('Maximum limit reached. You can buy only 5 tickets for this event.');
-                        return;
-                      }
-                      setShowTicketForm(true);
-                    }}
+                    onClick={handleBuyTicketsClick}
                     className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300"
                   >
                     Buy Tickets ({existingTicketCount}/5)
@@ -657,7 +719,7 @@ const EventDetails = () => {
                     </select>
                   </div>
                   <div className="mb-4">
-                    <label className="block text-sm font-medium text-black mb-2">Price (INR)</label>
+                    <label className="block text-sm font-medium text-black mb-2">Price Per Ticket (INR)</label>
                     <input
                       type="number"
                       step="0.01"
@@ -681,6 +743,14 @@ const EventDetails = () => {
                       ))}
                     </select>
                     <p className="text-xs text-gray-600 mt-1">Maximum 5 tickets per user per event.</p>
+                  </div>
+                  <div className="mb-4 rounded border border-gray-300 bg-gray-50 p-3">
+                    <p className="text-sm text-black">
+                      <strong>Total Amount (INR):</strong> {currentTicketTotalAmount}
+                    </p>
+                    <p className="text-xs text-gray-600 mt-1">
+                      {ticketQuantity} ticket(s) x ₹{Number(ticketPrice || 0)}
+                    </p>
                   </div>
                   <div className="flex gap-3">
                     <button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Create Ticket</button>

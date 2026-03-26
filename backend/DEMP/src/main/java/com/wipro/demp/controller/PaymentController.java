@@ -14,6 +14,8 @@ import com.wipro.demp.repository.PaymentsRepository;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -49,8 +51,11 @@ public class PaymentController {
 
     // TODO: compute amount from your DB logic (Registration -> Event -> priceRupees)
     // For now, expect amountRupees from the request (for dev/testing)
-    Integer amountRupees = Integer.valueOf(body.get("amountRupees").toString());
-    int amountPaise = amountRupees * 100;
+    BigDecimal amountRupees = new BigDecimal(body.get("amountRupees").toString());
+    int amountPaise = amountRupees
+      .movePointRight(2)
+      .setScale(0, RoundingMode.HALF_UP)
+      .intValue();
 
     // Create order in Razorpay
     org.json.JSONObject req = new org.json.JSONObject();
@@ -131,9 +136,11 @@ public class PaymentController {
   @PostMapping("/pending")
   public ResponseEntity<?> markPending(@RequestBody Map<String, Object> body) {
     Long registrationId = body.get("registrationId") == null ? null : Long.valueOf(body.get("registrationId").toString());
-    Integer amountRupees = body.get("amountRupees") == null ? null : Integer.valueOf(body.get("amountRupees").toString());
+    BigDecimal amountRupees = body.get("amountRupees") == null
+        ? null
+        : new BigDecimal(body.get("amountRupees").toString());
 
-    if (registrationId == null || amountRupees == null || amountRupees <= 0) {
+    if (registrationId == null || amountRupees == null || amountRupees.compareTo(BigDecimal.ZERO) <= 0) {
       return ResponseEntity.badRequest().body(Map.of("error", "registrationId and valid amountRupees are required"));
     }
 
@@ -141,7 +148,10 @@ public class PaymentController {
 
     Payment p = new Payment();
     p.setRegistrationId(registrationId);
-    p.setAmountPaise(amountRupees * 100);
+    p.setAmountPaise(amountRupees
+      .movePointRight(2)
+      .setScale(0, RoundingMode.HALF_UP)
+      .intValue());
     p.setCurrency("INR");
     p.setRazorpayOrderId("PAY_LATER_ORDER_" + suffix);
     p.setRazorpayPaymentId("PAY_LATER_PAYMENT_" + suffix);

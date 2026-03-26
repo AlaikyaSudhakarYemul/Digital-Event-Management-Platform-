@@ -14,9 +14,11 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.wipro.demp.entity.Event;
+import com.wipro.demp.entity.Registrations;
 import com.wipro.demp.entity.Ticket;
 import com.wipro.demp.entity.Users;
 import com.wipro.demp.repository.EventRepository;
+import com.wipro.demp.repository.RegistrationRepository;
 import com.wipro.demp.repository.TicketRepository;
 import com.wipro.demp.repository.UserRepository;
 import com.wipro.demp.repository.PaymentsRepository;
@@ -29,6 +31,7 @@ public class TicketServiceImpl implements TicketService {
     private static final int MAX_TICKETS_PER_USER_PER_EVENT = 5;
 
     private final TicketRepository ticketRepository;
+    private final RegistrationRepository registrationRepository;
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
     private final JavaMailSender mailSender;
@@ -41,11 +44,13 @@ public class TicketServiceImpl implements TicketService {
     private String frontendBaseUrl;
 
     public TicketServiceImpl(TicketRepository ticketRepository,
+                             RegistrationRepository registrationRepository,
                              UserRepository userRepository,
                              EventRepository eventRepository,
                              JavaMailSender mailSender,
                              PaymentsRepository paymentsRepository) {
         this.ticketRepository = ticketRepository;
+        this.registrationRepository = registrationRepository;
         this.userRepository = userRepository;
         this.eventRepository = eventRepository;
         this.mailSender = mailSender;
@@ -71,6 +76,23 @@ public class TicketServiceImpl implements TicketService {
         }
         if (ticketTemplate.getUserId() <= 0 || ticketTemplate.getEventId() <= 0) {
             throw new IllegalArgumentException("Valid userId and eventId are required.");
+        }
+
+        if (ticketTemplate.getRegistrationId() <= 0) {
+            throw new IllegalArgumentException("Please register for this event before buying tickets.");
+        }
+
+        Registrations registration = registrationRepository.findById(ticketTemplate.getRegistrationId())
+                .orElseThrow(() -> new IllegalArgumentException("Please register for this event before buying tickets."));
+
+        boolean mismatchedRegistration = registration.isDeleted()
+                || registration.getUser() == null
+                || registration.getEvent() == null
+                || registration.getUser().getUserId() != ticketTemplate.getUserId()
+                || registration.getEvent().getEventId() != ticketTemplate.getEventId();
+
+        if (mismatchedRegistration) {
+            throw new IllegalArgumentException("Please register for this event before buying tickets.");
         }
 
         long existingCount = ticketRepository.countByUserIdAndEventIdAndIsDeletedFalse(
