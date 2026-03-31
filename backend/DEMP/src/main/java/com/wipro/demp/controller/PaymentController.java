@@ -1,10 +1,11 @@
 package com.wipro.demp.controller;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.razorpay.RazorpayClient;
 import com.wipro.demp.entity.Order;
 import com.wipro.demp.entity.OrderStatus;
 import com.wipro.demp.entity.Payment;
@@ -22,9 +23,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/payments")
 @CrossOrigin(origins="http://localhost:3000")
+@ConditionalOnBean(name = "razorpayClient")
 public class PaymentController {
 
-  private final RazorpayClient razorpayClient;
+  private final Object razorpayClient;
   private final OrdersRepository ordersRepo;
   private final PaymentsRepository paymentsRepo;
 
@@ -34,7 +36,9 @@ public class PaymentController {
   @Value("${razorpay.keySecret}")
   private String keySecret;
 
-  public PaymentController(RazorpayClient razorpayClient, OrdersRepository ordersRepo, PaymentsRepository paymentsRepo) {
+  public PaymentController(@Qualifier("razorpayClient") Object razorpayClient,
+                           OrdersRepository ordersRepo,
+                           PaymentsRepository paymentsRepo) {
     this.razorpayClient = razorpayClient;
     this.ordersRepo = ordersRepo;
     this.paymentsRepo = paymentsRepo;
@@ -58,8 +62,9 @@ public class PaymentController {
     req.put("currency", "INR");
     req.put("receipt", "rcpt_" + System.currentTimeMillis());
 
-    com.razorpay.Order rzpOrder = razorpayClient.orders.create(req);
-    String rzpOrderId = rzpOrder.get("id");
+    Object ordersApi = razorpayClient.getClass().getField("orders").get(razorpayClient);
+    Object rzpOrder = ordersApi.getClass().getMethod("create", org.json.JSONObject.class).invoke(ordersApi, req);
+    String rzpOrderId = String.valueOf(rzpOrder.getClass().getMethod("get", String.class).invoke(rzpOrder, "id"));
 
     // Persist in DB
     Order order = new Order();

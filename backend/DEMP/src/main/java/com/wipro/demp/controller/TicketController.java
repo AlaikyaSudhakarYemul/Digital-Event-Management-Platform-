@@ -12,12 +12,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wipro.demp.constants.DempConstants;
 import com.wipro.demp.entity.Ticket;
 import com.wipro.demp.service.TicketService;
 
 @RestController
-@RequestMapping("/api/tickets")
-@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping(DempConstants.TICKETS_URL)
+@CrossOrigin(origins = DempConstants.FRONTEND_URL)
 public class TicketController {
 
     private final TicketService ticketService;

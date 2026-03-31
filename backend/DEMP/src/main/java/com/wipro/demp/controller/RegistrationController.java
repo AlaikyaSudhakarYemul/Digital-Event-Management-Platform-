@@ -1,6 +1,7 @@
 package com.wipro.demp.controller;
 
 
+import com.wipro.demp.constants.DempConstants;
 import com.wipro.demp.entity.Registrations;
 import com.wipro.demp.service.RegistrationService;
 
@@ -14,8 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/registrations")
-@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping(DempConstants.API_URL + DempConstants.REGISTRATIONS_URL)
+@CrossOrigin(origins = DempConstants.FRONTEND_URL)
 public class RegistrationController {
 
     private static final Logger logger = LoggerFactory.getLogger(RegistrationController.class);

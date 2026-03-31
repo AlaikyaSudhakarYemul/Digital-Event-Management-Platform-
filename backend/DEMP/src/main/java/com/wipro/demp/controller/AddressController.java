@@ -1,7 +1,8 @@
 package com.wipro.demp.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
- 
+
+import com.wipro.demp.constants.DempConstants;
 import com.wipro.demp.entity.*;
 import com.wipro.demp.service.*;
  
@@ -22,8 +23,8 @@ import org.springframework.web.bind.annotation.RequestBody;
  
  
 @RestController
-@RequestMapping("/api/admin")
-@CrossOrigin(origins="http://localhost:3000")
+@RequestMapping(DempConstants.API_URL + DempConstants.ADMIN_URL)
+@CrossOrigin(origins = DempConstants.FRONTEND_URL)
 public class AddressController {
  
     private static final Logger logger = LoggerFactory.getLogger(AddressController.class);
