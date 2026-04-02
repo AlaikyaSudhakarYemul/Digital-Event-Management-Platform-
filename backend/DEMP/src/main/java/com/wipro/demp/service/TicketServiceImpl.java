@@ -210,7 +210,7 @@ public class TicketServiceImpl implements TicketService {
        
         List<Ticket> tickets = ticketRepository.findAll();
         if (tickets.isEmpty()) {
-            throw new RuntimeException("No tickets found.");
+            return tickets;
         }
         // populate payment status for each ticket
         tickets.forEach(t -> {
@@ -228,7 +228,7 @@ public class TicketServiceImpl implements TicketService {
        
             List<Ticket> tickets = ticketRepository.findByEventId(eventId);
             if (tickets.isEmpty()) {
-                throw new RuntimeException("No tickets found for event id: " + eventId);
+                return tickets;
             }
             tickets.forEach(t -> {
                 if (t.getRegistrationId() > 0) {
@@ -244,7 +244,7 @@ public class TicketServiceImpl implements TicketService {
         
         List<Ticket> tickets = ticketRepository.findByUserId(userId);
         if (tickets.isEmpty()) {
-            throw new RuntimeException("No tickets found for user id: " + userId);
+            return tickets;
         }
         tickets.forEach(t -> {
             if (t.getRegistrationId() > 0) {

@@ -282,7 +282,12 @@ const TicketDetails = () => {
             ...(token ? { Authorization: `Bearer ${token}` } : {}),
           },
         });
-        if (!res.ok) throw new Error(`Failed to load tickets (HTTP ${res.status})`);
+        if (!res.ok) {
+          if (res.status === 404) {
+            throw new Error('No tickets found. Your registered events may have expired.');
+          }
+          throw new Error('Unable to load tickets right now. Please try again shortly.');
+        }
         const data = await res.json();
         if (cancelled) return;
         // If we have a signed-in user, filter tickets for that user. Otherwise show all.
