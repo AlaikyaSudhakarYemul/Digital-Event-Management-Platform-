@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import OrganizerEventChatBot from "../../components/EventCard/OrganizerEventChatBot";
 
 const API_BASE = process.env.REACT_APP_API_BASE_URL ?? "http://localhost:8080";
 
@@ -138,7 +139,7 @@ function ProfileModal({ open, onClose, organizer, organizerId }) {
 
 /* ===================== ORGANIZER DASHBOARD ===================== */
 export default function OrganizerDashboard() {
-  const [activeTab, setActiveTab] = useState("home"); // "home" | "events" | "registrations"
+  const [activeTab, setActiveTab] = useState("home"); // "home" | "events" | "registrations" | "eventbot"
   const [organizer, setOrganizer] = useState(null);
   const [token, setToken] = useState("");
 
@@ -335,6 +336,13 @@ export default function OrganizerDashboard() {
     );
   };
 
+  const onEventCreatedByBot = (createdEvent) => {
+    if (!createdEvent) return;
+    setEvents((prev) => [createdEvent, ...(prev || [])]);
+    setEventsAllCache((prev) => [createdEvent, ...(prev || [])]);
+    setActiveTab("events");
+  };
+
   /* ===================== UI ===================== */
   return (
     <div className="min-h-screen bg-[#f5f7fb] text-gray-900">
@@ -348,6 +356,7 @@ export default function OrganizerDashboard() {
                 { id: "home", label: "Home" },
                 { id: "events", label: "My Events" },
                 { id: "registrations", label: "Registrations" },
+                { id: "eventbot", label: "Create Event (ChatBot)" },
               ].map((tab) => (
                 <li key={tab.id}>
                   <button
@@ -565,6 +574,14 @@ export default function OrganizerDashboard() {
                 </div>
               )}
             </div>
+          )}
+
+          {activeTab === "eventbot" && (
+            <OrganizerEventChatBot
+              organizerId={organizerId}
+              token={token}
+              onEventCreated={onEventCreatedByBot}
+            />
           )}
         </main>
       </div>

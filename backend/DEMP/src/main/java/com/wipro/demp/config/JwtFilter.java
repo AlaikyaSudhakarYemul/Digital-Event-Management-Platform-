@@ -11,9 +11,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
- 
 
- 
+import com.wipro.demp.constants.DempConstants;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,8 +32,8 @@ public class JwtFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
        
         if (
-            path.startsWith("/api/auth/register") ||
-            path.startsWith("/api/auth/login")
+            path.startsWith(DempConstants.API_URL + DempConstants.REGISTER_URL) ||
+            path.startsWith(DempConstants.API_URL + DempConstants.LOGIN_URL)
         ) {
             filterChain.doFilter(request, response);
             return;

@@ -1,4 +1,5 @@
 const API_URL = 'http://localhost:8080/api/events';
+const API_BASE = 'http://localhost:8080/api';
 
 export const deleteEvent = async (eventId, token) => {
   const response = await fetch(`${API_URL}/${eventId}`, {
@@ -58,4 +59,43 @@ export const registerForEvent = async (eventId, user) => {
     registrationId: idMatch ? Number(idMatch[0]) : null,
     message: text,
   };
+};
+
+export const fetchSpeakers = async () => {
+  const response = await fetch(`${API_BASE}/speakers`);
+  if (!response.ok) {
+    throw new Error('Failed to load speakers');
+  }
+  return response.json();
+};
+
+export const fetchAddresses = async () => {
+  const response = await fetch(`${API_BASE}/admin/all`);
+  if (!response.ok) {
+    throw new Error('Failed to load addresses');
+  }
+  return response.json();
+};
+
+export const createEventForOrganizer = async ({ eventData, token, userId }) => {
+  const payload = {
+    ...eventData,
+    user: { userId },
+  };
+
+  const response = await fetch(`${API_URL}/create`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(errorText || 'Failed to create event');
+  }
+
+  return response.json();
 };

@@ -20,4 +20,5 @@ public final class DempConstants {
     public static final String REGISTRATIONS_URL = "/registrations";
     
     public static final String RAZORPAY_CLIENT = "com.razorpay.RazorpayClient";
+    
 }
