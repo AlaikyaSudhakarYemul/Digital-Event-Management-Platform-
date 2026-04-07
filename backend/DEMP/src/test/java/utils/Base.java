@@ -7,7 +7,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class Base {
-    static public WebDriver driver;
+    public static  WebDriver driver;
 
     public void launchBrowser() {
         Properties prop = ReadProperty.readProperty();

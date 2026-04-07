@@ -4,9 +4,9 @@ import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
 
 @CucumberOptions(
-    features = "src/test/resources/features/bookEvent.feature",
+    features = "src/test/resources/features/admin.feature",
     glue = "testdefinitions",
-    dryRun = false,                           
+                              
     plugin = {
         "pretty",
         "html:reports/HTMLReports.html",
