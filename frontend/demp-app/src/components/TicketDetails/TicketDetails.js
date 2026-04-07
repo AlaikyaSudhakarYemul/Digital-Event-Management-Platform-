@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 const API_BASE = process.env.REACT_APP_API_BASE_URL ?? 'http://localhost:8080';
 
@@ -282,7 +282,12 @@ const TicketDetails = () => {
             ...(token ? { Authorization: `Bearer ${token}` } : {}),
           },
         });
-        if (!res.ok) throw new Error(`Failed to load tickets (HTTP ${res.status})`);
+        if (!res.ok) {
+          if (res.status === 404) {
+            throw new Error('No tickets found. Your registered events may have expired.');
+          }
+          throw new Error('Unable to load tickets right now. Please try again shortly.');
+        }
         const data = await res.json();
         if (cancelled) return;
         // If we have a signed-in user, filter tickets for that user. Otherwise show all.
@@ -361,6 +366,65 @@ const TicketDetails = () => {
     setSelectedEvent(null);
   };
 
+  const MAX_TICKETS_PER_EVENT = 5;
+
+  const ticketInsights = useMemo(() => {
+    const grouped = new Map();
+
+    (tickets || []).forEach((ticket, idx) => {
+      const eventId = ticket?.eventId ?? ticket?.event?.eventId ?? null;
+      const eventName = ticket?.event?.eventName ?? `Event ${eventId ?? '-'}`;
+      const key = `${eventId ?? 'unknown'}-${eventName}`;
+
+      if (!grouped.has(key)) {
+        grouped.set(key, {
+          key,
+          eventId,
+          eventName,
+          tickets: [],
+        });
+      }
+
+      grouped.get(key).tickets.push({ ...ticket, _fallbackIndex: idx });
+    });
+
+    const rows = [];
+    const eventSummaries = [];
+
+    grouped.forEach((group) => {
+      const ordered = group.tickets
+        .slice()
+        .sort((a, b) => {
+          const aTime = new Date(a.creationTime ?? a.createdOn ?? 0).getTime();
+          const bTime = new Date(b.creationTime ?? b.createdOn ?? 0).getTime();
+          if (aTime !== bTime) return aTime - bTime;
+          return (a.ticketId ?? a._fallbackIndex) - (b.ticketId ?? b._fallbackIndex);
+        });
+
+      const total = ordered.length;
+      eventSummaries.push({
+        key: group.key,
+        eventName: group.eventName,
+        count: total,
+        maxReached: total >= MAX_TICKETS_PER_EVENT,
+      });
+
+      ordered.forEach((ticket, index) => {
+        rows.push({
+          ...ticket,
+          _eventName: group.eventName,
+          _ticketPosition: index + 1,
+          _ticketTotal: total,
+        });
+      });
+    });
+
+    return {
+      rows,
+      eventSummaries,
+    };
+  }, [tickets]);
+
   return (
     <div className="dashboard-card">
       <div className="card-header">My Tickets</div>
@@ -374,12 +438,31 @@ const TicketDetails = () => {
         )}
 
         {!loading && tickets.length > 0 && (
+          <>
+          {ticketInsights.eventSummaries.length > 0 && (
+            <div className="mb-4 p-3 rounded-md border border-slate-600 bg-slate-900/60">
+              <p className="text-sm text-slate-200 mb-2">Ticket usage by event (max 5 per event):</p>
+              <div className="flex flex-wrap gap-2">
+                {ticketInsights.eventSummaries.map((summary) => (
+                  <span
+                    key={summary.key}
+                    className={`px-2 py-1 rounded text-xs ${summary.maxReached ? 'bg-red-600 text-white' : 'bg-cyan-700 text-white'}`}
+                  >
+                    {summary.eventName}: {summary.count}/5 {summary.maxReached ? '(Maximum limit reached)' : ''}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div className="table-wrapper">
             <table className="events-table">
               <thead>
                 <tr>
                   <th>S.No.</th>
                   <th>Ticket ID</th>
+                  <th>Event</th>
+                  <th>Ticket No.</th>
                   <th>Type</th>
                   <th>Price</th>
                   <th>Created</th>
@@ -388,10 +471,12 @@ const TicketDetails = () => {
                 </tr>
               </thead>
               <tbody>
-                {tickets.map((t, idx) => (
+                {ticketInsights.rows.map((t, idx) => (
                   <tr key={t.ticketId ?? `${idx}`}>
                     <td>{idx + 1}</td>
                     <td>{t.ticketId ?? '-'}</td>
+                    <td>{t._eventName}</td>
+                    <td>{t._ticketPosition} of {t._ticketTotal}</td>
                     <td>{t.ticketType ?? '-'}</td>
                     <td>{t.price != null ? String(t.price) : '-'}</td>
                     <td>{formatDate(t.creationTime ?? t.createdOn)}</td>
@@ -420,6 +505,7 @@ const TicketDetails = () => {
               </tbody>
             </table>
           </div>
+          </>
         )}
 
         {showTicketProfile && selectedTicket && (

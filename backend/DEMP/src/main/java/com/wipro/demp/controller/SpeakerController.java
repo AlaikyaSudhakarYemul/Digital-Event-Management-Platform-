@@ -15,13 +15,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
- 
+
+import com.wipro.demp.constants.DempConstants;
 import com.wipro.demp.entity.*;
 import com.wipro.demp.service.*;
  
 @RestController
-@RequestMapping("/api/speakers")
-@CrossOrigin(origins="http://localhost:3000")
+@RequestMapping(DempConstants.API_URL + DempConstants.SPEAKERS_URL)
+@CrossOrigin(origins=DempConstants.FRONTEND_URL)
 public class SpeakerController {
  
     private static final Logger logger = LoggerFactory.getLogger(SpeakerController.class);

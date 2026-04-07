@@ -2,6 +2,7 @@ package com.wipro.demp.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +26,7 @@ import com.wipro.demp.entity.PaymentStatus;
 public class TicketServiceImpl implements TicketService {
 
     private static final Logger log = LoggerFactory.getLogger(TicketServiceImpl.class);
+    private static final int MAX_TICKETS_PER_USER_PER_EVENT = 5;
 
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;
@@ -52,22 +54,63 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public Ticket createTicket(Ticket ticket) {
+        List<Ticket> created = createMultipleTickets(ticket, 1);
+        return created.get(0);
+    }
 
-        ticket.setCreatedOn(LocalDate.now());
-        ticket.setCreationTime(LocalDateTime.now());
-        ticket.setUpdatedOn(LocalDate.now());
-        ticket.setDeleted(false);
-
-        Ticket savedTicket = ticketRepository.save(ticket);
-
-        // Send a second mail specifically for ticket access after successful ticket creation.
-        try {
-            sendTicketDownloadMail(savedTicket);
-        } catch (Exception e) {
-            log.error("Failed to send ticket download email for ticket id {}: {}", savedTicket.getTicketId(), e.getMessage(), e);
+    @Override
+    public List<Ticket> createMultipleTickets(Ticket ticketTemplate, int quantity) {
+        if (ticketTemplate == null) {
+            throw new IllegalArgumentException("Ticket data is required.");
+        }
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must be at least 1.");
+        }
+        if (quantity > MAX_TICKETS_PER_USER_PER_EVENT) {
+            throw new IllegalArgumentException("You can select at most 5 tickets at a time.");
+        }
+        if (ticketTemplate.getUserId() <= 0 || ticketTemplate.getEventId() <= 0) {
+            throw new IllegalArgumentException("Valid userId and eventId are required.");
         }
 
-        return savedTicket;
+        long existingCount = ticketRepository.countByUserIdAndEventIdAndIsDeletedFalse(
+                ticketTemplate.getUserId(), ticketTemplate.getEventId());
+
+        int remainingAllowed = (int) (MAX_TICKETS_PER_USER_PER_EVENT - existingCount);
+        if (remainingAllowed <= 0) {
+            throw new IllegalArgumentException("Maximum limit reached. You can buy only 5 tickets for this event.");
+        }
+        if (quantity > remainingAllowed) {
+            throw new IllegalArgumentException("You can buy only " + remainingAllowed + " more ticket(s) for this event. Maximum limit is 5.");
+        }
+
+        List<Ticket> toSave = new ArrayList<>();
+        for (int i = 0; i < quantity; i++) {
+            Ticket ticket = new Ticket();
+            ticket.setTicketType(ticketTemplate.getTicketType());
+            ticket.setPrice(ticketTemplate.getPrice());
+            ticket.setEventId(ticketTemplate.getEventId());
+            ticket.setUserId(ticketTemplate.getUserId());
+            ticket.setRegistrationId(ticketTemplate.getRegistrationId());
+            ticket.setCreatedOn(LocalDate.now());
+            ticket.setCreationTime(LocalDateTime.now());
+            ticket.setUpdatedOn(LocalDate.now());
+            ticket.setDeleted(false);
+            toSave.add(ticket);
+        }
+
+        List<Ticket> savedTickets = ticketRepository.saveAll(toSave);
+
+        // Send ticket emails best-effort without failing ticket creation.
+        savedTickets.forEach(savedTicket -> {
+            try {
+                sendTicketDownloadMail(savedTicket);
+            } catch (Exception e) {
+                log.error("Failed to send ticket download email for ticket id {}: {}", savedTicket.getTicketId(), e.getMessage(), e);
+            }
+        });
+
+        return savedTickets;
     }
 
     private void sendTicketDownloadMail(Ticket ticket) {
@@ -167,7 +210,7 @@ public class TicketServiceImpl implements TicketService {
        
         List<Ticket> tickets = ticketRepository.findAll();
         if (tickets.isEmpty()) {
-            throw new RuntimeException("No tickets found.");
+            return tickets;
         }
         // populate payment status for each ticket
         tickets.forEach(t -> {
@@ -185,7 +228,7 @@ public class TicketServiceImpl implements TicketService {
        
             List<Ticket> tickets = ticketRepository.findByEventId(eventId);
             if (tickets.isEmpty()) {
-                throw new RuntimeException("No tickets found for event id: " + eventId);
+                return tickets;
             }
             tickets.forEach(t -> {
                 if (t.getRegistrationId() > 0) {
@@ -201,7 +244,7 @@ public class TicketServiceImpl implements TicketService {
         
         List<Ticket> tickets = ticketRepository.findByUserId(userId);
         if (tickets.isEmpty()) {
-            throw new RuntimeException("No tickets found for user id: " + userId);
+            return tickets;
         }
         tickets.forEach(t -> {
             if (t.getRegistrationId() > 0) {

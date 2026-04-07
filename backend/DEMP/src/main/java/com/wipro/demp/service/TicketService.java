@@ -7,6 +7,7 @@ import com.wipro.demp.entity.Ticket;
 public interface TicketService {
 
     public Ticket createTicket(Ticket ticket);
+    public List<Ticket> createMultipleTickets(Ticket ticketTemplate, int quantity);
     public Ticket updateTicket(int id, Ticket ticket);
     public void deleteTicket(int id);
     public Ticket getTicketById(int id);

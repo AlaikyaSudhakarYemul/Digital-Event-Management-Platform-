@@ -14,7 +14,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 // import org.springframework.security.core.Authentication;
 // import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
- 
+
+import com.wipro.demp.constants.DempConstants;
 import com.wipro.demp.entity.Event;
 // import com.wipro.demp.entity.Registrations;
 // import com.wipro.demp.entity.Users;
@@ -22,8 +23,8 @@ import com.wipro.demp.service.EventService;
 import com.wipro.demp.service.RegistrationService;
  
 @RestController
-@RequestMapping("/api/events")
-@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping(DempConstants.API_URL + DempConstants.EVENTS_URL)
+@CrossOrigin(origins = DempConstants.FRONTEND_URL)
 public class EventController {
  
     private static final Logger logger = LoggerFactory.getLogger(EventController.class.getName());

@@ -18,11 +18,11 @@ import com.wipro.demp.config.JwtUtil;
 import com.wipro.demp.entity.Role;
 import com.wipro.demp.entity.Users;
 import com.wipro.demp.service.UserService;
-
+import com.wipro.demp.constants.DempConstants;
  
 @RestController
-@RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping(DempConstants.API_URL)
+@CrossOrigin(origins = DempConstants.FRONTEND_URL)
 public class UserController {
  
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -38,7 +38,7 @@ public class UserController {
         this.passwordEncoder = passwordEncoder;
     }
  
-    @PostMapping("/auth/register")
+    @PostMapping(DempConstants.REGISTER_URL)
     public ResponseEntity<?> register(@RequestBody(required = false) Users user) {
  
         if (user == null || user.getUserName() == null || user.getPassword() == null) {
@@ -62,7 +62,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
  
-    @PostMapping("/auth/login")
+    @PostMapping(DempConstants.LOGIN_URL)
     public ResponseEntity<?> login(@RequestBody Map<String, String> loginData) {
         String email = loginData.get("email");
         String password = loginData.get("password");
@@ -92,7 +92,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
     }
  
-    @GetMapping("/user/profile")
+    @GetMapping(DempConstants.USER_URL + "/profile")
     public ResponseEntity<?> getProfile(@RequestParam int userId, Authentication authentication) {
         if (authentication == null || authentication.getName() == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
@@ -107,7 +107,7 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @PutMapping("/user/{id}/contact")
+    @PutMapping(DempConstants.USER_URL + "/{id}/contact")
     public ResponseEntity<?> updateContactNo(@PathVariable int id,
                                              @RequestBody Map<String, String> payload,
                                              Authentication authentication) {
@@ -131,7 +131,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/user/{id}/password")
+    @PutMapping(DempConstants.USER_URL + "/{id}/password")
     public ResponseEntity<?> changePassword(@PathVariable int id,
                                             @RequestBody Map<String, String> payload,
                                             Authentication authentication) {
@@ -156,7 +156,7 @@ public class UserController {
         }
     }
  
-    @PutMapping("/user/{id}")
+    @PutMapping(DempConstants.USER_URL + "/{id}")
     public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody Users user) {
         if (user == null || user.getUserName() == null || user.getPassword() == null) {
             logger.warn("Update attempt with missing username or password for user ID: {}", id);
@@ -166,7 +166,7 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
  
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping(DempConstants.USER_URL + "/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable int id) {
         logger.info("Deleting user with ID: {}", id);
         userService.deleteUser(id);
@@ -176,7 +176,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/user/all")
+    @GetMapping(DempConstants.USER_URL + "/all")
     public ResponseEntity<List<Map<String, Object>>> getAllUsersForAdmin() {
         List<Map<String, Object>> users = userService.getAllUsers().stream()
                 .map(this::toSafeUserResponse)
@@ -185,7 +185,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/user/organizers")
+    @GetMapping(DempConstants.USER_URL + "/organizers")
     public ResponseEntity<List<Map<String, Object>>> getAllOrganizersForAdmin() {
         List<Map<String, Object>> organizers = userService.getAllUsers().stream()
                 .filter(u -> Role.ORGANIZER.equals(u.getRole()))

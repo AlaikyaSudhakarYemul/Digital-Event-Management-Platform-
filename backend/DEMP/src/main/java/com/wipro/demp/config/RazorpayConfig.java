@@ -1,12 +1,14 @@
 package com.wipro.demp.config;
 
-
-import com.razorpay.RazorpayClient;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.wipro.demp.constants.DempConstants;
+
 @Configuration
+@ConditionalOnClass(name = DempConstants.RAZORPAY_CLIENT)
 public class RazorpayConfig {
 
   @Value("${razorpay.keyId}")
@@ -16,7 +18,8 @@ public class RazorpayConfig {
   private String keySecret;
 
   @Bean
-  public RazorpayClient razorpayClient() throws Exception {
-    return new RazorpayClient(keyId, keySecret);
+  public Object razorpayClient() throws Exception {
+    Class<?> clientClass = Class.forName(DempConstants.RAZORPAY_CLIENT);
+    return clientClass.getConstructor(String.class, String.class).newInstance(keyId, keySecret);
   }
 }

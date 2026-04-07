@@ -106,19 +106,18 @@ public class EventServiceImpl implements EventService {
 
         LocalDate today = LocalDate.now();
 
-        
-        List<Event> upcomingEvents = events.stream()
-                .filter(event -> {
-                    if (event.getDate() != null && event.getDate().isBefore(today)) {
+        List<Event> allVisibleEvents = events.stream()
+                .filter(event -> event.getActiveStatus() != EventStatus.DELETED)
+                .peek(event -> {
+                    if (event.getDate() != null && event.getDate().isBefore(today)
+                            && event.getActiveStatus() != EventStatus.COMPLETED) {
                         event.setActiveStatus(EventStatus.COMPLETED);
                         eventRepository.save(event);
-                        return false; 
                     }
-                    return true;
                 })
                 .collect(Collectors.toList());
 
-        return upcomingEvents;
+        return allVisibleEvents;
     }
 
     @Override

@@ -44,7 +44,7 @@ public class Ticket {
     
     private int userId;
     
-    @Column(unique = true)
+    @Column
     private int registrationId;
 
     private LocalDate createdOn;
