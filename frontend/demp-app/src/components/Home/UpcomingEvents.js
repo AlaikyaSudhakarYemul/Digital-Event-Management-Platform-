@@ -1,29 +1,49 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
+import { AuthContext } from '../../contexts/AuthContext';
  
 const UpcomingEvents = () => {
- 
+  const API_BASE = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
+  const { user } = useContext(AuthContext);
   const [searchTerm, setSearchTerm] = useState('');
-  // Hardcoded events data
-  const events = [
-    {
-      title: 'Tech Conference 2025',
-      date: '2025-09-15',
-      tags: ['Technology', 'Conference', 'Networking']
-    },
-    {
-      title: 'Art & Music Festival',
-      date: '2025-10-01',
-      tags: ['Art', 'Music', 'Festival']
-    },
-    {
-      title: 'Startup Pitch Night',
-      date: '2025-09-25',
-      tags: ['Startup', 'Pitch', 'Entrepreneurship']
-    }
-  ];
- 
-  const filteredEvents = events.filter(event =>
-    event.title.toLowerCase().includes(searchTerm.toLowerCase())
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  const normalizedUser = useMemo(() => (user && user.user ? user.user : user), [user]);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      setLoading(true);
+      setError('');
+
+      try {
+        const role = (normalizedUser?.role || '').toUpperCase();
+        const userId = normalizedUser?.userId;
+
+        let endpoint = `${API_BASE}/api/events/all`;
+        if (role === 'ORGANIZER' && userId) {
+          endpoint = `${API_BASE}/api/events/user/${userId}`;
+        }
+
+        const response = await fetch(endpoint);
+        if (!response.ok) {
+          throw new Error('Failed to load events');
+        }
+
+        const data = await response.json();
+        setEvents(Array.isArray(data) ? data : []);
+      } catch (err) {
+        setError(err.message || 'Unable to load events right now');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, [API_BASE, normalizedUser]);
+
+  const filteredEvents = events.filter((event) =>
+    (event.eventName || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
  
   return (
@@ -41,17 +61,20 @@ const UpcomingEvents = () => {
         />
       </div>
  
+      {loading && <p className="text-white/80">Loading events...</p>}
+      {!loading && error && <p className="text-red-200">{error}</p>}
+
       {/* Event Cards */}
       <div className="flex flex-col md:flex-row justify-center gap-8 px-6">
-        {filteredEvents.map((event, idx) => (
+        {!loading && !error && filteredEvents.map((event) => (
           <div
-            key={idx}
+            key={event.eventId}
             className="bg-white/10 backdrop-blur-md rounded-xl shadow-md p-6 w-full md:w-80 text-white"
           >
-            <h3 className="text-lg font-semibold mb-2">{event.title}</h3>
+            <h3 className="text-lg font-semibold mb-2">{event.eventName}</h3>
             <p className="text-sm text-gray-200 mb-3">{event.date}</p>
             <div className="flex flex-wrap gap-2 justify-center mb-4">
-              {event.tags?.map((tag, i) => (
+              {[event.eventType, event.activeStatus].filter(Boolean).map((tag, i) => (
                 <span
                   key={i}
                   className="text-xs bg-white/20 px-2 py-1 rounded-full text-white"
@@ -66,6 +89,10 @@ const UpcomingEvents = () => {
           </div>
         ))}
       </div>
+
+      {!loading && !error && filteredEvents.length === 0 && (
+        <p className="mt-6 text-white/80">No events found for this organizer.</p>
+      )}
  
       <div className="mt-12">
         <h3 className="text-xl font-semibold mb-4">Ready to get started?</h3>

@@ -1,54 +1,168 @@
 package com.wipro.demp.controller;
 
+import java.util.HashMap;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-// import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
-import com.wipro.demp.entity.Address;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import com.wipro.demp.config.JwtUtil;
+import com.wipro.demp.constants.DempConstants;
+import com.wipro.demp.entity.Role;
 import com.wipro.demp.entity.Users;
 import com.wipro.demp.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
 
 
 @RestController
-@RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping(DempConstants.API_URL)
 public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
-    private final RestTemplate restTemplate;
+    private final JwtUtil jwtUtil;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService, RestTemplate restTemplate) {
-        logger.info("Initializing UserController with UserService and RestTemplate");
+    public UserController(UserService userService, JwtUtil jwtUtil, PasswordEncoder passwordEncoder) {
+        logger.info("Initializing UserController with UserService, JwtUtil, and PasswordEncoder");
         this.userService = userService;
-        this.restTemplate = restTemplate;
+        this.jwtUtil = jwtUtil;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    // @Value("${admin.service.url}")
-    // private String adminServiceUrl;
+    @PostMapping(DempConstants.REGISTER_URL)
+    public ResponseEntity<?> register(@RequestBody(required = false) Users user) {
 
-    @GetMapping("/user/{id}")
+        if (user == null || user.getUserName() == null || user.getPassword() == null) {
+            logger.warn("Registration attempt with missing username or password");
+            Map<String, String> errorResponse = Map.of("error", "Username and password are required");
+            return ResponseEntity.badRequest().body(errorResponse);
+        }
+
+        logger.info("Registering user: {}", user.getUserName());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        Users savedUser = userService.registerUser(user);
+
+        String token = jwtUtil.generateToken(savedUser.getEmail(), savedUser.getRole());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("user", savedUser);
+        response.put("token", token);
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PostMapping(DempConstants.LOGIN_URL)
+    public ResponseEntity<?> login(@RequestBody Map<String, String> loginData) {
+        String email = loginData.get("email");
+        String password = loginData.get("password");
+
+        if (email == null || password == null) {
+            logger.warn("Login attempt with missing email or password");
+            return ResponseEntity.badRequest().body("Email and password are required");
+        }
+        logger.info("User login attempt for email: {}", email);
+
+        Users user = userService.findByEmail(email);
+
+        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+            logger.info("User {} logged in successfully", user.getUserName());
+            user.setPassword(null);
+            String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("user", user);
+            response.put("token", token);
+
+            return ResponseEntity.ok(response);
+        }
+        logger.warn("Invalid login attempt for email: {}", email);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+    }
+
+    @GetMapping(DempConstants.USER_URL + "/{id}")
     public ResponseEntity<?> getUserById(@PathVariable int id) {
-        if(id<=0){
-            logger.warn("User cannot be fetched with user ID: {}",id);
+        if (id <= 0) {
+            logger.warn("User cannot be fetched with user ID: {}", id);
             return ResponseEntity.badRequest().body("USer ID given is incorrect");
         }
         Users user = userService.getUserById(id);
         return ResponseEntity.ok(user);
     }
-    
 
-    @PutMapping("/user/{id}")
+    @GetMapping(DempConstants.USER_URL + "/profile")
+    public ResponseEntity<?> getProfile(@RequestParam int userId, Authentication authentication) {
+        if (authentication == null || authentication.getName() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        }
+
+        Users user = userService.findById(userId);
+        if (!authentication.getName().equalsIgnoreCase(user.getEmail())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Forbidden");
+        }
+
+        user.setPassword(null);
+        return ResponseEntity.ok(user);
+    }
+
+    @PutMapping(DempConstants.USER_URL + "/{id}/contact")
+    public ResponseEntity<?> updateContactNo(@PathVariable int id,
+                                             @RequestBody Map<String, String> payload,
+                                             Authentication authentication) {
+        if (authentication == null || authentication.getName() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        }
+
+        String contactNo = payload.get("contactNo");
+        if (contactNo == null || !contactNo.matches("\\d{10}")) {
+            return ResponseEntity.badRequest().body("Contact number must be exactly 10 digits");
+        }
+
+        try {
+            Users updated = userService.updateContactNo(id, contactNo, authentication.getName());
+            updated.setPassword(null);
+            return ResponseEntity.ok(updated);
+        } catch (SecurityException ex) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @PutMapping(DempConstants.USER_URL + "/{id}/password")
+    public ResponseEntity<?> changePassword(@PathVariable int id,
+                                            @RequestBody Map<String, String> payload,
+                                            Authentication authentication) {
+        if (authentication == null || authentication.getName() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        }
+
+        String currentPassword = payload.get("currentPassword");
+        String newPassword = payload.get("newPassword");
+
+        if (currentPassword == null || currentPassword.isBlank() || newPassword == null || newPassword.length() < 6) {
+            return ResponseEntity.badRequest().body("Current password is required and new password must be at least 6 characters");
+        }
+
+        try {
+            userService.changePassword(id, currentPassword, newPassword, authentication.getName());
+            return ResponseEntity.ok(Map.of("message", "Password changed successfully. Please login again."));
+        } catch (SecurityException ex) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @PutMapping(DempConstants.USER_URL + "/{id}")
     public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody Users user) {
         if (user == null || user.getUserName() == null || user.getPassword() == null) {
             logger.warn("Update attempt with missing username or password for user ID: {}", id);
@@ -58,7 +172,7 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
 
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping(DempConstants.USER_URL + "/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable int id) {
         logger.info("Deleting user with ID: {}", id);
         userService.deleteUser(id);
@@ -67,271 +181,34 @@ public class UserController {
 
     }
 
-    // // @PreAuthorize("hasRole('ADMIN')")
-    // @GetMapping("/user/{id}/address/{addressId}")
-    // public ResponseEntity<?> getUserAddress(
-    //     @PathVariable int id,
-    //     @PathVariable int addressId,
-    //     @RequestHeader("Authorization") String authHeader) {
-
-    //     HttpHeaders headers = new HttpHeaders();
-    //     String token = authHeader;
-    //     // Remove all leading 'Bearer ' prefixes
-    //     while (token.startsWith("Bearer ")) {
-    //         token = token.substring(7).trim();
-    //     }
-    //     token = "Bearer " + token;
-    //     headers.set("Authorization", token);
-    //     System.out.println("Headers: " + headers);
-    //     HttpEntity<String> entity = new HttpEntity<>(headers);
-    //     ResponseEntity<Address> response = restTemplate.exchange(
-    //         "http://localhost:8081/api/admin/" + addressId,
-    //         HttpMethod.GET,
-    //         entity,
-    //         Address.class
-    //     );
-    //     Address address = response.getBody();
-    //     return ResponseEntity.ok(address);
-    // }
-
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/address")
-    public ResponseEntity<?> createAddress(@RequestBody Address address, @RequestHeader("Authorization") String authHeader) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", authHeader);
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Address> entity = new HttpEntity<>(address, headers);
-        ResponseEntity<Address> response = restTemplate.exchange(
-            "http://ADMIN/api/admin/add",
-            HttpMethod.POST,
-            entity,
-            Address.class
-        );
-        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
+    @GetMapping(DempConstants.USER_URL + "/all")
+    public ResponseEntity<List<Map<String, Object>>> getAllUsersForAdmin() {
+        List<Map<String, Object>> users = userService.getAllUsers().stream()
+                .map(this::toSafeUserResponse)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(users);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/address/{id}")
-    public ResponseEntity<?> updateAddress(@PathVariable int id, @RequestBody Address address, @RequestHeader("Authorization") String authHeader) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", authHeader);
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Address> entity = new HttpEntity<>(address, headers);
-        ResponseEntity<Address> response = restTemplate.exchange(
-            "http://ADMIN/api/admin/" + id,
-            HttpMethod.PUT,
-            entity,
-            Address.class
-        );
-        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
+    @GetMapping(DempConstants.USER_URL + "/organizers")
+    public ResponseEntity<List<Map<String, Object>>> getAllOrganizersForAdmin() {
+        List<Map<String, Object>> organizers = userService.getAllUsers().stream()
+                .filter(u -> Role.ORGANIZER.equals(u.getRole()))
+                .map(this::toSafeUserResponse)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(organizers);
     }
 
-    // @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/addresses")
-    public ResponseEntity<?> getAllAddresses(@RequestHeader("Authorization") String authHeader) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", authHeader);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<Address[]> response = restTemplate.exchange(
-            "http://ADMIN/api/admin/all",
-            HttpMethod.GET,
-            entity,
-            Address[].class
-        );
-        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/address/{id}")
-    public ResponseEntity<?> deleteAddress(@PathVariable int id, @RequestHeader("Authorization") String authHeader) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", authHeader);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<String> response = restTemplate.exchange(
-            "http://ADMIN/api/admin/" + id,
-            HttpMethod.DELETE,
-            entity,
-            String.class
-        );
-        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
-    }
-
-    // @PreAuthorize("hasRole('ADMIN')")
-    // @GetMapping("/user/{id}/addresses")
-    // public ResponseEntity<?> getUserAddresses(@PathVariable int id, @RequestHeader("Authorization") String authHeader) {
-    //     HttpHeaders headers = new HttpHeaders();
-    //     headers.set("Authorization", authHeader);
-    //     HttpEntity<String> entity = new HttpEntity<>(headers);
-    //     // Call ADMIN microservice to get addresses for user
-    //     ResponseEntity<Address[]> response = restTemplate.exchange(
-    //         "http://localhost:8081/api/admin/all" ,
-    //         HttpMethod.GET,
-    //         entity,
-    //         Address[].class
-    //     );
-    //     return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
-    // }
-
-    // @PreAuthorize("hasRole('ADMIN')")
-    // @PutMapping("/user/{userId}/address/{addressId}")
-    // public ResponseEntity<?> updateAddressForUser(
-    //     @PathVariable int userId,
-    //     @PathVariable int addressId,
-    //     @RequestBody Address address,
-    //     @RequestHeader("Authorization") String authHeader) {
-
-    //     HttpHeaders headers = new HttpHeaders();
-    //     headers.set("Authorization", authHeader);
-    //     HttpEntity<Address> entity = new HttpEntity<>(address, headers);
-
-    //     ResponseEntity<Address> response = restTemplate.exchange(
-    //         "http://localhost:8081/api/admin/" + addressId,
-    //         HttpMethod.PUT,
-    //         entity,
-    //         Address.class
-    //     );
-    //     return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
-    // }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/user/{userId}/address/{addressId}")
-    public ResponseEntity<?> deleteAddressForUser(
-        @PathVariable int userId,
-        @PathVariable int addressId,
-        @RequestHeader("Authorization") String authHeader) {
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", authHeader);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-        ResponseEntity<String> response = restTemplate.exchange(
-            "http://ADMIN/api/admin/" + addressId,
-            HttpMethod.DELETE,
-            entity,
-            String.class
-        );
-        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
-    }
-
-    
-    // @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/speakers/{id}")
-    public ResponseEntity<?> getSpeakerById(@PathVariable int id, @RequestHeader("Authorization") String authHeader){
-        logger.info("Fetching speaker by ID:{}",id);
-
-        HttpHeaders headers = new HttpHeaders();
-        String token = authHeader;
-        while (token.startsWith("Bearer ")) {
-            token = token.substring(7).trim();
-        }
-        token = "Bearer " + token;
-        headers.set("Authorization", token);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<String> response = restTemplate.exchange(
-            "http://ADMIN/api/speakers/" + id,
-            HttpMethod.GET,
-            entity,
-            String.class
-        );
-
-        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
-
-    }
-
-    @GetMapping("/speakers/all")
-    public ResponseEntity<?> getAllSpeakers(@RequestHeader("Authorization") String authHeader){
-        logger.info("Fetching all speakers");
-
-        HttpHeaders headers = new HttpHeaders();
-        String token = authHeader;
-        while (token.startsWith("Bearer ")) {
-            token = token.substring(7).trim();
-        }
-        token = "Bearer " + token;
-        headers.set("Authorization", token);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<String> response = restTemplate.exchange(
-            "http://ADMIN/api/speakers",
-            HttpMethod.GET,
-            entity,
-            String.class
-        );
-
-        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
-
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/speakers")
-    public ResponseEntity<?> createSpeaker(@RequestBody String speakerData, @RequestHeader("Authorization") String authHeader){
-        logger.info("Creating new speaker with data: {}", speakerData);
-
-        HttpHeaders headers = new HttpHeaders();
-        String token = authHeader;
-        while (token.startsWith("Bearer ")) {
-            token = token.substring(7).trim();
-        }
-        token = "Bearer " + token;
-        headers.set("Authorization", token);
-        headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
-        HttpEntity<String> entity = new HttpEntity<>(speakerData, headers);
-        ResponseEntity<String> response = restTemplate.exchange(
-            "http://ADMIN/api/speakers",
-            HttpMethod.POST,
-            entity,
-            String.class
-        );
-
-        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
-
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/speakers/{id}")
-    public ResponseEntity<?> updateSpeaker(@PathVariable int id, @RequestBody String speakerData, @RequestHeader("Authorization") String authHeader){
-        logger.info("Updating speaker with ID: {} and data: {}", id, speakerData);
-
-        HttpHeaders headers = new HttpHeaders();
-        String token = authHeader;
-        while (token.startsWith("Bearer ")) {
-            token = token.substring(7).trim();
-        }
-        token = "Bearer " + token;
-        headers.set("Authorization", token);
-        headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
-        HttpEntity<String> entity = new HttpEntity<>(speakerData, headers);
-        ResponseEntity<String> response = restTemplate.exchange(
-            "http://ADMIN/api/speakers/" + id,
-            HttpMethod.PUT,
-            entity,
-            String.class
-        );
-
-        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
-
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/speakers/{id}")
-    public ResponseEntity<?> deleteSpeaker(@PathVariable int id, @RequestHeader("Authorization") String authHeader){
-        logger.info("Deleting speaker with ID: {}", id);
-
-        HttpHeaders headers = new HttpHeaders();
-        String token = authHeader;
-        while (token.startsWith("Bearer ")) {
-            token = token.substring(7).trim();
-        }
-        token = "Bearer " + token;
-        headers.set("Authorization", token);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<String> response = restTemplate.exchange(
-            "http://ADMIN/api/speakers/" + id,
-            HttpMethod.DELETE,
-            entity,
-            String.class
-        );
-
-        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
-
+    private Map<String, Object> toSafeUserResponse(Users user) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("userId", user.getUserId());
+        response.put("userName", user.getUserName());
+        response.put("email", user.getEmail());
+        response.put("role", user.getRole());
+        response.put("contactNo", user.getContactNo());
+        response.put("createdOn", user.getCreatedOn());
+        response.put("isDeleted", user.isDeleted());
+        return response;
     }
 }

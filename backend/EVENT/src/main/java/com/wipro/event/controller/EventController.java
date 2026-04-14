@@ -17,7 +17,6 @@ import com.wipro.event.service.EventService;
  
 @RestController
 @RequestMapping("/api/events")
-@CrossOrigin(origins = "http://localhost:3000")
 public class EventController {
  
     private static final Logger logger = LoggerFactory.getLogger(EventController.class.getName());

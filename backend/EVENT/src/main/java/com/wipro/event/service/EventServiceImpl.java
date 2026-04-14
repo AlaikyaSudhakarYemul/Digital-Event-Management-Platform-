@@ -211,7 +211,7 @@ public class EventServiceImpl implements EventService {
     public List<EventDTO> getAllEvents() {
         List<Event> events = eventRepository.findAllInReverse();
         if (events.isEmpty()) {
-            throw new EventNotFoundException("No events found.");
+            return List.of();
         }
 
         LocalDate today = LocalDate.now();
@@ -309,7 +309,7 @@ public class EventServiceImpl implements EventService {
     public List<EventDTO> findEventsByUserId(int userId){
         List<Event> events = eventRepository.findByUserId(userId);
         if (events == null || events.isEmpty()) {
-            throw new EventNotFoundException("No events found for userId: " + userId);
+            return List.of();
         }
         return events.stream()
                 .map(this::getDTO)

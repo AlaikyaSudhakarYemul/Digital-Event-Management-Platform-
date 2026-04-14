@@ -20,6 +20,12 @@ public interface UserService {
     public Users updateUser(int id, Users updatedUser);
  
     public Users findByEmail(String email);
+
+    public Users findById(int id);
+
+    public Users updateContactNo(int id, String contactNo, String requesterEmail);
+
+    public void changePassword(int id, String currentPassword, String newPassword, String requesterEmail);
  
     public void deleteUser(int id);
  

@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,8 +15,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.wipro.admin.entity.Address;
 import com.wipro.admin.service.AddressService;
@@ -25,7 +22,6 @@ import com.wipro.admin.service.AddressService;
 
 @RestController
 @RequestMapping("/api/admin")
-@CrossOrigin(origins="http://localhost:3000")
 public class AddressController {
  
     private static final Logger logger = LoggerFactory.getLogger(AddressController.class);
@@ -66,14 +62,6 @@ public class AddressController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getAddress(@PathVariable int id) {
         logger.info("Fetching address with ID: {}", id);
-        String token = null;
-        try {
-            token = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-                .getRequest().getHeader("Authorization");
-        } catch (Exception e) {
-            System.out.println("Could not fetch Authorization header: " + e.getMessage());
-        }
-        System.out.println("Authorization header received: " + token);
         if(id < 0){
             logger.error("Invalid address ID: {}", id);
             return ResponseEntity.badRequest().body("Invalid address ID.");

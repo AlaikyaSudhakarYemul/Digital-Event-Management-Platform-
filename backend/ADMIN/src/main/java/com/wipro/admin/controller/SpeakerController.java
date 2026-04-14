@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +21,6 @@ import com.wipro.admin.service.SpeakerService;
  
 @RestController
 @RequestMapping("/api/speakers")
-@CrossOrigin(origins="http://localhost:3000")
 public class SpeakerController {
  
     private static final Logger logger = LoggerFactory.getLogger(SpeakerController.class);
@@ -95,6 +93,7 @@ public class SpeakerController {
         }
         logger.info("Calling speakerService to delete speaker with ID: {}", id);
         logger.debug("Speaker ID to delete: {}", id);
+        speakerService.deleteSpeaker(id);
         
         logger.info("Speaker with ID {} deleted successfully", id);
         return ResponseEntity.ok("Speaker deleted successfully!");

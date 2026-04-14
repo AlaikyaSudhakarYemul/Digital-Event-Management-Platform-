@@ -30,8 +30,8 @@ const Navbar = ({ onSignUpClick, onCreateEventClick }) => {
  
             <div className="flex items-center space-x-3 ml-4">
               <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-purple-600 font-semibold">
-                {user.name
-                  ? user.name.charAt(0).toUpperCase()
+                {(user.userName || user.name)
+                  ? (user.userName || user.name).charAt(0).toUpperCase()
                   : <UserCircleIcon className="w-6 h-6" />}
               </div>
  

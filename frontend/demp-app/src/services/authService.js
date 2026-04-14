@@ -1,4 +1,5 @@
-const API_URL = 'http://localhost:8080/api/auth'; // Change this to your backend URL if needed
+const API_BASE = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
+const API_URL = `${API_BASE}/api/auth`;
  
 // USER LOGIN
 export const login = async (email, password) => {

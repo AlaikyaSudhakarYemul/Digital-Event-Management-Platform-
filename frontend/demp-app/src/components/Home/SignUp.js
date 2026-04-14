@@ -2,6 +2,8 @@ import React, { useState, useContext } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { AuthContext } from '../../contexts/AuthContext';
+
+const API_BASE = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
  
 const AuthPopup = ({ onClose, onLoginSuccess }) => {
   const [isLogin, setIsLogin] = useState(true);
@@ -66,7 +68,7 @@ const AuthPopup = ({ onClose, onLoginSuccess }) => {
       console.log(formik.values);
       if (isLogin) {
   try {
-    const response = await fetch('http://localhost:8080/api/auth/login', {
+    const response = await fetch(`${API_BASE}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -98,7 +100,7 @@ const AuthPopup = ({ onClose, onLoginSuccess }) => {
  
       // Registration: Send data to backend
       try {
-        const response = await fetch('http://localhost:8080/api/auth/register', {
+        const response = await fetch(`${API_BASE}/api/auth/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
