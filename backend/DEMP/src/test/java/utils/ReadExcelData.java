@@ -16,7 +16,7 @@ public class ReadExcelData {
  
 		String fileName = "C:\\Users\\PR20586952\\Documents\\GitHub\\Digital-Event-Management-Platform-\\backend\\DEMP\\src\\test\\resources\\testdata\\testdata.xlsx";
  
-		String[][] inputData = new String[2][6];
+		String[][] inputData = new String[2][10];
  
 		try {
 			FileInputStream fis = new FileInputStream(fileName);

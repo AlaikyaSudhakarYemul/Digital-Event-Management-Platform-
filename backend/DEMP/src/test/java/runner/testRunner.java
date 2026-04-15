@@ -4,7 +4,7 @@ import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
 
 @CucumberOptions(
-    features = "src/test/resources/features/admin.feature",
+    features = "C:\\Users\\PR20586952\\Documents\\GitHub\\Digital-Event-Management-Platform-\\backend\\DEMP\\src\\test\\resources\\features\\createEvent.feature",
     glue = "testdefinitions",
                               
     plugin = {

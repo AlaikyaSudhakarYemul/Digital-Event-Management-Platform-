@@ -36,6 +36,7 @@ public class AdminStepDef {
 
 	@When("user click on Address button")
 	public void user_click_on_address_button() {
+		adminpage=new AdminPage(driver, null, test);
 		boolean actResult = adminpage.validateAddressTab();
 		Assert.assertTrue(actResult);
 

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Cucumber" time="9.177" tests="1" skipped="0" failures="1" errors="0">
+<testcase classname="create event" name="creating event is successful - Example #1.1" time="8.308">
+<failure type="io.cucumber.java.PendingException" message="TODO: implement me">
+<![CDATA[io.cucumber.java.PendingException: TODO: implement me
+	at testdefinitions.CreateEventStepDef.user_clicks_on_create_event_button(CreateEventStepDef.java:44)
+	at ✽.user clicks on create event button(file:///C:/Users/PR20586952/Documents/GitHub/Digital-Event-Management-Platform-/backend/DEMP/src/test/resources/features/createEvent.feature:7)
+]]>
+</failure>
+<system-out><![CDATA[
+Given user is on home page..................................................passed
+When user clicks on SignUp button and clicks on SignUp link.................passed
+And user enters name "organizerA", select role "Organizer",enters contact "9876543210", email "organizerA@gmail.com", password "Organizera@123" , confirmPassword "Organizera@123" and click on SignUp button.passed
+And user clicks on create event button......................................pending
+And user enters eventName "<eventName", enters eventDescription "<eventDescription>", select eventDate "<eventDate>",select eventTime "eventTime", enters maxAttendees "<maxAttendees>", select speaker "<speaker>", select address "<address>", select eventType "<eventType>" and click on create event button.skipped
+Then user gets event successfully created alert window......................skipped
+And user clicks on ok button................................................skipped
+Then user returns to home page..............................................skipped
+]]></system-out>
+</testcase>
+</testsuite>

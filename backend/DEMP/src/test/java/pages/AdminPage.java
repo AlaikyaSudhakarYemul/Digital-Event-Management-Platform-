@@ -21,11 +21,13 @@ public class AdminPage {
 	public AdminPage(WebDriver driver, WebDriverWait wait, ExtentTest test) {
 		this.driver = driver;
 		this.test = test;
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		this.wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 	}
 
 	public boolean validateAddressTab() {
 		boolean actResult;
+        wait.until(ExpectedConditions.elementToBeClickable(Locators.adminAdressTab)).click();
+		//wait.until(ExpectedConditions.visibilityOfElementLocated(Locators.adminAdressTab));
 		driver.findElement(Locators.adminAdressTab).click();
 		actResult = true;
 		try {
