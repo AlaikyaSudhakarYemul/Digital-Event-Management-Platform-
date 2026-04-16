@@ -70,8 +70,8 @@ public class UserServiceImpl implements UserService {
         try {
             mailSender.send(message);
         } catch (MailException ex) {
-            logger.error("Registration mail failed for user {} ({}): {}", savedUser.getUserName(), savedUser.getEmail(), ex.getMessage());
-            throw new IllegalStateException("Registration failed because confirmation email could not be sent. Please try again.");
+            // Log the failure but do NOT block registration — email is best-effort
+            logger.warn("Registration mail could not be sent for user {} ({}): {}", savedUser.getUserName(), savedUser.getEmail(), ex.getMessage());
         }
 
         return savedUser;

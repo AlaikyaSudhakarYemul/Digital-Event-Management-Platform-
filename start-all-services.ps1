@@ -19,6 +19,25 @@ function Start-ServiceWindow {
     Write-Host "Started $Title" -ForegroundColor Green
 }
 
+function Get-MavenWrapperCommand {
+    param(
+        [string]$WorkingDir,
+        [string]$RepoRoot
+    )
+
+    $localWrapper = Join-Path $WorkingDir "mvnw.cmd"
+    if (Test-Path $localWrapper) {
+        return "& ./mvnw.cmd spring-boot:run"
+    }
+
+    $sharedWrapper = Join-Path $RepoRoot "backend/DEMP/mvnw.cmd"
+    if (Test-Path $sharedWrapper) {
+        return "& '$sharedWrapper' spring-boot:run"
+    }
+
+    throw "No Maven wrapper found for $WorkingDir"
+}
+
 Write-Host "Launching Digital Event Management microservices..." -ForegroundColor Cyan
 
 $eurekaDir = Join-Path $repoRoot "backend/eureka-server"
@@ -26,22 +45,24 @@ $adminDir = Join-Path $repoRoot "backend/ADMIN"
 $eventDir = Join-Path $repoRoot "backend/EVENT"
 $dempDir = Join-Path $repoRoot "backend/DEMP"
 $paymentDir = Join-Path $repoRoot "backend/PAYMENT"
+$ticketsDir = Join-Path $repoRoot "backend/TICKETS"
 $gatewayDir = Join-Path $repoRoot "backend/api-gateway"
 $frontendDir = Join-Path $repoRoot "frontend/demp-app"
 
 # 1) Start discovery first
-Start-ServiceWindow -Title "Eureka Server (8761)" -WorkingDir $eurekaDir -Command "& ./mvnw.cmd spring-boot:run"
+Start-ServiceWindow -Title "Eureka Server (8761)" -WorkingDir $eurekaDir -Command (Get-MavenWrapperCommand -WorkingDir $eurekaDir -RepoRoot $repoRoot)
 Start-Sleep -Seconds 8
 
 # 2) Start core business services
-Start-ServiceWindow -Title "ADMIN Service (8081)" -WorkingDir $adminDir -Command "& ./mvnw.cmd spring-boot:run"
-Start-ServiceWindow -Title "EVENT Service (8082)" -WorkingDir $eventDir -Command "& ./mvnw.cmd spring-boot:run"
-Start-ServiceWindow -Title "DEMP Identity Service (8083)" -WorkingDir $dempDir -Command "& ./mvnw.cmd spring-boot:run"
-Start-ServiceWindow -Title "PAYMENT Service (8084)" -WorkingDir $paymentDir -Command "& ./mvnw.cmd spring-boot:run"
+Start-ServiceWindow -Title "ADMIN Service (8081)" -WorkingDir $adminDir -Command (Get-MavenWrapperCommand -WorkingDir $adminDir -RepoRoot $repoRoot)
+Start-ServiceWindow -Title "EVENT Service (8082)" -WorkingDir $eventDir -Command (Get-MavenWrapperCommand -WorkingDir $eventDir -RepoRoot $repoRoot)
+Start-ServiceWindow -Title "DEMP Identity Service (8083)" -WorkingDir $dempDir -Command (Get-MavenWrapperCommand -WorkingDir $dempDir -RepoRoot $repoRoot)
+Start-ServiceWindow -Title "PAYMENT Service (8084)" -WorkingDir $paymentDir -Command (Get-MavenWrapperCommand -WorkingDir $paymentDir -RepoRoot $repoRoot)
+Start-ServiceWindow -Title "TICKETS Service (8085)" -WorkingDir $ticketsDir -Command (Get-MavenWrapperCommand -WorkingDir $ticketsDir -RepoRoot $repoRoot)
 Start-Sleep -Seconds 8
 
 # 3) Start API Gateway after services register
-Start-ServiceWindow -Title "API Gateway (8080)" -WorkingDir $gatewayDir -Command "mvn spring-boot:run"
+Start-ServiceWindow -Title "API Gateway (8080)" -WorkingDir $gatewayDir -Command (Get-MavenWrapperCommand -WorkingDir $gatewayDir -RepoRoot $repoRoot)
 
 # 4) Start frontend
 Start-ServiceWindow -Title "Frontend (3000)" -WorkingDir $frontendDir -Command "$env:REACT_APP_API_BASE_URL='http://localhost:8080'; npm start"
