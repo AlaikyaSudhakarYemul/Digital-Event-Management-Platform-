@@ -18,6 +18,15 @@ public class Locators {
     //Locators for create event page
     public static By createEventBtn=By.xpath("//button[text()=\"Create Event\"]");
     public static By createEventTxt=By.xpath("//h2[text()=\"Create New Event\"]");
+    public static By eventName=By.id("eventName");
+    public static By eventDescription=By.id("description");
+    public static By eventDate=By.id("date");
+    public static By eventTime=By.id("time");
+    public static By eventAttendees=By.id("maxAttendees");
+    public static By eventSpeaker=By.id("speakerId");
+    public static By eventAddress=By.id("addressId");
+    public static By eventType=By.id("eventTypeId");
+    public static By eventCreateBtn=By.tagName("button");
     		
     //Locators in user page
     public static By registerEventBtn=By.xpath("//button[text()=\"Register\"]");

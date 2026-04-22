@@ -26,8 +26,7 @@ public class AdminPage {
 
 	public boolean validateAddressTab() {
 		boolean actResult;
-        wait.until(ExpectedConditions.elementToBeClickable(Locators.adminAdressTab)).click();
-		//wait.until(ExpectedConditions.visibilityOfElementLocated(Locators.adminAdressTab));
+        wait.until(ExpectedConditions.elementToBeClickable(Locators.adminAdressTab)).click();		
 		driver.findElement(Locators.adminAdressTab).click();
 		actResult = true;
 		try {
