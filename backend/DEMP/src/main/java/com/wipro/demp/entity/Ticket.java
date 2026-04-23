@@ -47,6 +47,12 @@ public class Ticket {
     @Column
     private int registrationId;
 
+    @Column(nullable = false)
+    private int quantity = 1;
+
+    @Column(name = "total_amount", precision = 10, scale = 2, nullable = false)
+    private BigDecimal totalAmount = BigDecimal.ZERO;
+
     private LocalDate createdOn;
     private LocalDateTime creationTime;
     private LocalDate updatedOn;

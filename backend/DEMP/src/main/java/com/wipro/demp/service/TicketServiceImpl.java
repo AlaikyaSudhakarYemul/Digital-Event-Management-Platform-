@@ -92,6 +92,8 @@ public class TicketServiceImpl implements TicketService {
             ticket.setEventId(ticketTemplate.getEventId());
             ticket.setUserId(ticketTemplate.getUserId());
             ticket.setRegistrationId(ticketTemplate.getRegistrationId());
+            ticket.setQuantity(1);
+            ticket.setTotalAmount(ticketTemplate.getPrice());
             ticket.setCreatedOn(LocalDate.now());
             ticket.setCreationTime(LocalDateTime.now());
             ticket.setUpdatedOn(LocalDate.now());
@@ -164,6 +166,7 @@ public class TicketServiceImpl implements TicketService {
         existingTicket.setUserId(ticket.getUserId());
         existingTicket.setRegistrationId(ticket.getRegistrationId());
         existingTicket.setPrice(ticket.getPrice());
+        existingTicket.setTotalAmount(ticket.getPrice());
         existingTicket.setUpdatedOn(LocalDate.now());
 
         return ticketRepository.save(existingTicket);

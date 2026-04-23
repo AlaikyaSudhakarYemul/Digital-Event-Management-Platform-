@@ -389,12 +389,23 @@ const EventDetails = () => {
 
       const token = getToken();
       if (!token) throw new Error('Not authenticated');
+      const resolvedUserId = user?.userId ?? user?.id ?? null;
+      const resolvedRegistrationId = registrationInfo?.registrationId ?? null;
+
+      if (!resolvedUserId) {
+        throw new Error('User information is missing. Please log in again.');
+      }
+
+      if (!resolvedRegistrationId) {
+        throw new Error('Registration not found for this event. Please register first.');
+      }
+
       const body = {
         ticketType,
         price: Number(ticketPrice),
         eventId: Number(eventId),
-        userId: user?.userId ?? null,
-        registrationId: registrationInfo?.registrationId ?? null,
+        userId: Number(resolvedUserId),
+        registrationId: Number(resolvedRegistrationId),
         quantity,
       };
 

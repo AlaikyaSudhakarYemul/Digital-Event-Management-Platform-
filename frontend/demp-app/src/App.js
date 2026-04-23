@@ -12,6 +12,7 @@ import EventDetails from './pages/EventDetails/EventDetails';
 import RegistrationPay from './pages/Payments/RegistrationPay';
 import PaymentSuccess from './pages/Payments/PaymentSuccess';
 import PaymentFailed from './pages/Payments/PaymentFailed';
+import ChatbotWidget from './components/Common/ChatbotWidget';
 
 // PrivateRoute for user
 function PrivateRoute({ children }) {
@@ -25,37 +26,40 @@ function AdminPrivateRoute({ children }) {
 
 function App() {
   return (
-    <Routes>
-      {/* Public Routes */}
-      <Route path="/" element={<Home />} />
-      <Route path="/CreateEvent" element={<EventCreatePage />} />
-      <Route path="/events/:eventId" element={<EventDetails />} />
-      <Route path="/payments" element={<RegistrationPay />} />
-      <Route path="/payment-success" element={<PaymentSuccess />} />
-      <Route path="/payment-failed" element={<PaymentFailed />} />
+    <>
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<Home />} />
+        <Route path="/CreateEvent" element={<EventCreatePage />} />
+        <Route path="/events/:eventId" element={<EventDetails />} />
+        <Route path="/payments" element={<RegistrationPay />} />
+        <Route path="/payment-success" element={<PaymentSuccess />} />
+        <Route path="/payment-failed" element={<PaymentFailed />} />
 
-      {/* User Protected Route */}
-      <Route
-        path="/userdashboard"
-        element={
-          <PrivateRoute>
-            <UserDashboard />
-          </PrivateRoute>
-        }
-      />
+        {/* User Protected Route */}
+        <Route
+          path="/userdashboard"
+          element={
+            <PrivateRoute>
+              <UserDashboard />
+            </PrivateRoute>
+          }
+        />
 
-      {/* Admin Routes */}
-      <Route path="/admin/login" element={<AdminLogin />} />
-      <Route
-        path="/admin/dashboard"
-        element={
-          <AdminPrivateRoute>
-            <AdminDashboard />
-          </AdminPrivateRoute>
-        }
-      />
-      <Route path="/organizer/dashboard" element={<OrganizerDashboard />} />
-    </Routes>
+        {/* Admin Routes */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <AdminPrivateRoute>
+              <AdminDashboard />
+            </AdminPrivateRoute>
+          }
+        />
+        <Route path="/organizer/dashboard" element={<OrganizerDashboard />} />
+      </Routes>
+      <ChatbotWidget />
+    </>
   );
 }
 

@@ -22,7 +22,7 @@ import com.wipro.demp.entity.TicketType;
 import com.wipro.demp.service.TicketService;
 
 @RestController
-@RequestMapping(DempConstants.TICKETS_URL)
+@RequestMapping(DempConstants.API_URL + DempConstants.TICKETS_URL)
 @CrossOrigin(origins = DempConstants.FRONTEND_URL)
 public class TicketController {
 
@@ -52,6 +52,22 @@ public class TicketController {
                 return ResponseEntity.badRequest().body("Request body is required.");
             }
 
+            if (payload.get("ticketType") == null) {
+                return ResponseEntity.badRequest().body("ticketType is required.");
+            }
+            if (payload.get("price") == null) {
+                return ResponseEntity.badRequest().body("price is required.");
+            }
+            if (payload.get("eventId") == null) {
+                return ResponseEntity.badRequest().body("eventId is required.");
+            }
+            if (payload.get("userId") == null) {
+                return ResponseEntity.badRequest().body("userId is required.");
+            }
+            if (payload.get("registrationId") == null) {
+                return ResponseEntity.badRequest().body("registrationId is required.");
+            }
+
             int quantity = payload.get("quantity") == null
                     ? 1
                     : Integer.parseInt(payload.get("quantity").toString());
@@ -68,7 +84,7 @@ public class TicketController {
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (Exception ex) {
-            return ResponseEntity.badRequest().body("Invalid ticket request payload.");
+            return ResponseEntity.badRequest().body("Invalid ticket request payload: " + ex.getMessage());
         }
     }
 

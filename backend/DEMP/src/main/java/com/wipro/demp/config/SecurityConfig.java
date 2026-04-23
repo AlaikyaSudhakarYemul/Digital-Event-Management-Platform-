@@ -41,6 +41,7 @@ public class SecurityConfig {
                                 .requestMatchers(DempConstants.API_URL + DempConstants.USER_URL + "/all", DempConstants.API_URL + DempConstants.USER_URL + "/organizers").hasRole("ADMIN")
                                 .requestMatchers(DempConstants.API_URL + DempConstants.USER_URL + "/events/**").hasRole("ORGANIZER")
                 .requestMatchers(DempConstants.API_URL + DempConstants.USER_URL + "/**").authenticated()
+                                .requestMatchers(DempConstants.API_URL + DempConstants.CHATBOT_URL + "/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/admin/**").permitAll()
                                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, DempConstants.API_URL + DempConstants.SPEAKERS_URL + "/**").permitAll()
