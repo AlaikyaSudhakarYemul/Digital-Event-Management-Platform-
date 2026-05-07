@@ -1,0 +1,94 @@
+# DEMP Frontend User Registration Deep Dive
+
+This document provides a detailed, step-by-step guide and technical overview of the user registration process in the Digital Event Management Platform (DEMP) frontend application. It covers user experience, validation, security, troubleshooting, and integration with backend services.
+
+---
+
+## 1. Registration Flow Overview
+- **Access:** Click the "Sign Up" button on the homepage or login screen.
+- **Form Fields:** Username, email, password (minimum 8 characters, mix of letters and numbers), and agreement to terms.
+- **Submission:** On submit, the frontend validates input and sends a registration request to the backend API.
+- **Confirmation:** User receives a confirmation email with an activation link.
+- **Activation:** Clicking the link activates the account and allows login.
+
+---
+
+## 2. Step-by-Step Registration Guide
+1. Click "Sign Up" on the homepage or login page.
+2. Fill in the following fields:
+   - **Username:** Unique, 3-20 characters, no spaces or special symbols.
+   - **Email:** Must be a valid, unused email address.
+   - **Password:** At least 8 characters, must include both letters and numbers.
+   - **Agree to Terms:** Check the box to accept terms and privacy policy.
+3. Click "Register" or "Sign Up" to submit the form.
+4. If all fields are valid, you will see a message: "Registration successful! Please check your email to activate your account."
+5. Open your email and click the activation link to complete registration.
+6. After activation, return to the login page and sign in.
+
+---
+
+## 3. Validation & Error Handling
+- **Frontend Validation:**
+  - Checks for required fields, email format, password strength, and unique username/email (if possible).
+  - Displays inline error messages for invalid input.
+- **Backend Validation:**
+  - Ensures email and username are unique.
+  - Enforces password policy and email format.
+  - Returns error messages for duplicate or invalid data.
+- **Error Feedback:**
+  - Clear, actionable error messages (e.g., "Email already registered", "Password too weak").
+
+---
+
+## 4. Security Considerations
+- **HTTPS:** All registration data is sent over encrypted connections.
+- **Password Handling:** Passwords are never stored or logged in the frontend; sent securely to backend for hashing.
+- **Email Verification:** Prevents fake or mistyped accounts.
+- **Rate Limiting:** Backend may enforce limits to prevent abuse.
+
+---
+
+## 5. Integration with Backend
+- **API Endpoint:** `POST /api/users/register`
+- **Payload Example:**
+  ```json
+  {
+    "username": "janedoe",
+    "email": "jane@example.com",
+    "password": "StrongP@ssw0rd!"
+  }
+  ```
+- **Response Example:**
+  ```json
+  {
+    "message": "Registration successful. Please check your email to activate your account."
+  }
+  ```
+- **Activation:** Backend sends an email with a unique activation link.
+
+---
+
+## 6. Troubleshooting & Support
+- **No Confirmation Email:**
+  - Check spam/junk folder.
+  - Wait a few minutes; resend if available.
+  - Contact support if not received.
+- **Registration Errors:**
+  - Review error messages and correct input.
+  - Ensure email is not already registered.
+- **Activation Link Issues:**
+  - Ensure the link is not expired or already used.
+  - Contact support for manual activation if needed.
+
+---
+
+## 7. Best Practices
+- Use a strong, unique password for your account.
+- Double-check your email address before submitting.
+- Read and understand the terms and privacy policy.
+- Activate your account promptly to avoid delays.
+
+---
+
+For more details on login, password reset, and profile management, see [FRONTEND_FEATURE_USER_GUIDE.txt](FRONTEND_FEATURE_USER_GUIDE.txt).
+For backend API details, refer to the DEMP Backend API Documentation.

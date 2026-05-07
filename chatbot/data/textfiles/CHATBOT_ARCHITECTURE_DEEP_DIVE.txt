@@ -1,0 +1,99 @@
+# DEMP Chatbot Architecture & Developer Deep Dive
+
+This document provides an in-depth technical overview of the DEMP chatbot, including architecture diagrams, Retrieval-Augmented Generation (RAG) pipeline internals, environment setup, extension patterns, and security best practices. It is intended for backend and AI developers.
+
+---
+
+## Table of Contents
+1. System Architecture Overview
+2. RAG Pipeline Internals
+3. Environment Setup & Dependencies
+4. Extension Patterns & Customization
+5. Security Considerations
+6. Example Code Snippets
+7. Troubleshooting & Best Practices
+
+---
+
+## 1. System Architecture Overview
+- The chatbot is a Python 3.10+ application using FastAPI for REST endpoints and LangChain for LLM orchestration.
+- ChromaDB is used as the vector store for document embeddings and retrieval.
+- The chatbot exposes REST APIs for frontend integration and communicates with backend microservices for event, ticket, and payment data.
+- Architecture Diagram:
+  - [User] ⇄ [React Frontend] ⇄ [FastAPI Chatbot] ⇄ [ChromaDB, Backend APIs, LLM Provider]
+
+## 2. RAG Pipeline Internals
+- User queries are received via REST API and preprocessed (tokenization, normalization).
+- The query is embedded using a transformer model (e.g., Sentence Transformers).
+- ChromaDB is queried for top-k relevant documents based on vector similarity.
+- Retrieved documents are combined with the user query and sent to the LLM (e.g., OpenAI, Azure OpenAI) for answer generation.
+- The response is post-processed (formatting, validation) and returned to the user.
+- Pipeline Steps:
+  1. Input: User message
+  2. Embedding: Convert to vector
+  3. Retrieval: Query ChromaDB
+  4. Augmentation: Combine docs + query
+  5. Generation: LLM produces answer
+  6. Output: Return to frontend
+
+## 3. Environment Setup & Dependencies
+- Python 3.10+ (recommended: use a virtual environment)
+- Install dependencies:
+  - `pip install -r requirements.txt`
+- ChromaDB setup:
+  - Local SQLite for development, scalable DB for production
+- Environment variables:
+  - `OPENAI_API_KEY`, `CHROMA_DB_PATH`, `BACKEND_API_URL`, etc.
+- Start the chatbot:
+  - `uvicorn app:app --reload`
+
+## 4. Extension Patterns & Customization
+- Add new retrieval sources by extending the document loader and embedding pipeline.
+- Add new intents or conversation flows by updating the LangChain chain and prompt templates.
+- Integrate additional LLM providers by abstracting the generation step.
+- Example: To add a new FAQ source, create a loader for the new data and update the retrieval chain.
+
+## 5. Security Considerations
+- All API endpoints require authentication for sensitive actions (OAuth2/JWT).
+- Validate and sanitize all user inputs to prevent prompt injection and code execution.
+- Store API keys and secrets in environment variables or secure vaults (e.g., Azure Key Vault).
+- Regularly update dependencies to patch vulnerabilities.
+- Log all access and errors for auditing.
+
+## 6. Example Code Snippets
+**FastAPI Endpoint:**
+```python
+from fastapi import FastAPI, Request
+app = FastAPI()
+
+@app.post("/chatbot/message")
+async def chatbot_message(request: Request):
+    data = await request.json()
+    user_message = data["message"]
+    # ... process message, run RAG pipeline ...
+    return {"response": "..."}
+```
+
+**ChromaDB Query:**
+```python
+from chromadb.utils import embedding
+results = chroma_collection.query(query_embeddings=[user_embedding], n_results=3)
+```
+
+**LangChain Chain:**
+```python
+from langchain.chains import RetrievalQA
+qa_chain = RetrievalQA(llm=llm, retriever=chroma_retriever)
+response = qa_chain.run(user_query)
+```
+
+## 7. Troubleshooting & Best Practices
+- Use logging to trace pipeline steps and errors.
+- Test the RAG pipeline with known queries and expected answers.
+- Monitor LLM usage and costs.
+- For production, use a scalable ChromaDB backend and secure all endpoints.
+- Regularly review and update prompt templates for accuracy and safety.
+
+---
+
+For further customization or advanced integration, refer to the main DEMP API documentation or contact the platform architects.

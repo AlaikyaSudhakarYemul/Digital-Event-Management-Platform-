@@ -1,0 +1,47 @@
+# Chatbot Knowledge Base: Event Platform
+
+This file contains structured information for the chatbot to answer questions about events, tickets, speakers, and related details. Data should be periodically updated from the backend.
+
+---
+
+## Upcoming Events
+- [Add event details here, e.g.]
+- Event: Tech Summit 2026
+  - Date: 2026-06-15
+  - Location: Virtual
+  - Description: Annual technology conference with industry leaders.
+
+## Present Events
+- [Add current event details here]
+- Event: Digital Innovation Expo
+  - Date: 2026-05-10
+  - Location: New York
+  - Description: Showcasing digital transformation projects.
+
+## Tickets Details
+- [Add ticketing info here]
+- Tech Summit 2026:
+  - Early Bird: $99 (until 2026-05-31)
+  - Regular: $149
+  - VIP: $299 (includes speaker meet & greet)
+
+## Speaker Details
+- [Add speaker info here]
+- Dr. Jane Smith
+  - Topic: AI in Modern Business
+  - Bio: CTO at InnovateX, AI thought leader.
+- Mr. John Doe
+  - Topic: Cloud Security
+  - Bio: Security Architect at SecureCloud.
+
+## How to Buy Tickets
+- Visit the event page or use the chatbot to request a ticket link.
+- Payment methods: Credit Card, PayPal, UPI.
+
+## Contact for Support
+- Email: support@eventplatform.com
+- Phone: +1-800-123-4567
+
+---
+
+[Update this file with real data from the backend as needed.]

@@ -1,0 +1,98 @@
+# DEMP Frontend Booking Tickets Deep Dive
+
+This document provides a comprehensive guide and technical overview of the ticket booking process in the Digital Event Management Platform (DEMP) frontend application. It covers user experience, UI flow, validation, troubleshooting, and backend integration.
+
+---
+
+## 1. Overview & Purpose
+- The ticket booking feature allows users to reserve and purchase tickets for events.
+- It ensures a smooth, secure, and user-friendly experience from selection to confirmation.
+
+---
+
+## 2. Booking Flow Steps
+1. **Select Ticket Type & Quantity:**
+   - On the Event Details Page, view available ticket types (e.g., General, VIP).
+   - Choose the desired type and specify the quantity (limited by availability and per-user limits).
+2. **Click "Book Now":**
+   - Initiates the booking process and opens a review modal or page.
+3. **Review Selection:**
+   - Confirm ticket type, quantity, and total price.
+   - Option to edit selection or cancel.
+4. **Authentication Check:**
+   - If not logged in, user is prompted to log in or register before proceeding.
+5. **Proceed to Payment:**
+   - On confirmation, user is redirected to the payment page.
+
+---
+
+## 3. UI Components
+- **Ticket Selector:** Dropdowns or buttons for type and quantity.
+- **Price Calculation:** Real-time update of total cost based on selection.
+- **Review Modal/Page:** Summary of booking before payment.
+- **Error/Success Messages:** Clear feedback for invalid actions or successful steps.
+
+---
+
+## 4. Validation & Error Handling
+- **Frontend Validation:**
+  - Prevents booking more tickets than available.
+  - Ensures at least one ticket is selected.
+  - Validates user authentication before proceeding.
+- **Backend Validation:**
+  - Confirms ticket availability and enforces per-user limits.
+  - Handles race conditions (e.g., tickets sold out during booking).
+- **Error Feedback:**
+  - Displays messages for sold-out tickets, invalid quantities, or session timeouts.
+
+---
+
+## 5. Integration with Backend
+- **API Endpoints:**
+  - `POST /api/bookings` — Create a new booking (requires event ID, ticket type, quantity, user info)
+- **Sample Request:**
+  ```json
+  {
+    "eventId": "evt_001",
+    "ticketType": "VIP",
+    "quantity": 2
+  }
+  ```
+- **Sample Response:**
+  ```json
+  {
+    "bookingId": "bkg_123",
+    "status": "pending",
+    "totalAmount": 598,
+    "paymentUrl": "/payment/bkg_123"
+  }
+  ```
+- **State Management:** Uses React state/hooks or Context API to manage booking data and UI state.
+
+---
+
+## 6. Security & Best Practices
+- All booking actions require user authentication.
+- Sensitive data is transmitted over HTTPS.
+- Booking sessions may expire after inactivity for security.
+- Users should review selections before confirming.
+
+---
+
+## 7. Troubleshooting & Support
+- **Cannot Book Tickets:**
+  - Check if tickets are sold out or if you are logged in.
+- **Session Timeout:**
+  - Refresh the page and try again.
+- **Support:**
+  - Use in-app chat or email support@demp.example.com for help.
+
+---
+
+## 8. Related Features
+- For payment details, see the "Making Payments" deep dive.
+- For ticket download and management, see "My Tickets & Downloads".
+
+---
+
+For more details on the full booking and payment workflow, see [FRONTEND_FEATURE_USER_GUIDE.txt](FRONTEND_FEATURE_USER_GUIDE.txt) and the DEMP Backend API Documentation.

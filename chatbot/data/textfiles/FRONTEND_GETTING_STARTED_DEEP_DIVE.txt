@@ -1,0 +1,82 @@
+# DEMP Frontend Getting Started Deep Dive
+
+This document provides an expanded, step-by-step guide to getting started with the Digital Event Management Platform (DEMP) frontend application. It covers access, environment requirements, first-time setup, navigation, and troubleshooting for new users and organizers.
+
+---
+
+## 1. Accessing the Application
+- Open your preferred web browser (latest Chrome, Firefox, or Edge recommended).
+- Navigate to the DEMP application URL (provided by your organization or event host).
+- Ensure a stable internet connection for best performance.
+
+---
+
+## 2. Supported Devices & Browsers
+- **Desktop:** Windows, macOS, Linux (modern browsers)
+- **Mobile:** Android and iOS (Chrome, Safari, Edge)
+- **Tablet:** Fully responsive layouts for tablets
+- **Browser Requirements:**
+  - JavaScript enabled
+  - Cookies enabled (for authentication)
+  - Pop-ups allowed for payment flows (if required)
+
+---
+
+## 3. First-Time User Checklist
+- Bookmark the DEMP application URL for easy access.
+- Review the privacy policy and terms of service.
+- Prepare your email and a secure password for registration.
+- (Organizers) Gather event details and images for event creation.
+
+---
+
+## 4. Application Layout Overview
+- **Top Navigation Bar:** Access to login, registration, profile, notifications, and main menu.
+- **Homepage:** Featured and upcoming events, search bar, and filters.
+- **Sidebar/Menu:** Quick links to "My Tickets", "Organizer Dashboard", and support.
+- **Footer:** Contact info, support links, and legal notices.
+
+---
+
+## 5. User Onboarding Flow
+- **Step 1:** Register a new account or log in with existing credentials.
+- **Step 2:** Complete your profile (optional, but recommended for personalized experience).
+- **Step 3:** Browse events, use filters/search to find events of interest.
+- **Step 4:** Book tickets and complete payment securely.
+- **Step 5:** Access "My Tickets" for downloads and event entry.
+
+---
+
+## 6. Organizer Onboarding Flow
+- **Step 1:** Register as an organizer (or upgrade your user account).
+- **Step 2:** Access the "Organizer Dashboard" from the main menu.
+- **Step 3:** Click "Create Event" and fill in event details, ticket types, and upload images.
+- **Step 4:** Publish your event and monitor ticket sales in real time.
+- **Step 5:** Use analytics and attendee management features as needed.
+
+---
+
+## 7. Troubleshooting Common Issues
+- **Login Problems:**
+  - Check your credentials and internet connection.
+  - Use the "Forgot Password" link if needed.
+- **Payment Issues:**
+  - Ensure pop-ups are enabled and payment details are correct.
+  - Contact support if payment fails repeatedly.
+- **Display/Navigation Issues:**
+  - Refresh the page or clear browser cache.
+  - Try a different browser if problems persist.
+- **Support:**
+  - Use the in-app chat or email support@demp.example.com for help.
+
+---
+
+## 8. Best Practices
+- Log out after each session, especially on shared devices.
+- Keep your browser updated for security and compatibility.
+- Use strong, unique passwords for your account.
+
+---
+
+For a full feature guide, see [FRONTEND_FEATURE_USER_GUIDE.txt](FRONTEND_FEATURE_USER_GUIDE.txt).
+For backend/API integration, refer to the DEMP Backend API Documentation.

@@ -1,0 +1,77 @@
+# DEMP Chatbot Security Remediation & Incident Report Template
+
+This document provides a remediation guide and a structured template for reporting security incidents, audit findings, or compliance gaps for the DEMP chatbot. Use this for operational reviews, audit responses, and incident management.
+
+---
+
+## Table of Contents
+1. Remediation Guide
+2. Incident Report Template
+3. Example Remediation Actions
+
+---
+
+## 1. Remediation Guide
+- **Identify the Issue:**
+  - Review logs, alerts, or audit findings to determine the root cause.
+- **Assess Impact:**
+  - Determine affected systems, data, and users.
+- **Contain & Mitigate:**
+  - Isolate affected components, revoke compromised credentials, and block malicious access.
+- **Remediate:**
+  - Patch vulnerabilities, update configurations, rotate keys, and restore secure state.
+- **Validate Fixes:**
+  - Test the system to ensure the issue is resolved and no new vulnerabilities are introduced.
+- **Document Actions:**
+  - Record all steps taken, including timestamps, responsible parties, and outcomes.
+- **Notify Stakeholders:**
+  - Inform users, management, and authorities as required by policy or regulation.
+- **Review & Improve:**
+  - Update policies, procedures, and training to prevent recurrence.
+
+## 2. Incident Report Template
+**Incident Summary:**
+- Date/Time Detected:
+- Reported By:
+- Affected Systems/Components:
+- Description of Issue:
+
+**Impact Assessment:**
+- Data/Users Affected:
+- Business Impact:
+- Regulatory/Compliance Impact:
+
+**Root Cause Analysis:**
+- How was the issue introduced?
+- When did it first occur?
+- Detection method:
+
+**Remediation Actions:**
+- Step 1:
+- Step 2:
+- Step 3:
+
+**Validation & Testing:**
+- How was the fix verified?
+- Date/time of validation:
+
+**Notifications:**
+- Users notified:
+- Authorities notified:
+- Internal stakeholders notified:
+
+**Post-Incident Review:**
+- Lessons learned:
+- Policy/process updates:
+- Additional controls implemented:
+
+## 3. Example Remediation Actions
+- Rotate all API keys and update environment variables
+- Patch vulnerable dependencies and redeploy containers
+- Enable stricter input validation and rate limiting
+- Update logging to exclude sensitive data
+- Conduct team training on secure coding and incident response
+
+---
+
+For each incident or audit finding, complete the template and retain for compliance and continuous improvement.

@@ -1,0 +1,104 @@
+# DEMP Frontend Event Management (Organizers) Deep Dive
+
+This document provides a comprehensive guide and technical overview of the event management features available to organizers in the Digital Event Management Platform (DEMP) frontend application. It covers event creation, editing, publishing, ticket configuration, validation, troubleshooting, backend integration, and best practices.
+
+---
+
+## 1. Overview & Purpose
+- The event management module empowers organizers to create, configure, and manage events from the frontend dashboard.
+- Supports full event lifecycle: draft, publish, update, cancel, and post-event analytics.
+
+---
+
+## 2. Accessing Organizer Features
+- **Organizer Dashboard:**
+  - Accessible from the main menu for users with organizer privileges.
+  - Displays all events created by the organizer, with status (draft, published, cancelled).
+
+---
+
+## 3. Creating a New Event
+- **Start New Event:**
+  - Click "Create Event" in the dashboard.
+- **Event Details Form:**
+  - Enter event title, description, date/time, venue/location, and upload images.
+  - Add agenda, speakers, and special instructions (if applicable).
+- **Ticket Configuration:**
+  - Define ticket types (e.g., General, VIP), pricing, quantity, and sales period.
+  - Set early bird pricing, group discounts, or promo codes (if supported).
+- **Publish or Save as Draft:**
+  - Save event as draft for later editing or publish immediately to make it live.
+
+---
+
+## 4. Editing & Managing Events
+- **Edit Event:**
+  - Update event details, ticket availability, or images at any time before the event starts.
+- **Cancel Event:**
+  - Cancel an event; triggers notifications and refunds to attendees.
+- **Duplicate Event:**
+  - (If supported) Clone an existing event to quickly create similar events.
+- **Manage Ticket Sales:**
+  - Monitor ticket sales in real time, adjust availability, or close sales early.
+
+---
+
+## 5. Validation & Error Handling
+- **Frontend Validation:**
+  - Ensures all required fields are filled and dates are valid.
+  - Validates ticket pricing, quantity, and sales period.
+- **Backend Validation:**
+  - Confirms event uniqueness, ticket rules, and organizer permissions.
+- **Error Feedback:**
+  - Clear messages for missing/invalid data, scheduling conflicts, or permission issues.
+
+---
+
+## 6. Integration with Backend
+- **API Endpoints:**
+  - `POST /api/events` — Create a new event.
+  - `PUT /api/events/{eventId}` — Update event details.
+  - `DELETE /api/events/{eventId}` — Cancel an event.
+  - `POST /api/tickets/configure` — Set up ticket types and pricing.
+- **Sample Request (Create Event):**
+  ```json
+  {
+    "title": "Tech Summit 2026",
+    "description": "A premier technology conference...",
+    "date": "2026-06-01T09:00:00Z",
+    "venue": "Javits Center",
+    "tickets": [
+      {"type": "General Admission", "price": 99, "quantity": 200},
+      {"type": "VIP", "price": 299, "quantity": 50}
+    ]
+  }
+  ```
+
+---
+
+## 7. Security & Permissions
+- Only authenticated users with organizer roles can access event management features.
+- All actions are logged for audit purposes.
+- Sensitive operations (e.g., cancellation, refunds) require confirmation.
+
+---
+
+## 8. Troubleshooting & Support
+- **Cannot Create/Edit Event:**
+  - Check for missing required fields or permission issues.
+- **Ticket Configuration Errors:**
+  - Ensure pricing and quantity are valid and do not overlap.
+- **Support:**
+  - Use in-app chat or email support@demp.example.com for help.
+
+---
+
+## 9. Best Practices
+- Review all event details before publishing.
+- Use drafts to prepare events in advance.
+- Monitor ticket sales and attendee feedback regularly.
+- Communicate promptly with attendees about any changes.
+
+---
+
+For more details on the organizer dashboard, analytics, and backend API, see [FRONTEND_FEATURE_USER_GUIDE.txt](FRONTEND_FEATURE_USER_GUIDE.txt) and the DEMP Backend API Documentation.

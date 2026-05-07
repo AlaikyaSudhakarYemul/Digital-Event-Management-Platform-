@@ -1,0 +1,236 @@
+# APPENDIX: EXAMPLE REQUEST/RESPONSE PAYLOADS
+
+This appendix provides a comprehensive set of example request and response payloads for the major modules and API endpoints of the Digital Event Management Platform (DEMP). Use these as references for integration, testing, and documentation.
+
+---
+
+## 1. User Management
+### Registration Request
+```
+POST /api/users/register
+{
+  "email": "user@example.com",
+  "password": "StrongP@ssw0rd!",
+  "fullName": "Jane Doe"
+}
+```
+### Registration Response
+```
+{
+  "id": "user_123",
+  "email": "user@example.com",
+  "fullName": "Jane Doe",
+  "roles": ["attendee"],
+  "createdAt": "2026-05-05T10:00:00Z"
+}
+```
+
+---
+
+## 2. Event Management
+### Create Event Request
+```
+POST /api/events
+{
+  "title": "Tech Summit 2026",
+  "description": "Annual technology conference.",
+  "startDate": "2026-06-01T09:00:00Z",
+  "endDate": "2026-06-03T18:00:00Z",
+  "location": "Convention Center, City",
+  "organizerId": "user_456"
+}
+```
+### Create Event Response
+```
+{
+  "id": "evt_001",
+  "title": "Tech Summit 2026",
+  "status": "pending",
+  "createdAt": "2026-05-05T10:10:00Z"
+}
+```
+
+---
+
+## 3. Ticketing
+### Purchase Ticket Request
+```
+POST /api/tickets/purchase
+{
+  "eventId": "evt_001",
+  "userId": "user_123",
+  "ticketType": "VIP",
+  "quantity": 2
+}
+```
+### Purchase Ticket Response
+```
+{
+  "ticketIds": ["t1", "t2"],
+  "status": "confirmed",
+  "purchaseDate": "2026-05-05T10:15:00Z"
+}
+```
+
+---
+
+## 4. Payment Processing
+### Initiate Payment Request
+```
+POST /api/payments/initiate
+{
+  "userId": "user_123",
+  "ticketIds": ["t1", "t2"],
+  "amount": 2500,
+  "currency": "INR",
+  "paymentMethod": "card"
+}
+```
+### Payment Gateway Webhook (Stripe Example)
+```
+{
+  "id": "evt_1",
+  "type": "payment_intent.succeeded",
+  "data": {
+    "object": {
+      "id": "pi_1",
+      "amount": 2500,
+      "currency": "INR",
+      "status": "succeeded"
+    }
+  }
+}
+```
+
+---
+
+## 5. Notifications
+### Send Notification Request
+```
+POST /api/notifications/send
+{
+  "recipientId": "user_123",
+  "channel": "email",
+  "template": "ticket_purchase",
+  "data": {
+    "eventName": "Tech Summit 2026",
+    "ticketId": "t1"
+  }
+}
+```
+### In-App Notification Response
+```
+{
+  "id": "notif_001",
+  "title": "Ticket Confirmed",
+  "body": "Your ticket for Tech Summit 2026 is confirmed.",
+  "read": false,
+  "createdAt": "2026-05-05T10:00:00Z"
+}
+```
+
+---
+
+## 6. Document & Media Management
+### Media Upload Request (Multipart)
+```
+POST /api/media/upload
+Content-Type: multipart/form-data
+
+{
+  "file": <binary>,
+  "title": "Event Brochure",
+  "tags": ["brochure", "2026"],
+  "eventId": "evt123"
+}
+```
+### Media Metadata Response
+```
+{
+  "id": "media_001",
+  "title": "Event Brochure",
+  "owner": "user_123",
+  "eventId": "evt123",
+  "url": "https://.../media_001.pdf",
+  "createdAt": "2026-05-05T10:00:00Z",
+  "version": 2,
+  "tags": ["brochure", "2026"]
+}
+```
+
+---
+
+## 7. Analytics & Reporting
+### Custom Report Generation Request
+```
+POST /api/analytics/reports
+{
+  "type": "ticket_sales",
+  "eventId": "evt123",
+  "format": "csv",
+  "dateRange": {
+    "from": "2026-05-01",
+    "to": "2026-05-05"
+  }
+}
+```
+### Analytics Overview Response
+```
+{
+  "totalEvents": 25,
+  "totalUsers": 1200,
+  "totalTicketsSold": 3500,
+  "totalRevenue": 500000,
+  "activeEvents": 5
+}
+```
+
+---
+
+## 8. Validation & Error Handling
+### Validation Error Response
+```
+{
+  "timestamp": "2026-05-05T10:00:00Z",
+  "status": 400,
+  "error": "Bad Request",
+  "message": "Email must be a valid address",
+  "path": "/api/users/register"
+}
+```
+### Domain Error Response
+```
+{
+  "timestamp": "2026-05-05T10:00:00Z",
+  "status": 409,
+  "error": "Conflict",
+  "message": "Ticket is already sold",
+  "path": "/api/tickets/purchase"
+}
+```
+
+---
+
+## 9. Security & Compliance
+### Audit Log Entry
+```
+{
+  "timestamp": "2026-05-05T10:00:00Z",
+  "user": "admin_001",
+  "action": "ROLE_UPDATE",
+  "target": "user_123",
+  "ip": "203.0.113.10",
+  "status": "SUCCESS"
+}
+```
+### GDPR Data Deletion Request
+```
+POST /api/users/gdpr-delete
+{
+  "userId": "user_123"
+}
+```
+
+---
+
+For further customization or additional examples, please specify your requirements.

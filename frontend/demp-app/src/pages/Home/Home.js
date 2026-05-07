@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import Navbar from '../../components/Common/Navbar';
 import HeroSection from '../../components/Home/HomeSection';
 import Footer from '../../components/Common/Footer';
+import Chatbot from '../../components/Common/Chatbot';
 import SignupPopup from '../../components/Home/SignUp';
 import HowItWorks from '../../components/Home/HowItWorks';
 import AuthPopup from '../../components/Home/SignUp';
@@ -46,6 +47,9 @@ const Home = () => {
       <Footer />
 
       {showSignup && <SignupPopup onClose={() => setShowSignup(false)} />}
+
+      {/* Floating chatbot widget */}
+      <Chatbot />
     </div>
   );
 };
