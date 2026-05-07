@@ -1,0 +1,109 @@
+# DEMP Chatbot Advanced Integration & Production Patterns
+
+This document provides advanced Python code examples and patterns for the DEMP chatbot, including external API integration, custom retrieval logic, multi-turn state management, webhook usage, production deployment, custom embeddings, logging, and robust error handling. Use these templates for specialized scenarios and scalable deployments.
+
+---
+
+## Table of Contents
+1. External API Integration
+2. Custom Retrieval Logic
+3. Multi-Turn State Management
+4. Webhook Usage
+5. Production Deployment
+6. Custom Embeddings
+7. Logging & Monitoring
+8. Advanced Error Handling
+
+---
+
+## 1. External API Integration
+```python
+import requests
+
+def get_event_details(event_id):
+    resp = requests.get(f"https://api.demp.com/events/{event_id}", headers={"Authorization": f"Bearer {token}"})
+    if resp.status_code == 200:
+        return resp.json()
+    else:
+        raise Exception(f"API error: {resp.status_code}")
+```
+
+## 2. Custom Retrieval Logic
+```python
+def custom_retrieve(query, collection, top_k=5):
+    # Example: filter by event type before vector search
+    filtered_docs = [doc for doc in collection if doc['type'] == 'conference']
+    # ... then run vector similarity search on filtered_docs ...
+    return top_k_results
+```
+
+## 3. Multi-Turn State Management
+```python
+from fastapi import Request
+from starlette.middleware.sessions import SessionMiddleware
+
+app.add_middleware(SessionMiddleware, secret_key="supersecret")
+
+@app.post("/chatbot/message")
+async def chatbot_message(request: Request):
+    session = request.session
+    user_input = (await request.json())["message"]
+    if "event" not in session:
+        session["event"] = extract_event(user_input)
+        return {"response": f"Which date for {session['event']}?"}
+    # ... continue multi-turn flow ...
+```
+
+## 4. Webhook Usage
+```python
+import requests
+
+def notify_booking(event_id, user_id):
+    payload = {"event": event_id, "user": user_id}
+    requests.post("https://external-service/api/notify", json=payload)
+```
+
+## 5. Production Deployment
+```bash
+# Use Gunicorn and Uvicorn workers for FastAPI
+pip install gunicorn uvicorn
+
+gunicorn app:app -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000 --workers 4
+```
+- Use environment variables for secrets and configuration
+- Set up HTTPS and reverse proxy (e.g., Nginx)
+
+## 6. Custom Embeddings
+```python
+from sentence_transformers import SentenceTransformer
+model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
+vector = model.encode("Sample text for embedding")
+```
+- Store vectors in ChromaDB or another vector store
+
+## 7. Logging & Monitoring
+```python
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("demp_chatbot")
+
+logger.info("User message received: %s", user_message)
+logger.error("Error processing request", exc_info=True)
+```
+- Integrate with monitoring tools (e.g., Prometheus, Grafana)
+
+## 8. Advanced Error Handling
+```python
+from fastapi.responses import JSONResponse
+from fastapi import Request
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    logger.error(f"Unhandled error: {exc}")
+    return JSONResponse(status_code=500, content={"error": "Internal server error. Please try again later."})
+```
+- Return user-friendly errors, log stack traces, and alert on critical failures
+
+---
+
+For even more specialized examples or unique integration scenarios, contact the DEMP development team or refer to the platform's advanced documentation.

@@ -1,0 +1,587 @@
+
+## 16. Key Documentation Content from chatbot/data/
+
+### Introduction to Python
+Python is a widely used, high-level programming language celebrated for its clear syntax and versatility. Developed by Guido van Rossum and introduced in 1991, Python has grown into one of the most popular languages globally.
+
+**Notable Features:**
+- Readable, straightforward syntax that prioritizes clarity
+- Dynamically typed and interpreted, ideal for beginners
+- Supports procedural, object-oriented, and functional programming styles
+- Rich standard library and a vast ecosystem of third-party modules
+- Runs on all major operating systems (Windows, macOS, Linux)
+- Backed by a large, active community
+
+**Typical Applications:**
+- Building web applications (e.g., Django, Flask)
+- Data science and machine learning (e.g., pandas, NumPy, scikit-learn, TensorFlow)
+- Automation and scripting tasks
+- General software development and rapid prototyping
+- Scientific research and data visualization
+- Game development
+
+**Syntax Overview:**
+Python uses indentation to define code blocks, ensuring code is visually organized and easy to follow.
+
+---
+
+### Chatbot Advanced Use Cases
+Explore advanced scenarios such as multi-turn conversations, context retention, dynamic slot filling, and integration with external APIs. Example: Booking an event ticket via chatbot, handling payment, and sending confirmation notifications in a single conversational flow.
+
+### Chatbot Code Examples
+Sample code snippets for integrating the chatbot with backend APIs:
+```python
+import requests
+def get_event_list():
+    response = requests.get('http://localhost:8080/api/events')
+    return response.json()
+```
+Example: Handling user authentication, event search, and ticket booking via REST API calls from the chatbot.
+
+### Chatbot Developer Reference
+Comprehensive API reference for chatbot developers, including endpoint descriptions, request/response formats, authentication requirements, and error codes. Example:
+- `POST /chatbot/message` — Send a user message and receive a bot response.
+- `GET /chatbot/context/{userId}` — Retrieve conversation context for a user.
+
+### Chatbot Security Audit Checklist
+- Ensure all API endpoints require authentication (OAuth2/JWT).
+- Validate and sanitize all user inputs.
+- Log all sensitive actions and access attempts.
+- Regularly update dependencies and patch vulnerabilities.
+- Conduct penetration testing and code reviews.
+
+### Chatbot Security Best Practices
+- Use HTTPS for all communications.
+- Store secrets and credentials securely (e.g., Azure Key Vault).
+- Implement rate limiting and brute-force protection.
+- Use least-privilege principles for API access.
+- Monitor and alert on suspicious activity.
+
+### Chatbot Security Remediation Report Template
+**Incident Summary:**
+- Date/Time:
+- Affected Systems:
+- Description:
+
+**Remediation Steps:**
+- Step 1: ...
+- Step 2: ...
+
+**Post-Incident Actions:**
+- Review and update security policies.
+- Conduct team training if needed.
+
+### Chatbot Service Documentation
+Describes the chatbot’s architecture, supported flows (event search, ticket booking, payment, FAQs), integration with backend microservices, and error handling strategies. Includes diagrams and sequence flows for major use cases.
+
+### Chatbot Specialized Scenarios
+Examples of specialized flows:
+- Handling VIP event bookings with custom approval.
+- Multi-language support for user queries.
+- Integrating with third-party calendar and notification services.
+
+### Frontend User Guide
+Step-by-step guide for end users of the React frontend:
+- How to register, log in, and manage your profile.
+- Browsing and searching for events.
+- Booking tickets and making payments.
+- Viewing notifications and downloading tickets.
+
+### Example Payloads Deep Dive
+Comprehensive library of request/response payloads for all endpoints, including edge cases and error scenarios. Example:
+```json
+{
+  "error": "Event not found",
+  "code": 404
+}
+```
+
+### Validation Error Handling Deep Dive
+Catalog of all validation rules, error codes, and exception handling strategies. Example:
+- `ERR_USER_EMAIL_INVALID`: Email format is invalid.
+- `ERR_EVENT_DATE_PAST`: Event date cannot be in the past.
+
+### Security Compliance Deep Dive
+Overview of PCI, GDPR, and other compliance requirements. Secure coding practices, audit logging, and incident response procedures.
+
+### Extensibility & Maintainability Deep Dive
+Guidelines for adding new modules, API versioning, plugin architecture, and best practices for maintainability. Example: How to add a new notification channel or payment provider.
+
+### Analytics & Reporting Deep Dive
+Details on analytics endpoints, report generation, filtering, and export options. Example: Generating a CSV report of ticket sales by event.
+
+### Admin Operations Deep Dive
+Admin-only endpoints for user management, system stats, and audit logging. RBAC enforcement and audit trail best practices.
+
+### Event Management Deep Dive
+Event creation, update, deletion, and listing. Event lifecycle, permissions, and business validation rules.
+
+### Ticketing API Deep Dive
+Ticket booking, cancellation, seat allocation, and refund logic. Ticket status transitions and validation rules.
+
+### Payment Processing API Deep Dive
+Payment initiation, verification, transaction history, and PCI compliance. Error handling for payment failures and fraud detection.
+
+### Notifications API Deep Dive
+Notification channels (email, SMS, push), template management, and delivery tracking. Integration with third-party providers.
+
+### Document/Media Management API Deep Dive
+Document/media upload/download, supported file types, storage, and access control. Virus scanning and file retention policies.
+
+### User Management API Deep Dive
+User registration, authentication, profile management, and account deletion. Validation, error handling, and RBAC.
+
+---
+## 15. Documentation Files in chatbot/data/
+### Data Validation Deep Dive
+Data validation ensures that all incoming and outgoing data meets the required format, constraints, and business rules. The DEMP backend uses Jakarta Bean Validation (JSR 380) for DTOs, custom validators for complex business logic, and global exception handling for consistent error responses.
+
+**Common Validation Rules:**
+- Required fields must not be null or empty (e.g., username, email, event title)
+- Email addresses must match a valid email pattern
+- Passwords must meet minimum length and complexity requirements
+- Dates must be in the future for event creation
+- Numeric fields (e.g., ticket quantity, payment amount) must be positive
+- Enum values (e.g., ticket status, notification type) must match allowed values
+
+**Custom Business Validation Examples:**
+- A user cannot book more tickets than the event's available seats
+- Payment amount must match the total ticket price
+- Event end date must be after the start date
+
+**Validation Strategies:**
+- Use `@NotNull`, `@NotBlank`, `@Email`, `@Min`, `@Max`, `@Pattern`, and other standard annotations on DTO fields
+- Implement custom annotations for business-specific rules (e.g., `@ValidEventDate`)
+- Centralize validation logic in service layer for cross-field and cross-entity checks
+- Return standardized error responses with field, message, and error code
+
+**Example Error Response:**
+```json
+{
+  "timestamp": "2026-05-05T12:00:00Z",
+  "status": 400,
+  "error": "Bad Request",
+  "message": "Validation failed for field 'email'",
+  "path": "/api/users/register"
+}
+```
+
+**Validation Best Practices:**
+- Validate all user input at the API boundary
+- Fail fast: reject invalid data before processing
+- Provide clear, actionable error messages to clients
+- Log validation failures for monitoring and auditing
+
+**Advanced Validation Topics:**
+- Cross-field validation: Ensure related fields are consistent (e.g., password and confirm password match, event start and end dates are logical).
+- Nested object validation: Validate fields within nested DTOs (e.g., address inside user profile).
+- Conditional validation: Apply rules only if certain conditions are met (e.g., phone number required if notification type is SMS).
+- Uniqueness checks: Ensure values like email or username are unique in the database.
+- Bulk/batch validation: Validate lists of objects in a single request (e.g., bulk ticket booking).
+
+**Real-World Validation Scenarios:**
+- Prevent duplicate event creation by checking for existing events with the same name and date.
+- Validate uploaded file types and sizes for document/media endpoints.
+- Ensure payment gateway responses are validated before updating transaction status.
+
+**Sample Java Validation Annotation Usage:**
+```java
+public class UserRegistrationDTO {
+    @NotBlank(message = "Username is required")
+    private String username;
+
+    @Email(message = "Invalid email format")
+    private String email;
+
+    @Size(min = 8, message = "Password must be at least 8 characters")
+    private String password;
+}
+```
+
+**Custom Validator Example:**
+```java
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = EventDateValidator.class)
+public @interface ValidEventDate {
+    String message() default "Event end date must be after start date";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
+}
+```
+
+**Testing Validation:**
+- Use unit tests to verify validation logic for DTOs and custom validators.
+- Simulate invalid requests in integration tests to ensure proper error handling.
+
+### Admin Operations Deep Dive
+Admin endpoints allow privileged users to manage the system, view statistics, and audit logs. Example: An admin can deactivate a user, view system health, and review all login attempts. RBAC ensures only authorized roles can access these endpoints. All actions are logged for compliance.
+
+### Analytics & Reporting Deep Dive
+The analytics module provides endpoints for generating reports on event attendance, ticket sales, and user engagement. Reports can be filtered by date, event, or user. Example: Generating a CSV report of monthly ticket sales. Security controls restrict access to sensitive analytics data.
+
+### Chatbot Advanced Use Cases
+Advanced chatbot scenarios include multi-turn conversations, context retention, dynamic slot filling, and integration with external APIs. Example: The chatbot guides a user through event booking, payment, and sends a confirmation email—all in one flow.
+
+### Chatbot Code Examples
+Example Python code for chatbot-backend integration:
+```python
+import requests
+def get_events():
+    return requests.get('http://localhost:8080/api/events').json()
+```
+Other examples include user authentication, ticket booking, and error handling in chatbot flows.
+
+### Chatbot Developer Reference
+API reference for chatbot developers:
+- `POST /chatbot/message` — Send a user message and receive a bot response.
+- `GET /chatbot/context/{userId}` — Retrieve conversation context for a user.
+Includes request/response formats, authentication, and error codes.
+
+### Chatbot Security Audit Checklist
+- All endpoints require OAuth2/JWT authentication
+- Input validation and sanitization
+- Logging of sensitive actions
+- Regular dependency updates
+- Penetration testing and code reviews
+
+### Chatbot Security Best Practices
+- Use HTTPS for all communications
+- Store secrets in Azure Key Vault
+- Implement rate limiting and brute-force protection
+- Use least-privilege API access
+- Monitor and alert on suspicious activity
+
+### Chatbot Security Remediation Report Template
+**Incident Summary:**
+- Date/Time:
+- Affected Systems:
+- Description:
+**Remediation Steps:**
+- Step 1: ...
+- Step 2: ...
+**Post-Incident Actions:**
+- Update security policies
+- Team training if needed
+
+### Chatbot Service Documentation
+Describes chatbot architecture, supported flows (event search, ticket booking, payment, FAQs), integration with backend microservices, and error handling. Includes diagrams and sequence flows for major use cases.
+
+### Chatbot Specialized Scenarios
+Specialized flows include VIP event bookings, multi-language support, and integration with third-party calendar/notification services.
+
+### Frontend User Guide
+How to register, log in, manage your profile, browse/search events, book tickets, make payments, and view/download notifications and tickets in the React frontend.
+
+### Example Payloads Deep Dive
+Request/response payloads for all endpoints, including edge cases and error scenarios. Example:
+```json
+{
+  "error": "Event not found",
+  "code": 404
+}
+```
+
+### Validation Error Handling Deep Dive
+Validation rules, error codes, and exception handling. Example:
+- `ERR_USER_EMAIL_INVALID`: Email format is invalid.
+- `ERR_EVENT_DATE_PAST`: Event date cannot be in the past.
+
+### Security Compliance Deep Dive
+PCI, GDPR, and other compliance requirements. Secure coding, audit logging, and incident response procedures.
+
+### Extensibility & Maintainability Deep Dive
+How to add new modules, API versioning, plugin architecture, and maintainability best practices. Example: Adding a new notification channel or payment provider.
+
+### Document/Media Management API Deep Dive
+Upload/download documents and media, supported file types, storage, access control, virus scanning, and file retention policies.
+
+### Event Management Deep Dive
+Event creation, update, deletion, listing, lifecycle, permissions, and business validation rules.
+
+### Ticketing API Deep Dive
+Ticket booking, cancellation, seat allocation, refund logic, status transitions, and validation rules.
+
+### Payment Processing API Deep Dive
+Payment initiation, verification, transaction history, PCI compliance, error handling for payment failures, and fraud detection.
+
+### Notifications API Deep Dive
+Notification channels (email, SMS, push), template management, delivery tracking, and third-party provider integration.
+
+### User Management API Deep Dive
+User registration, authentication, profile management, account deletion, validation, error handling, and RBAC.
+
+### Introduction to Python
+Python is a high-level, interpreted programming language known for its simplicity, readability, and versatility. Key features include easy-to-read syntax, dynamic typing, multiple paradigms, a large ecosystem, and cross-platform support. Common uses: web development, data science, automation, scripting, scientific computing, and game development.
+
+---
+## 12. Advanced Usage & Best Practices
+
+- **API Versioning:** Use URI versioning (e.g., /api/v1/) for backward compatibility. Deprecate old endpoints with clear migration paths.
+- **Idempotency:** Ensure POST/PUT endpoints are idempotent where possible, especially for payment and ticketing operations.
+- **Rate Limiting:** Apply per-user and per-IP rate limits to prevent abuse. Use HTTP 429 for throttling.
+- **Monitoring & Logging:** Integrate with centralized logging (e.g., ELK, Azure Monitor) and set up alerts for error rates and suspicious activity.
+- **Testing:** Maintain comprehensive unit, integration, and end-to-end tests. Use test data seeding for consistent test environments.
+- **API Gateway:** Route all external traffic through the API gateway for unified security, logging, and throttling.
+
+## 13. Troubleshooting & Support
+
+- **Common Issues:**
+  - Authentication failures: Check JWT validity and user roles.
+  - Validation errors: Refer to VALIDATION_ERROR_HANDLING_DEEP_DIVE for error codes.
+  - Payment failures: Review PAYMENT_PROCESSING_API_DEEP_DIVE for gateway error mapping.
+  - Notification delivery: Check NOTIFICATIONS_API_DEEP_DIVE for provider status and retry logic.
+- **Support Channels:**
+  - Internal Slack: #demp-support
+  - Email: support@demp.example.com
+  - Documentation: See all referenced .txt files in chatbot/data/
+
+## 14. Roadmap & Future Enhancements
+
+- **Planned Features:**
+  - Multi-language support for notifications and frontend
+  - Real-time analytics dashboard
+  - Enhanced fraud detection for payments
+  - Webhook/event-driven integrations
+  - Self-service admin portal
+- **Deprecation Policy:**
+  - Deprecated endpoints will be announced 3 months in advance
+  - Migration guides will be provided in the documentation
+
+---
+## 10. Deep Dive Summaries
+
+### ADMIN_OPERATIONS_API_DEEP_DIVE
+Describes admin-only endpoints for user management, system stats, and audit logging. Includes RBAC enforcement and audit trail best practices.
+
+### ANALYTICS_REPORTING_API_DEEP_DIVE
+Details analytics endpoints, report generation, custom queries, and export formats. Covers data aggregation, filtering, and security for analytics data.
+
+### DOCUMENT_MEDIA_MANAGEMENT_API_DEEP_DIVE
+Explains document and media upload/download, supported file types, storage, and access control. Includes virus scanning and file retention policies.
+
+### EVENT_MANAGEMENT_API_DEEP_DIVE
+Outlines event creation, update, deletion, and listing. Discusses event lifecycle, permissions, and business validation rules.
+
+### EXAMPLE_PAYLOADS_DEEP_DIVE
+Provides a library of sample request/response payloads for all major endpoints, including edge cases and error scenarios.
+
+### EXTENSIBILITY_MAINTAINABILITY_DEEP_DIVE
+Describes extension points, plugin architecture, and best practices for maintainability. Includes guidelines for adding new modules and API versioning.
+
+### NOTIFICATIONS_API_DEEP_DIVE
+Documents notification channels (email, SMS, push), template management, and delivery tracking. Includes integration with third-party providers.
+
+### PAYMENT_PROCESSING_API_DEEP_DIVE
+Explains payment initiation, verification, transaction history, and PCI compliance. Covers error handling for payment failures and fraud detection.
+
+### SECURITY_COMPLIANCE_DEEP_DIVE
+Summarizes security controls, compliance requirements (PCI, GDPR), and secure coding practices. Includes audit and incident response procedures.
+
+### TICKETING_API_DEEP_DIVE
+Details ticket booking, cancellation, seat allocation, and refund logic. Discusses ticket status transitions and validation rules.
+
+### USER_MANAGEMENT_API_DEEP_DIVE
+Explains user registration, authentication, profile management, and account deletion. Includes validation, error handling, and RBAC.
+
+### VALIDATION_ERROR_HANDLING_DEEP_DIVE
+Catalogs all validation rules, error codes, and global exception handling strategies. Provides examples for common validation failures.
+
+---
+
+## 11. Additional Documentation
+- [CHATBOT_ADVANCED_USE_CASES.txt](../chatbot/data/CHATBOT_ADVANCED_USE_CASES.txt): Advanced chatbot scenarios and integration patterns.
+- [CHATBOT_CODE_EXAMPLES.txt](../chatbot/data/CHATBOT_CODE_EXAMPLES.txt): Example code for chatbot and backend integration.
+- [CHATBOT_DEVELOPER_REFERENCE.txt](../chatbot/data/CHATBOT_DEVELOPER_REFERENCE.txt): API reference for chatbot developers.
+- [CHATBOT_SECURITY_AUDIT_CHECKLIST.txt](../chatbot/data/CHATBOT_SECURITY_AUDIT_CHECKLIST.txt): Security checklist for chatbot and backend integration.
+- [CHATBOT_SECURITY_BEST_PRACTICES.txt](../chatbot/data/CHATBOT_SECURITY_BEST_PRACTICES.txt): Best practices for securing chatbot workflows.
+- [CHATBOT_SECURITY_REMEDIATION_REPORT_TEMPLATE.txt](../chatbot/data/CHATBOT_SECURITY_REMEDIATION_REPORT_TEMPLATE.txt): Template for reporting and remediating security issues.
+- [CHATBOT_SPECIALIZED_SCENARIOS.txt](../chatbot/data/CHATBOT_SPECIALIZED_SCENARIOS.txt): Specialized chatbot use cases and flows.
+
+---
+
+# DEMP Backend API Documentation
+
+This document provides a comprehensive overview of the Digital Event Management Platform (DEMP) backend API. It covers all major features, endpoints, validation, error handling, security, extensibility, and includes example request/response payloads for each module.
+
+---
+
+## Table of Contents
+1. Introduction
+2. Authentication & Security
+3. Core Modules & Endpoints
+    - User Management
+    - Event Management
+    - Ticketing
+    - Payment Processing
+    - Notifications
+    - Admin Operations
+    - Analytics & Reporting
+    - Document/Media Management
+4. Validation & Error Handling
+5. Extensibility & Maintainability
+6. Example Payloads
+7. Integration Points
+8. References to Deep Dive Docs
+9. Chatbot & Frontend Docs
+
+---
+
+## 1. Introduction
+The DEMP backend is a modular, microservices-based system built with Java 17 and Spring Boot 3.x. It exposes RESTful APIs for all business operations, following best practices for DTO/entity separation, service/repository patterns, and robust validation.
+
+## 2. Authentication & Security
+- **OAuth2/JWT** authentication for all endpoints
+- **Role-Based Access Control (RBAC)** for admin/user separation
+- **PCI Compliance** for payment endpoints
+- **Audit Logging** for sensitive operations
+- **Rate Limiting** to prevent abuse
+
+## 3. Core Modules & Endpoints
+
+### User Management
+- **Register User:** `POST /api/users/register`
+- **Login:** `POST /api/users/login`
+- **Get Profile:** `GET /api/users/{id}`
+- **Update Profile:** `PUT /api/users/{id}`
+- **Delete User:** `DELETE /api/users/{id}`
+  - See [USER_MANAGEMENT_API_DEEP_DIVE.txt](USER_MANAGEMENT_API_DEEP_DIVE.txt) for detailed flows, validation, and error codes.
+
+### Event Management
+- **Create Event:** `POST /api/events`
+- **List Events:** `GET /api/events`
+- **Get Event:** `GET /api/events/{id}`
+- **Update Event:** `PUT /api/events/{id}`
+- **Delete Event:** `DELETE /api/events/{id}`
+  - See [EVENT_MANAGEMENT_API_DEEP_DIVE.txt](EVENT_MANAGEMENT_API_DEEP_DIVE.txt) for event lifecycle, permissions, and business rules.
+
+### Ticketing
+- **Book Ticket:** `POST /api/tickets/book`
+- **List Tickets:** `GET /api/tickets`
+- **Get Ticket:** `GET /api/tickets/{id}`
+- **Cancel Ticket:** `DELETE /api/tickets/{id}`
+  - See [TICKETING_API_DEEP_DIVE.txt](TICKETING_API_DEEP_DIVE.txt) for seat allocation, ticket status, and refund logic.
+
+### Payment Processing
+- **Initiate Payment:** `POST /api/payments/initiate`
+- **Verify Payment:** `POST /api/payments/verify`
+- **List Transactions:** `GET /api/payments/transactions`
+  - See [PAYMENT_PROCESSING_API_DEEP_DIVE.txt](PAYMENT_PROCESSING_API_DEEP_DIVE.txt) for PCI compliance, payment gateway integration, and error handling.
+
+### Notifications
+- **Send Notification:** `POST /api/notifications/send`
+- **List Notifications:** `GET /api/notifications`
+  - See [NOTIFICATIONS_API_DEEP_DIVE.txt](NOTIFICATIONS_API_DEEP_DIVE.txt) for supported channels, templates, and delivery status.
+
+### Admin Operations
+- **Get System Stats:** `GET /api/admin/stats`
+- **User Management:** `GET/PUT/DELETE /api/admin/users/{id}`
+  - See [ADMIN_OPERATIONS_API_DEEP_DIVE.txt](ADMIN_OPERATIONS_API_DEEP_DIVE.txt) for admin-only endpoints and audit logging.
+
+### Analytics & Reporting
+- **Get Reports:** `GET /api/analytics/reports`
+- **Custom Query:** `POST /api/analytics/query`
+  - See [ANALYTICS_REPORTING_API_DEEP_DIVE.txt](ANALYTICS_REPORTING_API_DEEP_DIVE.txt) for report types, filters, and export options.
+
+### Document/Media Management
+- **Upload Document:** `POST /api/documents/upload`
+- **Get Document:** `GET /api/documents/{id}`
+- **Delete Document:** `DELETE /api/documents/{id}`
+  - See [DOCUMENT_MEDIA_MANAGEMENT_API_DEEP_DIVE.txt](DOCUMENT_MEDIA_MANAGEMENT_API_DEEP_DIVE.txt) for file size limits, supported formats, and storage details.
+
+## 4. Validation & Error Handling
+- **Jakarta Bean Validation** for DTOs
+- **Custom Validators** for business rules
+- **Global Exception Handling** with standardized error responses
+- **Error Response Example:**
+```json
+{
+  "timestamp": "2026-05-05T12:00:00Z",
+  "status": 400,
+  "error": "Bad Request",
+  "message": "Validation failed for field 'email'",
+  "path": "/api/users/register"
+}
+```
+- See [VALIDATION_ERROR_HANDLING_DEEP_DIVE.txt](VALIDATION_ERROR_HANDLING_DEEP_DIVE.txt) for a catalog of error codes and validation rules.
+
+## 5. Extensibility & Maintainability
+- **Modular architecture** for easy feature addition
+- **Service/Repository pattern**
+- **DTO/entity separation**
+- **OpenAPI/Swagger** for API documentation
+- **Comprehensive unit/integration tests**
+- See [EXTENSIBILITY_MAINTAINABILITY_DEEP_DIVE.txt](EXTENSIBILITY_MAINTAINABILITY_DEEP_DIVE.txt) for extension points and best practices.
+
+## 6. Example Payloads
+### User Registration Request
+```json
+{
+  "username": "johndoe",
+  "email": "john@example.com",
+  "password": "securePassword123"
+}
+```
+### Event Creation Request
+```json
+{
+  "title": "Tech Conference 2026",
+  "description": "A conference for tech enthusiasts.",
+  "date": "2026-06-15",
+  "location": "New York"
+}
+```
+### Ticket Booking Response
+```json
+{
+  "ticketId": "TCKT123456",
+  "eventId": "EVT7890",
+  "userId": "USR4567",
+  "status": "CONFIRMED"
+}
+```
+### Payment Initiation Request
+```json
+{
+  "userId": "USR4567",
+  "amount": 99.99,
+  "currency": "USD",
+  "paymentMethod": "credit_card"
+}
+```
+### Notification Send Request
+```json
+{
+  "recipient": "john@example.com",
+  "type": "EMAIL",
+  "templateId": "WELCOME_EMAIL",
+  "params": {
+    "userName": "John"
+  }
+}
+```
+
+## 7. Integration Points
+- **Chatbot Integration:** The backend exposes endpoints for chatbot workflows (see [CHATBOT_SERVICE_DOCUMENTATION.txt](../chatbot/data/CHATBOT_SERVICE_DOCUMENTATION.txt)).
+- **Frontend Integration:** All endpoints are consumed by the React frontend (see [FRONTEND_USER_GUIDE.txt](../chatbot/data/FRONTEND_USER_GUIDE.txt)).
+- **External Services:** Payment gateway, email/SMS providers, analytics tools.
+
+## 8. References to Deep Dive Docs
+- [USER_MANAGEMENT_API_DEEP_DIVE.txt](USER_MANAGEMENT_API_DEEP_DIVE.txt)
+- [EVENT_MANAGEMENT_API_DEEP_DIVE.txt](EVENT_MANAGEMENT_API_DEEP_DIVE.txt)
+- [TICKETING_API_DEEP_DIVE.txt](TICKETING_API_DEEP_DIVE.txt)
+- [PAYMENT_PROCESSING_API_DEEP_DIVE.txt](PAYMENT_PROCESSING_API_DEEP_DIVE.txt)
+- [NOTIFICATIONS_API_DEEP_DIVE.txt](NOTIFICATIONS_API_DEEP_DIVE.txt)
+- [ADMIN_OPERATIONS_API_DEEP_DIVE.txt](ADMIN_OPERATIONS_API_DEEP_DIVE.txt)
+- [ANALYTICS_REPORTING_API_DEEP_DIVE.txt](ANALYTICS_REPORTING_API_DEEP_DIVE.txt)
+- [DOCUMENT_MEDIA_MANAGEMENT_API_DEEP_DIVE.txt](DOCUMENT_MEDIA_MANAGEMENT_API_DEEP_DIVE.txt)
+- [EXTENSIBILITY_MAINTAINABILITY_DEEP_DIVE.txt](EXTENSIBILITY_MAINTAINABILITY_DEEP_DIVE.txt)
+- [VALIDATION_ERROR_HANDLING_DEEP_DIVE.txt](VALIDATION_ERROR_HANDLING_DEEP_DIVE.txt)
+
+## 9. Chatbot & Frontend Docs
+- [CHATBOT_SERVICE_DOCUMENTATION.txt](../chatbot/data/CHATBOT_SERVICE_DOCUMENTATION.txt): Chatbot architecture, flows, and API usage.
+- [FRONTEND_USER_GUIDE.txt](../chatbot/data/FRONTEND_USER_GUIDE.txt): End-user guide for the React frontend.
+
+---
+
+For further customization or more detail on any section, let me know!

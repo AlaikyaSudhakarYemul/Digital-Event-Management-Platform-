@@ -1,0 +1,106 @@
+# DEMP Frontend Browsing & Searching Events Deep Dive
+
+This document provides a detailed, step-by-step guide and technical overview of the event browsing and search features in the Digital Event Management Platform (DEMP) frontend application. It covers user experience, filtering, search logic, validation, troubleshooting, and backend integration.
+
+---
+
+## 1. Browsing Events Overview
+- **Homepage:** Displays featured, trending, and upcoming events.
+- **Event Cards:** Each event is shown as a card with title, date, location, and a thumbnail image.
+- **Pagination/Infinite Scroll:** Load more events as you scroll or paginate through results.
+- **Categories:** Events are grouped by type (e.g., conferences, concerts, workshops).
+
+---
+
+## 2. Searching for Events
+- **Search Bar:** Located at the top of the homepage and event listing pages.
+- **Search Criteria:**
+  - Event name (partial or full match)
+  - Date or date range
+  - Location (city, venue)
+  - Category/type
+- **Live Suggestions:** As you type, suggestions may appear for quick selection.
+- **Search Results:** Displayed as a list/grid of event cards matching the criteria.
+
+---
+
+## 3. Filtering Events
+- **Filter Options:**
+  - Category (e.g., music, tech, sports)
+  - Date range (calendar picker)
+  - Price range (if applicable)
+  - Popularity or featured status
+- **Combining Filters:** Multiple filters can be applied together for precise results.
+- **Reset Filters:** Option to clear all filters and view all events.
+
+---
+
+## 4. Viewing Event Details
+- Click any event card to open the event details page.
+- See full description, schedule, ticket types, organizer info, and images.
+- Use the "Share" button to send event details to others.
+
+---
+
+## 5. Validation & Error Handling
+- **Frontend Validation:**
+  - Ensures valid input for search fields (e.g., valid date range).
+  - Displays messages if no events match the criteria (e.g., "No events found").
+- **Backend Validation:**
+  - Ensures search/filter parameters are valid and safe.
+- **Error Feedback:**
+  - Clear messages for invalid input or backend errors.
+
+---
+
+## 6. Integration with Backend
+- **API Endpoints:**
+  - `GET /api/events` — List all events (with optional filters/search params)
+  - `GET /api/events?name=...&date=...&location=...` — Search/filter events
+- **Payload Example (Search):**
+  ```json
+  {
+    "name": "Tech Summit",
+    "dateFrom": "2026-06-01",
+    "dateTo": "2026-06-30",
+    "location": "New York",
+    "category": "Technology"
+  }
+  ```
+- **Response Example:**
+  ```json
+  [
+    {
+      "id": "evt_001",
+      "title": "Tech Summit 2026",
+      "date": "2026-06-01T09:00:00Z",
+      "location": "New York",
+      "category": "Technology",
+      "thumbnail": "..."
+    },
+    ...
+  ]
+  ```
+
+---
+
+## 7. Troubleshooting & Support
+- **No Results:**
+  - Broaden your search criteria or reset filters.
+  - Check spelling and date ranges.
+- **Loading Issues:**
+  - Refresh the page or check your internet connection.
+- **Support:**
+  - Use in-app chat or email support@demp.example.com for help.
+
+---
+
+## 8. Best Practices
+- Use filters to quickly find relevant events.
+- Bookmark events of interest for easy access later.
+- Share event details with friends to increase participation.
+
+---
+
+For more details on event details, ticket booking, and organizer features, see [FRONTEND_FEATURE_USER_GUIDE.txt](FRONTEND_FEATURE_USER_GUIDE.txt).
+For backend API details, refer to the DEMP Backend API Documentation.

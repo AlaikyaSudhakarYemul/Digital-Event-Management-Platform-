@@ -1,0 +1,103 @@
+# DEMP Frontend Organizer Dashboard Deep Dive
+
+This document provides a comprehensive guide and technical overview of the Organizer Dashboard in the Digital Event Management Platform (DEMP) frontend application. It covers dashboard features, event management, ticket monitoring, attendee tools, validation, troubleshooting, backend integration, and best practices.
+
+---
+
+## 1. Overview & Purpose
+- The Organizer Dashboard is the central hub for event organizers to manage all aspects of their events.
+- Provides real-time insights, quick actions, and access to analytics, attendee lists, and notifications.
+
+---
+
+## 2. Dashboard Features
+- **Event List:**
+  - Displays all events created by the organizer, with status (draft, published, cancelled).
+  - Quick filters for upcoming, ongoing, and past events.
+- **Quick Actions:**
+  - Create new event, edit existing, duplicate, or cancel events.
+- **Ticket Sales Monitor:**
+  - Real-time ticket sales data for each event.
+  - Visual indicators for sold out, low stock, or high demand.
+- **Notifications Panel:**
+  - View and send notifications to attendees.
+- **Analytics Snapshot:**
+  - Key metrics: tickets sold, revenue, attendee demographics, and engagement trends.
+- **Attendee Management:**
+  - Access attendee lists, mark attendance, resend tickets, or process refunds.
+- **Export Tools:**
+  - Download attendee lists as CSV, export sales reports.
+
+---
+
+## 3. Event Management from Dashboard
+- **Edit Event:**
+  - Update event details, ticket types, or images directly from the dashboard.
+- **Monitor Ticket Sales:**
+  - View sales trends, identify peak booking periods, and adjust ticket availability.
+- **Send Notifications:**
+  - Communicate with attendees about updates, reminders, or special offers.
+- **Cancel or Duplicate Events:**
+  - Cancel events with confirmation and trigger attendee notifications/refunds.
+  - Duplicate events to quickly set up similar future events.
+
+---
+
+## 4. Validation & Error Handling
+- **Frontend Validation:**
+  - Ensures only authorized organizers can access the dashboard.
+  - Validates event and ticket data before updates.
+- **Backend Validation:**
+  - Confirms organizer permissions and event ownership.
+- **Error Feedback:**
+  - Clear messages for failed actions, permission issues, or data conflicts.
+
+---
+
+## 5. Integration with Backend
+- **API Endpoints:**
+  - `GET /api/organizer/events` — List all events for the organizer.
+  - `GET /api/organizer/analytics` — Fetch analytics data.
+  - `GET /api/organizer/attendees/{eventId}` — Get attendee list for an event.
+  - `POST /api/organizer/notifications` — Send notifications to attendees.
+- **Sample Response (Event List):**
+  ```json
+  [
+    {
+      "eventId": "evt_001",
+      "title": "Tech Summit 2026",
+      "status": "published",
+      "ticketsSold": 120,
+      "revenue": 11880
+    },
+    ...
+  ]
+  ```
+
+---
+
+## 6. Security & Permissions
+- Only authenticated users with organizer roles can access the dashboard.
+- All actions are logged for audit and compliance.
+
+---
+
+## 7. Troubleshooting & Support
+- **Cannot Access Dashboard:**
+  - Ensure you are logged in with organizer privileges.
+- **Data Not Updating:**
+  - Refresh the page or check your internet connection.
+- **Support:**
+  - Use in-app chat or email support@demp.example.com for help.
+
+---
+
+## 8. Best Practices
+- Regularly monitor ticket sales and attendee feedback.
+- Use analytics to optimize event timing and marketing.
+- Communicate promptly with attendees about any changes.
+- Export reports for record-keeping and further analysis.
+
+---
+
+For more details on event management, analytics, and backend API, see [FRONTEND_FEATURE_USER_GUIDE.txt](FRONTEND_FEATURE_USER_GUIDE.txt) and the DEMP Backend API Documentation.

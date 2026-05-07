@@ -1,0 +1,114 @@
+# DEMP Chatbot User & Developer Guide
+
+This document provides a comprehensive overview of the Digital Event Management Platform (DEMP) chatbot, covering its features, integration points, validation, error handling, security, extensibility, and example payloads. It is intended for both end users and developers.
+
+---
+
+## Table of Contents
+1. Introduction
+2. Chatbot Features
+3. User Guide: Chatbot Flows
+4. Example User Interactions
+5. Developer Guide: Integration & Endpoints
+6. Validation & Error Handling
+7. Security & Compliance
+8. Extensibility & Customization
+9. Example Request/Response Payloads
+10. Troubleshooting & Support
+
+---
+
+## 1. Introduction
+The DEMP chatbot is an AI-powered assistant integrated into the platform's frontend. It helps users discover events, book tickets, get support, and access FAQs through natural language conversations. The chatbot is built with Python (FastAPI, LangChain) and connects to backend APIs for real-time data.
+
+## 2. Chatbot Features
+- Event search and recommendations
+- Ticket booking assistance
+- Payment guidance
+- Profile and account help
+- FAQ and support queries
+- Multi-turn, context-aware conversations
+- Integration with notifications (email/SMS)
+
+## 3. User Guide: Chatbot Flows
+- Access the chatbot via the chat icon on any page.
+- Type your question or request (e.g., "Find music events this weekend").
+- The chatbot will respond with relevant information or guide you through booking.
+- For ticket booking, the chatbot will:
+  1. Ask for event details
+  2. Confirm ticket type and quantity
+  3. Initiate the booking and payment process
+  4. Notify you of success and provide ticket download links
+- For support, ask questions like "How do I reset my password?" or "How can I contact support?"
+
+## 4. Example User Interactions
+**Event Search:**
+User: "Show me tech conferences in June."
+Bot: "Here are upcoming tech conferences in June: ..."
+
+**Ticket Booking:**
+User: "Book 2 VIP tickets for Music Fest."
+Bot: "Booking 2 VIP tickets for Music Fest. Please confirm your email."
+
+**Support:**
+User: "I didn't receive my ticket."
+Bot: "Please provide your booking ID or email. I will check the status."
+
+## 5. Developer Guide: Integration & Endpoints
+- The chatbot communicates with backend APIs using REST endpoints.
+- Key endpoints:
+  - `POST /chatbot/message` — Send user message, receive bot response
+  - `GET /chatbot/context/{userId}` — Retrieve conversation context
+  - `POST /api/events/search` — Search events
+  - `POST /api/tickets/book` — Book tickets
+  - `POST /api/payments/initiate` — Initiate payment
+- Authentication: OAuth2/JWT required for user-specific actions
+
+## 6. Validation & Error Handling
+- All user inputs are validated for intent, required fields, and data format
+- The chatbot provides clear error messages (e.g., "Please enter a valid email address.")
+- Backend errors are surfaced as user-friendly responses
+- Example error payload:
+```
+{
+  "error": "Event not found",
+  "code": 404
+}
+```
+
+## 7. Security & Compliance
+- All API calls are made over HTTPS
+- User authentication is enforced for sensitive actions
+- No sensitive data is stored in chatbot session beyond the active conversation
+- Regular security audits and dependency updates
+
+## 8. Extensibility & Customization
+- The chatbot can be extended with new intents (e.g., event feedback, organizer support)
+- Integrate with third-party APIs (e.g., calendar, notification services)
+- Custom flows can be added for VIP bookings, group sales, etc.
+
+## 9. Example Request/Response Payloads
+**User Message Request:**
+```
+POST /chatbot/message
+{
+  "userId": "USR1234",
+  "message": "Book 2 tickets for Tech Expo"
+}
+```
+**Bot Response:**
+```
+{
+  "response": "Booking 2 tickets for Tech Expo. Please confirm your email.",
+  "nextAction": "confirm_email"
+}
+```
+
+## 10. Troubleshooting & Support
+- If the chatbot does not respond, refresh the page or check your internet connection
+- For persistent issues, contact support@demp.example.com
+- Developers: Check API logs and error payloads for debugging
+
+---
+
+For more details on backend and frontend integration, refer to the respective user guides and API documentation.

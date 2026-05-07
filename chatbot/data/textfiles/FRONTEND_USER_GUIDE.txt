@@ -1,0 +1,193 @@
+# Frontend User Guide
+
+This document provides a comprehensive guide for end users of the Digital Event Management Platform (DEMP) React frontend application. It covers all major features, user flows, and best practices for interacting with the platform.
+
+---
+
+## Project Overview
+The Digital Event Management Platform (DEMP) is a full-featured, cloud-ready solution for managing events, ticketing, payments, and user engagement. The frontend is built with React and integrates seamlessly with a robust Java/Spring Boot backend and a Python-based AI chatbot. The platform is designed for scalability, security, and a modern user experience.
+
+### Key Features
+- Event discovery and advanced search
+- Secure user registration, login, and profile management
+- Real-time ticket booking and seat selection
+- Integrated payment gateway (PCI-compliant)
+- Notifications via email, SMS, and in-app alerts
+- Downloadable e-tickets (PDF)
+- Admin dashboard for event organizers
+- Analytics and reporting for event performance
+- AI-powered chatbot for user support and FAQs
+
+### Technology Stack
+- **Frontend:** React, Tailwind CSS, JavaScript (ES6+), Axios
+- **Backend:** Java 17, Spring Boot 3.x, REST APIs
+- **Chatbot:** Python 3.10+, FastAPI, LangChain, ChromaDB
+- **Database:** PostgreSQL (primary), Redis (caching)
+- **Authentication:** OAuth2/JWT
+- **Deployment:** Docker, Azure/AWS
+
+### User Roles
+- **Attendee:** Register, browse events, book tickets, make payments, receive notifications
+- **Organizer/Admin:** Create/manage events, view analytics, manage users, access admin dashboard
+
+### UI/UX Highlights
+- Responsive design for desktop, tablet, and mobile
+- Intuitive navigation with clear call-to-actions
+- Accessible forms with validation and helpful error messages
+- Real-time feedback for actions (loading spinners, toasts, confirmations)
+- Dark mode support (if enabled)
+
+### Integration Points
+- **Backend API:** All user actions (registration, booking, payments) are processed via secure REST endpoints
+- **Chatbot:** Embedded AI assistant for instant help, event search, and booking guidance
+- **Payment Gateway:** Secure, PCI-compliant payment processing
+- **Notifications:** Real-time updates via email, SMS, and in-app
+
+### Advanced Usage
+- **Bulk Booking:** Organizers can enable group ticket purchases for corporate or VIP events
+- **Event Reminders:** Users receive automated reminders for upcoming events
+- **Custom Reports:** Organizers can generate downloadable reports on ticket sales and attendance
+- **Multi-language Support:** (Planned) Interface and notifications in multiple languages
+
+### Security & Privacy
+- All data is encrypted in transit (HTTPS)
+- User credentials are securely hashed and never stored in plain text
+- Strict RBAC ensures only authorized users can access admin features
+- Compliance with GDPR and PCI standards
+
+### Support & Feedback
+- In-app support chat for real-time help
+- Email support at support@demp.example.com
+- Feedback form for suggestions and bug reports
+
+## Table of Contents
+1. Introduction
+2. Getting Started
+3. User Registration & Login
+4. Profile Management
+5. Browsing & Searching Events
+6. Booking Tickets
+7. Making Payments
+8. Notifications & Ticket Downloads
+9. Security & Privacy
+10. Troubleshooting & Support
+
+11. Project Overview
+12. Technology Stack
+13. User Roles
+14. UI/UX Features
+15. Integration Points
+16. Advanced Usage
+17. Support & Feedback
+
+---
+
+## 1. Introduction
+The DEMP frontend is a modern, responsive web application built with React. It provides a seamless interface for users to discover events, book tickets, make payments, and manage their profiles.
+
+**What does this mean for you?**
+- You can easily find and register for events online.
+- All actions, from searching to payment, happen in one place.
+- The interface is designed to be simple and intuitive, even for first-time users.
+
+**Example:**
+If you want to attend a tech conference, you can search for "Tech Conference" on the homepage, view event details, book your ticket, pay securely, and download your ticket—all within a few clicks.
+
+## 2. Getting Started
+- Open the DEMP application in your web browser.
+- Ensure you have a stable internet connection.
+- For the best experience, use the latest version of Chrome, Firefox, or Edge.
+
+**Tip:** Bookmark the DEMP homepage for quick access.
+
+## 3. User Registration & Login
+- **Register:** Click on the "Sign Up" button and fill in your username, email, and password. Submit the form to create your account.
+- **Login:** Click on the "Login" button and enter your credentials. Upon successful authentication, you will be redirected to the dashboard.
+- **Password Reset:** Use the "Forgot Password" link to reset your password via email.
+
+**Note:** Your password must be at least 8 characters long and contain a mix of letters and numbers for security.
+
+## 4. Profile Management
+- Access your profile by clicking on your username/avatar in the top navigation bar.
+- Update your personal information, change your password, and manage notification preferences.
+- Delete your account if you no longer wish to use the platform (irreversible action).
+
+**Example:**
+To change your email address, go to your profile, edit the email field, and save changes. You will receive a confirmation email to verify the new address.
+
+## 5. Browsing & Searching Events
+- Browse featured and upcoming events on the homepage.
+- Use the search bar to find events by name, date, or location.
+- Filter events by category, date range, or popularity.
+- Click on an event card to view detailed information, including description, date, venue, and available tickets.
+
+**Tip:** Use filters to quickly narrow down events that match your interests or schedule.
+
+## 6. Booking Tickets
+- On the event details page, select the number of tickets and ticket type (if applicable).
+- Click "Book Now" to proceed to the booking summary.
+- Review your selection and confirm the booking.
+- If required, log in or register before completing the booking.
+
+**Example:**
+If you want to book 2 VIP tickets for a concert, select "VIP" as the ticket type, enter "2" as the quantity, and follow the prompts to complete your booking.
+
+## 7. Making Payments
+- After confirming your ticket selection, proceed to the payment page.
+- Choose your preferred payment method (credit/debit card, UPI, etc.).
+- Enter payment details and complete the transaction securely.
+- Upon successful payment, you will receive a confirmation message and email.
+
+**Security:**
+All payments are processed through a secure, PCI-compliant gateway. Your card details are never stored on the platform.
+
+## 8. Notifications & Ticket Downloads
+- View notifications for booking confirmations, event updates, and reminders in the notifications panel.
+- Download your tickets as PDF files from the "My Tickets" section.
+- Receive email notifications for all important actions.
+
+**Example:**
+After booking, you will see a notification in the app and receive an email with your ticket attached as a PDF. You can also download it anytime from "My Tickets."
+
+## 9. Security & Privacy
+- All user data and transactions are secured with HTTPS.
+- Passwords are encrypted and never stored in plain text.
+- Personal information is handled in accordance with privacy policies and regulations.
+- Log out after each session, especially on shared devices.
+
+**Your privacy matters:**
+We do not share your personal data with third parties. You can review our privacy policy from the app footer.
+
+## 10. Troubleshooting & Support
+- **Common Issues:**
+  - Login problems: Check your credentials and internet connection.
+  - Payment failures: Ensure your payment details are correct and try again.
+  - Ticket not received: Check your email spam folder or download from "My Tickets".
+- **Support Channels:**
+  - Use the in-app support chat or contact support@demp.example.com for assistance.
+
+**Quick Fix:**
+If you encounter any issue, try refreshing the page or logging out and back in. For persistent problems, contact support with a description and screenshot if possible.
+
+---
+
+For more details on backend integration and API documentation, refer to the DEMP Backend API Documentation.
+
+---
+
+## Appendix: Frequently Asked Questions (FAQ)
+
+**Q: How do I reset my password?**
+A: Click the "Forgot Password" link on the login page and follow the instructions sent to your email.
+
+**Q: Can I transfer my ticket to someone else?**
+A: Ticket transfer is supported for select events. Check the event details or contact support for assistance.
+
+**Q: What payment methods are accepted?**
+A: Credit/debit cards, UPI, and other region-specific methods are supported via the integrated payment gateway.
+
+**Q: How do I contact support?**
+A: Use the in-app chat or email support@demp.example.com.
+
+**Q: Is my data secure?**
+A: Yes, all data is encrypted and handled according to industry best practices and compliance standards.

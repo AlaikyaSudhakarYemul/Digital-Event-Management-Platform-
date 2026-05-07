@@ -1,0 +1,108 @@
+# DEMP Frontend Profile Management Deep Dive
+
+This document provides a detailed, step-by-step guide and technical overview of the profile management features in the Digital Event Management Platform (DEMP) frontend application. It covers user experience, available actions, validation, security, troubleshooting, and backend integration.
+
+---
+
+## 1. Profile Management Overview
+- **Access:** Click your avatar or username in the top navigation bar to open the profile menu.
+- **Features:**
+  - View and update personal details (name, email, phone, etc.)
+  - Change password
+  - Set notification preferences
+  - Delete account (irreversible)
+
+---
+
+## 2. Step-by-Step Profile Management Guide
+### Viewing & Editing Profile
+1. Click your avatar/username in the navigation bar.
+2. Select "Profile" from the dropdown menu.
+3. Review your current details.
+4. Click "Edit" or the pencil icon to update fields.
+5. Make changes and click "Save" to apply updates.
+6. Success or error messages are displayed as appropriate.
+
+### Changing Password
+1. In the profile section, select "Change Password".
+2. Enter your current password and new password (must meet security requirements).
+3. Confirm the new password and submit.
+4. On success, you are notified and may be prompted to log in again.
+
+### Setting Notification Preferences
+1. In the profile section, locate notification settings.
+2. Toggle preferences for email, SMS, or in-app notifications.
+3. Save changes to update your preferences.
+
+### Deleting Your Account
+1. In the profile section, select "Delete Account" (usually at the bottom).
+2. Confirm your choice (this action is irreversible).
+3. Your account and all associated data are permanently deleted.
+
+---
+
+## 3. Validation & Error Handling
+- **Frontend Validation:**
+  - Checks for required fields, valid email/phone formats, and password strength.
+  - Inline error messages for invalid input.
+- **Backend Validation:**
+  - Ensures data integrity and uniqueness (e.g., email).
+  - Verifies current password before allowing changes.
+- **Error Feedback:**
+  - Clear, actionable error messages (e.g., "Email already in use", "Incorrect current password").
+
+---
+
+## 4. Security Considerations
+- **HTTPS:** All profile data is sent over encrypted connections.
+- **Password Handling:** Passwords are never stored or logged in the frontend.
+- **Session Management:** You may be logged out after sensitive changes (e.g., password update, account deletion).
+- **Data Privacy:** Personal data is handled per privacy policy and not shared with third parties.
+
+---
+
+## 5. Integration with Backend
+- **Profile API Endpoint:** `GET /api/users/me`, `PUT /api/users/me`
+- **Password Change Endpoint:** `POST /api/users/change-password`
+- **Notification Preferences Endpoint:** `PUT /api/users/me/preferences`
+- **Account Deletion Endpoint:** `DELETE /api/users/me`
+- **Payload Example (Update Profile):**
+  ```json
+  {
+    "fullName": "Jane Doe",
+    "email": "jane@example.com",
+    "phone": "+1234567890"
+  }
+  ```
+- **Payload Example (Change Password):**
+  ```json
+  {
+    "currentPassword": "OldP@ssw0rd!",
+    "newPassword": "NewStrongP@ssw0rd!"
+  }
+  ```
+
+---
+
+## 6. Troubleshooting & Support
+- **Update Errors:**
+  - Review error messages and correct input.
+  - Ensure email/phone is not already in use.
+- **Password Change Issues:**
+  - Double-check your current password.
+  - Ensure new password meets requirements.
+- **Account Deletion Issues:**
+  - Contact support if you cannot delete your account.
+
+---
+
+## 7. Best Practices
+- Keep your profile information up to date.
+- Use strong, unique passwords and change them regularly.
+- Review and adjust notification preferences as needed.
+- Delete your account only if you are sure; this action cannot be undone.
+
+---
+
+For more details on registration, login, and security, see [FRONTEND_FEATURE_USER_GUIDE.txt](FRONTEND_FEATURE_USER_GUIDE.txt).
+For backend API details, refer to the DEMP Backend API Documentation.

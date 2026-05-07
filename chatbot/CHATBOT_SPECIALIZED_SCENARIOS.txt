@@ -1,0 +1,119 @@
+# DEMP Chatbot Specialized Scenarios & Enterprise Integrations
+
+This document provides advanced patterns and code examples for specialized chatbot scenarios, including human-in-the-loop escalation, WebSocket notifications, PDF OCR, multi-language support, rate limiting, SSO, scheduled tasks, and custom logging. Use these as templates for enterprise-grade deployments and unique requirements.
+
+---
+
+## Table of Contents
+1. Human-in-the-Loop Escalation
+2. WebSocket Notifications
+3. PDF OCR Integration
+4. Multi-Language Support
+5. Rate Limiting
+6. Single Sign-On (SSO)
+7. Scheduled Tasks
+8. Custom Logging
+
+---
+
+## 1. Human-in-the-Loop Escalation
+```python
+# Escalate to a human agent if the chatbot cannot resolve the issue
+def escalate_to_human(user_id, message):
+    # Store conversation context and notify support staff
+    save_to_escalation_queue(user_id, message)
+    send_email_to_support(user_id, message)
+    return "Your request has been escalated to a human agent."
+```
+
+## 2. WebSocket Notifications
+```python
+from fastapi import WebSocket
+
+@app.websocket("/ws/notifications/{user_id}")
+async def websocket_endpoint(websocket: WebSocket, user_id: str):
+    await websocket.accept()
+    while True:
+        data = await websocket.receive_text()
+        # Send real-time notification
+        await websocket.send_text(f"Notification for {user_id}: {data}")
+```
+
+## 3. PDF OCR Integration
+```python
+import pytesseract
+from PIL import Image
+
+def extract_text_from_pdf(pdf_path):
+    images = convert_pdf_to_images(pdf_path)
+    text = ""
+    for img in images:
+        text += pytesseract.image_to_string(Image.open(img))
+    return text
+```
+
+## 4. Multi-Language Support
+```python
+from googletrans import Translator
+translator = Translator()
+
+def translate_message(message, target_lang):
+    return translator.translate(message, dest=target_lang).text
+```
+- Store user language preference and translate bot responses accordingly
+
+## 5. Rate Limiting
+```python
+from slowapi import Limiter
+from slowapi.util import get_remote_address
+
+limiter = Limiter(key_func=get_remote_address)
+
+@app.post("/chatbot/message")
+@limiter.limit("5/minute")
+async def chatbot_message(...):
+    ...
+```
+
+## 6. Single Sign-On (SSO)
+```python
+from authlib.integrations.starlette_client import OAuth
+
+oauth = OAuth()
+oauth.register(...)
+
+@app.route("/login")
+async def login(request):
+    redirect_uri = url_for('auth', _external=True)
+    return await oauth.provider.authorize_redirect(request, redirect_uri)
+```
+- Integrate with enterprise SSO providers (Azure AD, Okta, etc.)
+
+## 7. Scheduled Tasks
+```python
+from apscheduler.schedulers.background import BackgroundScheduler
+
+def send_daily_summary():
+    # Aggregate and send daily chatbot usage summary
+    ...
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(send_daily_summary, 'cron', hour=0)
+scheduler.start()
+```
+
+## 8. Custom Logging
+```python
+import logging
+class CustomLogger(logging.Logger):
+    def log_user_interaction(self, user_id, message, response):
+        self.info(f"User {user_id}: {message} => {response}")
+
+logger = CustomLogger("demp_chatbot")
+logger.log_user_interaction(user_id, user_message, bot_response)
+```
+- Integrate with SIEM or log aggregation tools for compliance
+
+---
+
+For additional specialized scenarios, specify your requirements and the DEMP team can provide targeted examples or solutions.

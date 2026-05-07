@@ -1,0 +1,130 @@
+# DEMP Frontend Complete User Guide
+
+This document provides a detailed, feature-by-feature user guide for the Digital Event Management Platform (DEMP) frontend application. Each section covers a specific feature or functionality, with clear instructions and practical examples for end users and organizers.
+
+---
+
+## Table of Contents
+1. Introduction
+2. Getting Started
+3. User Registration
+4. User Login & Password Reset
+5. Profile Management
+6. Browsing & Searching Events
+7. Event Details Page
+8. Booking Tickets
+9. Making Payments
+10. My Tickets & Downloads
+11. Notifications
+12. Event Management (Organizers)
+13. Organizer Dashboard
+14. Analytics & Reports (Organizers)
+15. Attendee Management (Organizers)
+16. Security & Privacy
+17. Troubleshooting & Support
+18. FAQ
+
+---
+
+## 1. Introduction
+The DEMP frontend is a modern web application built with React, designed for seamless event discovery, ticket booking, and event management. It is accessible on desktop and mobile browsers.
+
+## 2. Getting Started
+- Open the DEMP application in your browser.
+- For best results, use the latest version of Chrome, Firefox, or Edge.
+- Ensure a stable internet connection.
+
+## 3. User Registration
+- Click "Sign Up" on the homepage.
+- Fill in your username, email, and password (minimum 8 characters, mix of letters and numbers).
+- Agree to the terms and submit.
+- You will receive a confirmation email. Click the link to activate your account.
+
+## 4. User Login & Password Reset
+- Click "Login" and enter your email and password.
+- If you forget your password, click "Forgot Password" and follow the instructions sent to your email.
+- After login, you are redirected to your dashboard.
+
+## 5. Profile Management
+- Click your avatar or username in the top navigation bar.
+- Update your personal details, change your password, and set notification preferences.
+- To delete your account, use the "Delete Account" option (irreversible).
+
+## 6. Browsing & Searching Events
+- Browse featured and upcoming events on the homepage.
+- Use the search bar to find events by name, date, or location.
+- Filter events by category, date range, or popularity.
+- Click an event card for more details.
+
+## 7. Event Details Page
+- View event description, date, time, venue, ticket types, and prices.
+- See event images, organizer info, and attendee reviews (if available).
+- Use the "Share" button to send event details to friends.
+
+## 8. Booking Tickets
+- On the event page, select ticket type and quantity.
+- Click "Book Now" to review your selection.
+- If not logged in, you will be prompted to log in or register.
+- Confirm your booking to proceed to payment.
+
+## 9. Making Payments
+- Choose your payment method (credit/debit card, UPI, etc.).
+- Enter payment details and complete the transaction securely.
+- On success, you receive a confirmation message and email.
+
+## 10. My Tickets & Downloads
+- Access "My Tickets" from the main menu.
+- View all your booked tickets, event details, and status.
+- Download tickets as PDF for printing or mobile use.
+- Show the QR code at the event for entry.
+
+## 11. Notifications
+- Receive notifications for booking confirmations, event updates, and reminders.
+- Access notifications via the bell icon in the navigation bar.
+- Mark notifications as read or delete them as needed.
+
+## 12. Event Management (Organizers)
+- Organizers can access the "Organizer Dashboard" from the main menu.
+- Click "Create Event" to add a new event: enter title, description, date, venue, ticket types, pricing, and upload images.
+- Set ticket sales periods and special conditions (e.g., early bird pricing).
+- Publish the event to make it live.
+
+## 13. Organizer Dashboard
+- View and manage all your events in one place.
+- Edit event details, update ticket availability, or cancel events.
+- Monitor ticket sales in real time.
+- Download attendee lists as CSV.
+- Send notifications to attendees.
+
+## 14. Analytics & Reports (Organizers)
+- Access analytics for each event: tickets sold, revenue, attendee demographics.
+- Visualize trends with charts (sales over time, peak booking periods).
+- Export reports for further analysis.
+
+## 15. Attendee Management (Organizers)
+- View and search attendee lists for each event.
+- Mark attendance, resend tickets, or process refunds.
+- Handle special requests (e.g., accessibility, VIP upgrades).
+
+## 16. Security & Privacy
+- All data is encrypted in transit (HTTPS).
+- Passwords are securely hashed.
+- Personal data is handled per privacy policy and not shared with third parties.
+- Log out after each session, especially on shared devices.
+
+## 17. Troubleshooting & Support
+- For login or payment issues, check your credentials and internet connection.
+- If you do not receive your ticket, check your spam folder or download from "My Tickets".
+- Use the in-app support chat or email support@demp.example.com for help.
+- Refresh the page or log out and back in for minor issues.
+
+## 18. FAQ
+- **How do I reset my password?** Use the "Forgot Password" link on the login page.
+- **Can I transfer my ticket?** Ticket transfer is available for select events. Contact support for details.
+- **What payment methods are accepted?** Credit/debit cards, UPI, and more.
+- **How do I contact support?** Use the in-app chat or email support@demp.example.com.
+- **Is my data secure?** Yes, all data is encrypted and handled securely.
+
+---
+
+For more details on backend integration and API documentation, refer to the DEMP Backend API Documentation.

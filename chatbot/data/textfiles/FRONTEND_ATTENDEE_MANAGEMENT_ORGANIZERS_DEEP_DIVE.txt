@@ -1,0 +1,100 @@
+# DEMP Frontend Attendee Management (Organizers) Deep Dive
+
+This document provides a comprehensive guide and technical overview of the attendee management features available to organizers in the Digital Event Management Platform (DEMP) frontend application. It covers attendee lists, attendance tracking, ticket actions, validation, troubleshooting, backend integration, and best practices.
+
+---
+
+## 1. Overview & Purpose
+- The attendee management module enables organizers to view, search, and manage attendees for each event.
+- Supports attendance tracking, ticket resending, refunds, and handling special requests.
+
+---
+
+## 2. Accessing Attendee Management
+- **Organizer Dashboard:**
+  - Select an event to access its attendee list and management tools.
+- **Attendee List:**
+  - Displays all registered attendees for the selected event.
+  - Columns: Name, email, ticket type, status (confirmed, checked-in, refunded), and actions.
+- **Search & Filter:**
+  - Search attendees by name, email, or ticket type.
+  - Filter by status (e.g., only show checked-in or VIP attendees).
+
+---
+
+## 3. Attendance Tracking
+- **Mark Attendance:**
+  - Mark attendees as present at the event (manual or via QR code scan integration).
+  - Real-time update of attendance status.
+- **Export Attendance:**
+  - Download attendee lists and attendance records as CSV for record-keeping.
+
+---
+
+## 4. Ticket Actions
+- **Resend Tickets:**
+  - Resend ticket emails to attendees who request it.
+- **Process Refunds:**
+  - Initiate refunds for cancelled tickets or no-shows (with confirmation).
+- **Handle Special Requests:**
+  - Manage accessibility needs, VIP upgrades, or other attendee-specific requests.
+
+---
+
+## 5. Validation & Error Handling
+- **Frontend Validation:**
+  - Ensures only authorized organizers can access attendee data.
+  - Validates actions (e.g., cannot refund already refunded tickets).
+- **Backend Validation:**
+  - Confirms ticket ownership and event association before processing actions.
+- **Error Feedback:**
+  - Clear messages for failed actions, permission issues, or data conflicts.
+
+---
+
+## 6. Integration with Backend
+- **API Endpoints:**
+  - `GET /api/organizer/attendees/{eventId}` — List all attendees for an event.
+  - `POST /api/organizer/attendance/{attendeeId}` — Mark attendance.
+  - `POST /api/organizer/tickets/resend` — Resend ticket to attendee.
+  - `POST /api/organizer/tickets/refund` — Process refund for a ticket.
+- **Sample Response (Attendee List):**
+  ```json
+  [
+    {
+      "attendeeId": "att_001",
+      "name": "Jane Doe",
+      "email": "jane@example.com",
+      "ticketType": "VIP",
+      "status": "confirmed"
+    },
+    ...
+  ]
+  ```
+
+---
+
+## 7. Security & Permissions
+- Only authenticated users with organizer roles can access attendee management features.
+- All actions are logged for audit and compliance.
+
+---
+
+## 8. Troubleshooting & Support
+- **Cannot Access Attendee List:**
+  - Ensure you are logged in with organizer privileges.
+- **Action Fails:**
+  - Check attendee status and try again; contact support if issues persist.
+- **Support:**
+  - Use in-app chat or email support@demp.example.com for help.
+
+---
+
+## 9. Best Practices
+- Regularly update attendance records during the event.
+- Respond promptly to attendee requests and issues.
+- Export and archive attendee data for compliance and future reference.
+
+---
+
+For more details on the organizer dashboard, event management, and backend API, see [FRONTEND_FEATURE_USER_GUIDE.txt](FRONTEND_FEATURE_USER_GUIDE.txt) and the DEMP Backend API Documentation.

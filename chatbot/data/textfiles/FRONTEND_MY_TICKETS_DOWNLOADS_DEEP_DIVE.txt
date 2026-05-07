@@ -1,0 +1,104 @@
+# DEMP Frontend My Tickets & Downloads Deep Dive
+
+This document provides a comprehensive guide and technical overview of the "My Tickets & Downloads" feature in the Digital Event Management Platform (DEMP) frontend application. It covers user experience, ticket management, downloads, validation, troubleshooting, and backend integration.
+
+---
+
+## 1. Overview & Purpose
+- The "My Tickets" section allows users to view, manage, and download all tickets they have booked for events.
+- Ensures easy access to tickets, event details, and entry QR codes for a seamless event experience.
+
+---
+
+## 2. Accessing My Tickets
+- **Navigation:**
+  - Click on "My Tickets" in the main menu or user dashboard.
+  - Only available to logged-in users.
+- **Ticket List:**
+  - Displays all tickets booked by the user, sorted by event date (upcoming first).
+  - Each ticket entry shows event name, date, venue, ticket type, status (active, used, cancelled), and actions.
+
+---
+
+## 3. Viewing Ticket Details
+- **Ticket Details Page:**
+  - Click on a ticket to view full details: event info, seat/zone (if applicable), purchase date, and QR code for entry.
+  - Shows ticket status and any special instructions (e.g., entry time, COVID guidelines).
+
+---
+
+## 4. Downloading Tickets
+- **PDF Download:**
+  - Each ticket can be downloaded as a PDF for printing or mobile use.
+  - PDF includes event details, ticket info, and a scannable QR code.
+- **Mobile Wallet Integration:**
+  - (If supported) Option to add ticket to Apple Wallet or Google Pay.
+- **Download All:**
+  - Option to download all tickets for an event in a single PDF (for group bookings).
+
+---
+
+## 5. Using Tickets at Events
+- **QR Code Entry:**
+  - Show the QR code on your phone or printed ticket at the event entrance for scanning.
+  - Each QR code is unique and can only be used once (unless otherwise specified).
+- **Ticket Status:**
+  - Status updates in real time after entry (e.g., "used").
+
+---
+
+## 6. Validation & Error Handling
+- **Frontend Validation:**
+  - Ensures only logged-in users can access tickets.
+  - Validates ticket availability and download eligibility.
+- **Backend Validation:**
+  - Confirms ticket ownership and status before allowing download or display.
+- **Error Feedback:**
+  - Clear messages for expired, cancelled, or already-used tickets.
+
+---
+
+## 7. Integration with Backend
+- **API Endpoints:**
+  - `GET /api/tickets` — List all tickets for the logged-in user.
+  - `GET /api/tickets/{ticketId}` — Get details for a specific ticket.
+  - `GET /api/tickets/{ticketId}/download` — Download ticket as PDF.
+- **Sample Response:**
+  ```json
+  [
+    {
+      "ticketId": "tkt_001",
+      "event": "Tech Summit 2026",
+      "date": "2026-06-01T09:00:00Z",
+      "venue": "Javits Center",
+      "type": "VIP",
+      "status": "active",
+      "qrCode": "...base64..."
+    },
+    ...
+  ]
+  ```
+
+---
+
+## 8. Troubleshooting & Support
+- **Cannot Find Ticket:**
+  - Ensure you are logged in with the correct account.
+  - Check event date and filters.
+- **Download Issues:**
+  - Try a different browser or device.
+  - Contact support if PDF fails to generate.
+- **Entry Problems:**
+  - Ensure QR code is visible and not damaged.
+  - Contact event staff or support@demp.example.com for help.
+
+---
+
+## 9. Best Practices
+- Download tickets in advance and keep a backup copy.
+- Arrive early to avoid entry delays.
+- Do not share your ticket QR code with others unless transfer is supported.
+
+---
+
+For more details on booking, payments, and backend API, see [FRONTEND_FEATURE_USER_GUIDE.txt](FRONTEND_FEATURE_USER_GUIDE.txt) and the DEMP Backend API Documentation.
