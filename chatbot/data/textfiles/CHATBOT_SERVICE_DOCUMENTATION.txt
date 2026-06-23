@@ -1,2 +1,0 @@
-(Moved from chatbot/CHATBOT_SERVICE_DOCUMENTATION.txt)
-

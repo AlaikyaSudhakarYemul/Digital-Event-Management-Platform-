@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,6 +15,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.Authentication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.wipro.demp.entity.Users;
 import com.wipro.demp.exception.UserNotFoundException;
@@ -21,6 +25,8 @@ import com.wipro.demp.repository.UserRepository;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
     private final UserRepository userRepository;
 
     @Autowired
@@ -28,6 +34,9 @@ public class UserServiceImpl implements UserService {
  
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Value("${app.mail.fail-on-error:false}")
+    private boolean failOnMailError;
  
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -58,7 +67,14 @@ public class UserServiceImpl implements UserService {
                 "Best regards,\n" +
                 "The EVENTRA Team";
         message.setText(msg);
-        mailSender.send(message);
+        try {
+            mailSender.send(message);
+        } catch (MailException ex) {
+            logger.error("Failed to send registration email to {}", user.getEmail(), ex);
+            if (failOnMailError) {
+                throw ex;
+            }
+        }
  
         return userRepository.save(user);
     }

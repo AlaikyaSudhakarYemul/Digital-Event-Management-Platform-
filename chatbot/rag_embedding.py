@@ -8,6 +8,11 @@ import uuid
 from typing import List, Dict, Any
 import requests
 
+
+BASE_DIR = Path(__file__).resolve().parent
+TXT_DATA_DIR = BASE_DIR / "data" / "textfiles"
+VECTOR_STORE_DIR = BASE_DIR / "data" / "vector_store"
+
 # --- Document Processing ---
 def process_all_txts(txt_directory):
     all_documents = []
@@ -150,7 +155,15 @@ def ollama_rag_response(
     retrieved_docs = rag_retriever.retrieve(query, top_k=top_k)
     context = "\n\n".join([doc['content'] for doc in retrieved_docs]) if retrieved_docs else ""
     if not context:
-        return "No relevant context found to answer the question."
+        return (
+            "I couldn't find matching knowledge for that in the indexed documents yet.\n"
+            "Try rephrasing with more detail (event name, booking id, ticket type), "
+            "or ask one of these:\n"
+            "- How do I book a ticket?\n"
+            "- Show my booked tickets\n"
+            "- How do I download my invoice?\n"
+            "- How do I reset my password?"
+        )
     prompt = f"""Context:\n{context}\n\nQuestion: {query}\nAnswer:"""
     payload = {
         "model": model_name,
@@ -171,10 +184,10 @@ def ollama_rag_response(
 
 # --- Initialize pipeline objects at module level ---
 # (You may want to adjust the data path as needed)
-all_txt_documents = process_all_txts("./data/textfiles")
+all_txt_documents = process_all_txts(TXT_DATA_DIR)
 chunks = split_documents(all_txt_documents)
 embedding_manager = EmbeddingManager()
-vectorstore = VectorStore(persist_directory="./data/vector_store")
+vectorstore = VectorStore(persist_directory=str(VECTOR_STORE_DIR))
 # Only add if collection is empty and there is data to add (avoid duplicates and empty input)
 if vectorstore.collection.count() == 0 and len(chunks) > 0:
     texts = [chunk.page_content for chunk in chunks]

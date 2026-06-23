@@ -1,0 +1,557 @@
+# How to Create an Event - Project Guide
+
+## Event Creation Workflow
+
+### Prerequisites
+- Sign up or log in as **Organizer**
+- Only organizers should create events
+
+### Step-by-Step Process
+
+#### 1. Open Create Event Page
+Go to the event creation form from the organizer dashboard.
+
+#### 2. Fill Basic Details
+Enter the following information:
+- Event Name
+- Description
+- Date
+- Time
+
+#### 3. Choose Event Type
+Pick one of the following:
+- `IN_PERSON`
+- `VIRTUAL`
+- `HYBRID`
+
+#### 4. Fill Location Rules
+- **IF IN_PERSON or HYBRID**: Select an address/location
+- **IF VIRTUAL**: No address needed
+
+#### 5. Select Speaker
+Choose at least one speaker from the available list.
+
+#### 6. Set Max Attendees
+Enter a number between **10 and 500**.
+
+#### 7. Add Event Image (Optional)
+You can upload an image, but it is not mandatory.
+
+#### 8. Submit
+Click **Create Event** button.
+
+#### 9. Success Message
+You should see a success popup, and the event gets created.
+
+---
+
+## FAQ - Event Creation
+
+### How do I create an event?
+Login as organizer, open Create Event form, fill details, then click Create Event.
+
+### Where is the create event page?
+In organizer side, go to dashboard and open **Create Event**.
+
+### What details are required to create an event?
+- Event name
+- Description
+- Date
+- Time
+- Event type
+- Max attendees
+- Speaker
+- User ID
+- **Note**: Address is required for in-person and hybrid events.
+
+### Can I create a virtual event without address?
+**Yes.** For `VIRTUAL` event type, address can be empty.
+
+### What is the valid max attendees limit?
+In your frontend validation, allowed range is **10 to 500**.
+
+### What event types are allowed in this project?
+- `IN_PERSON`
+- `VIRTUAL`
+- `HYBRID`
+
+---
+
+## Ticketing & Booking FAQs
+
+### How do users book tickets in this platform?
+User selects event → chooses ticket type → books through ticket API.
+
+### Do I need organizer role to create event?
+**Yes.** Event creation is organizer-specific.
+
+### How do I add new venue/address in system?
+Create address/location in admin/address management, then organizer can select it.
+
+1. How Do I Reset My Password?
+Step 1 — Open Login page
+Go to the DEMP app and click Login.
+
+Step 2 — Click "Forgot Password?"
+Below the login form, click the Forgot Password? link.
+
+Step 3 — Enter your email
+Type the email you registered with and submit.
+Step 4 — Check your inbox
+You will receive a password reset link by email.
+If not found → check spam/junk folder.
+
+Step 5 — Click reset link
+The link contains a secure token. It expires after some time, so use it quickly.
+
+Step 6 — Set new password
+Enter a strong new password (must meet length and complexity rules).
+Step 7 — Login with new password
+Go back to login page and login normally.
+
+---
+
+# Password Reset Guide
+
+## How Do I Reset My Password?
+
+### Step 1 — Open Login Page
+Go to the DEMP app and click **Login**.
+
+### Step 2 — Click "Forgot Password?"
+Below the login form, click the **Forgot Password?** link.
+
+### Step 3 — Enter Your Email
+Type the email you registered with and submit.
+
+### Step 4 — Check Your Inbox
+You will receive a password reset link by email.
+- **Not found?** Check spam/junk folder.
+
+### Step 5 — Click Reset Link
+The link contains a secure token. It expires after some time, so use it quickly.
+
+### Step 6 — Set New Password
+Enter a strong new password (must meet length and complexity rules).
+
+### Step 7 — Login With New Password
+Go back to login page and login normally.
+
+---
+
+# Ticket Booking Guide
+
+## How to Book a Ticket (User)
+
+1. **Select an event**
+2. **Choose ticket type** (General, VIP, Early Bird, Group, etc.)
+3. **Enter quantity and attendee info**
+4. **Complete payment**
+5. **Get e-ticket** via email and in My Tickets section
+6. **Show QR code** at event entry
+
+---
+
+## Platform Roles
+
+| Role | Description |
+|------|-------------|
+| **Attendee** | Books tickets, views events |
+| **Organizer** | Creates/manages events, configures tickets |
+| **Admin** | Full platform control, monitoring, user management |
+
+---
+
+## Ticket Types Reference
+
+| Ticket Type | Description | Tier |
+|-------------|-------------|------|
+| **FIRST_CLASS** | Premium / highest tier ticket | Most expensive, best seats |
+| **SECOND_CLASS** | Mid-tier ticket | Mid range |
+| **ECONOMY_CLASS** | Standard / lowest tier ticket | Budget friendly |
+
+---
+
+# Event Management Guide
+
+## How do I create a new event?
+
+### Step 1: Log in as Organizer
+
+### Step 2: Open Create Event form
+
+### Step 3: Enter event details and submit
+
+### Step 4: Check event list to confirm it was created
+
+---
+
+## What details are required to create an event?
+
+### Step 1: Add event name and description
+
+### Step 2: Select date, time, and event type
+
+### Step 3: Add max attendees, speaker, and organizer info
+
+### Step 4: Add address if event is not virtual
+
+---
+
+## How do I edit my event after creating it?
+
+### Step 1: Go to Organizer Dashboard
+
+### Step 2: Open My Events
+
+### Step 3: Click Edit on the selected event
+
+### Step 4: Update fields and save changes
+
+---
+
+## How can users view all available events?
+
+### Step 1: Log in as User
+
+### Step 2: Open Events page
+
+### Step 3: System loads all active events
+
+### Step 4: Click any event to view full details
+
+
+---
+
+# Ticket Management Guide
+
+## How do I set ticket price for my event?
+
+### Step 1: Open the event in organizer panel
+
+### Step 2: Go to Ticket Settings
+
+### Step 3: Set price for each ticket type
+
+### Step 4: Save so users can book with new prices
+
+---
+
+## What ticket types are available in the system?
+
+### Step 1: Open ticket configuration page
+
+### Step 2: Choose available classes
+
+### Step 3: Use FIRST_CLASS, SECOND_CLASS, ECONOMY_CLASS
+
+### Step 4: Set quantity and price for each class
+
+---
+
+## How does ticket booking work step by step?
+
+### Step 1: User logs in and selects event
+
+### Step 2: Choose ticket type and quantity
+
+### Step 3: Complete payment in gateway
+
+### Step 4: Booking is confirmed and ticket is generated
+
+---
+
+## How can users download or view booked tickets?
+
+### Step 1: Log in and open My Tickets
+
+### Step 2: Select booked event ticket
+
+### Step 3: View ticket details and QR code
+
+### Step 4: Download or save ticket for entry
+
+---
+
+# Account Management Guide
+
+## How do I reset my password if I forgot it?
+
+### Step 1: Click Forgot Password on login page
+
+### Step 2: Enter registered email
+
+### Step 3: Open reset link from email
+
+### Step 4: Set new password and log in
+
+---
+
+## How do I reset forgotten password?
+
+### Step 1: Click Forgot Password on login page
+
+### Step 2: Enter registered email address
+
+### Step 3: Open reset link from email
+
+### Step 4: Set new password and login again
+
+---
+
+## How do I update my profile details?
+
+### Step 1: Log in to your account
+
+### Step 2: Go to Profile or Account Settings
+
+### Step 3: Edit fields like name, phone, or bio
+
+### Step 4: Save changes and refresh profile
+
+---
+
+## How do admins deactivate a user account?
+
+### Step 1: Open admin user management panel
+
+### Step 2: Search for the user account
+
+### Step 3: Click Deactivate/Block action
+
+### Step 4: Confirm and log reason
+
+---
+
+# User Registration & Authentication
+
+## "How do I register?"
+
+### Step 1: Open the Sign Up or Register page
+
+### Step 2: Enter your email address
+
+### Step 3: Create a strong password
+- Letters
+- Numbers
+- Special character
+
+### Step 4: Enter your full name
+
+### Step 5: Tap Register
+
+---
+
+## "I forgot my password, what should I do?"
+
+### Step 1: User clicks Forgot Password on login page
+
+### Step 2: Chatbot asks
+> "Please enter your registered email."
+
+### Step 3: User enters email
+
+### Step 4: System validates email format
+
+### Step 5: If valid, system sends OTP/reset link to email
+
+### Step 6: Chatbot says
+> "We sent a reset code/link to your email."
+
+### Step 7: User opens email and enters OTP (or clicks reset link)
+
+### Step 8: System verifies OTP/link validity and expiry
+
+### Step 9: Chatbot asks user to enter new password
+
+### Step 10: User enters new password + confirm password
+
+### Step 11: System checks password rules
+- Minimum 8 characters
+- Uppercase + lowercase
+- Number + special character
+
+### Step 12: If rules pass, system updates password
+
+### Step 13: Chatbot confirms
+> "Password reset successful. Please login now."
+
+### Step 14: User logs in with new password
+
+
+---
+
+## "How do I update my profile?"
+
+### Step 1: Log in to your account
+
+### Step 2: Go to My Account or Profile Settings
+
+### Step 3: Click Edit Profile
+
+### Step 4: Update the fields you want
+- Full Name
+- Phone Number
+- Profile Photo
+- Address
+- Preferences (event categories, notifications, etc.)
+
+### Step 5: Check that all details are correct
+
+### Step 6: Click Save Changes
+
+### Step 7: Wait for confirmation message
+> "Profile updated successfully."
+
+### Step 8: Re-open profile page to verify updated details
+
+“What events are happening this week?”
+Step 1 :User asks: “What events are happening this week?”
+Step 2 :Chatbot understands the intent as event search for current week.
+Step 3 :Chatbot checks the current date.
+Step 4 :Chatbot calculates this week’s range:
+Start date of the week
+End date of the week
+Step 5 :Chatbot searches the event database for events scheduled within that date range.
+Step 6 :Chatbot filters only active or published events.
+Step 7 :Chatbot sorts the results by date and time.
+Step 8 :Chatbot shows a simple list:
+Event name
+Date
+Time
+Location
+Ticket status
+Step 9:If many events exist, chatbot asks follow-up questions like:
+“Do you want online or offline events?”
+“Which city are you interested in?”
+“Do you want free or paid events?”
+Step 10:User can select one event from the list.
+Step 11 :Chatbot then shows event details:
+Description
+Venue
+Organizer
+Available tickets
+Registration link
+Step 12 :If no events are found, chatbot replies:
+“No events are scheduled for this week.”
+“Would you like to see upcoming events for next week or this month?”
+
+
+“How can I book a ticket?”
+
+
+Step 1: Chatbot identifies the intent as ticket booking help.
+Step 2: Chatbot asks the user to choose or search for an event.
+Step 3: User selects an event.
+Step 4: Chatbot fetches event details and available ticket types.
+Step 5: Chatbot shows ticket options, for example:
+VIP
+General
+Early Bird
+Step 6: User selects the ticket type.
+Step 7: Chatbot asks for the number of tickets.
+Step 8: User enters quantity.
+Step 9: Chatbot checks ticket availability.
+Step 10: If tickets are available, chatbot shows booking summary:
+Event name
+Ticket type
+Quantity
+Total amount
+Step 11: Chatbot asks user to confirm the booking.
+Step 12: User confirms.
+Step 13: Chatbot redirects user to payment or starts payment flow.
+Step 14: User completes payment using available method.
+Step 15: System verifies payment success.
+Step 16: Ticket booking is confirmed.
+Step 17: Chatbot sends confirmation with:
+Ticket ID
+Booking status
+Purchase date
+
+
+“What ticket types are available?”
+Step 1 :Chatbot detects intent as ticket type inquiry.
+Step 2 :Chatbot checks if the user already selected an event.
+Step 3 :If event is not selected, chatbot asks:
+“Please tell me the event name.”
+Step 4 :User provides event name.
+Step 5 :Chatbot fetches ticket configuration for that event from backend.
+Step 6 :Chatbot filters only active and purchasable ticket types.
+Step 7 :Chatbot displays available ticket types, for example:
+VIP
+General
+Early Bird
+Student Pass
+Step 1 :For each type, chatbot also shows:
+Price
+Benefits/features
+Availability count or status (available/sold out)
+Step 8 :Chatbot asks follow-up:
+“Would you like to book one of these ticket types?”
+Step 9 :User selects a type, and chatbot proceeds to quantity and booking flow.
+
+“How do I get my payment receipt?”
+
+Step 1 : Chatbot detects intent as payment receipt request.
+Step 2 : Chatbot asks for identification details:
+Booking ID or Ticket ID
+Registered email (or phone)
+Step 3 : User provides details.
+Step 4 : Chatbot validates user identity and checks payment status.
+Step 5 : If payment is successful, chatbot fetches receipt details from payment service.
+Step 6 : Chatbot gives receipt delivery options:
+Download PDF now
+Send to registered email
+Send to WhatsApp or SMS link (if supported)
+Step 7 : User chooses one option.
+Step 8 : System generates or retrieves receipt.
+Step 9 : Chatbot shares confirmation:
+Your receipt is ready
+Download link or sent confirmation
+Step 10: Chatbot asks follow-up:
+Do you also want invoice details?
+Do you want all past payment receipts?
+
+“Show my booked tickets.”
+Step 1 : Chatbot detects intent as booking history request.
+Step 2 :Chatbot verifies user is logged in.
+Step 3 :If not logged in, chatbot asks user to log in first.
+Step 4 :Chatbot fetches user ID from session/token.
+Step 5 :Chatbot calls booking service to get ticket bookings for that user.
+Step 6 :Chatbot filters by status if needed:
+Confirmed
+Pending
+Cancelled
+Step 7 :Chatbot sorts tickets by latest booking date.
+Step 8 :Chatbot displays ticket list with key details:
+Event name
+Event date and time
+Ticket type
+Quantity
+Booking ID
+Booking status
+Step 9 :Chatbot asks optional follow-up:
+Download ticket
+View payment receipt
+Cancel ticket (if allowed)
+
+“Is my ticket confirmed?”
+
+Yes, I can check that for you.
+Please share your Booking ID or Ticket ID.
+
+After you share it, I will verify your booking status and tell you whether it is:
+
+Confirmed
+Pending
+Failed
+Cancelled
+If confirmed, I can also show:
+
+Event name and date
+Ticket type and quantity
+Payment receipt link
+Download ticket option
+
+
+

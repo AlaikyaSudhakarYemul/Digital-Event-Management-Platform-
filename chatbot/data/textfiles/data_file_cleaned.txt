@@ -1,0 +1,165 @@
+DEMP Chatbot Knowledge Base - Cleaned
+
+Format:
+Intent
+Question
+Answer
+Steps
+Keywords
+
+--------------------------------------------------
+Intent: create_event
+Question: How do I create a new event?
+Answer: Log in as organizer, open Create Event form, fill required details, and submit.
+Steps:
+1. Log in with organizer account.
+2. Open Organizer Dashboard and click Create Event.
+3. Enter event name, description, date, time, and event type.
+4. Add speaker and max attendees.
+5. Add address for IN_PERSON or HYBRID events.
+6. Click Create Event and confirm success.
+Keywords: create event, organizer, event form
+
+--------------------------------------------------
+Intent: create_event_required_fields
+Question: What details are required to create an event?
+Answer: You need name, description, date, time, event type, max attendees, and speaker.
+Steps:
+1. Enter event name and description.
+2. Select date and time.
+3. Choose event type.
+4. Add speaker.
+5. Set max attendees between 10 and 500.
+Keywords: required fields, event details, validation
+
+--------------------------------------------------
+Intent: virtual_event_no_address
+Question: Can I create a virtual event without address?
+Answer: Yes. Address is not required for VIRTUAL events.
+Steps:
+1. Open Create Event.
+2. Set event type to VIRTUAL.
+3. Leave address empty.
+4. Submit event.
+Keywords: virtual event, address optional
+
+--------------------------------------------------
+Intent: max_attendees_limit
+Question: What is the valid max attendees limit?
+Answer: The valid range is 10 to 500.
+Steps:
+1. Enter attendee value in event form.
+2. Keep the value between 10 and 500.
+3. Submit after validation passes.
+Keywords: max attendees, range, validation
+
+--------------------------------------------------
+Intent: event_types
+Question: What event types are allowed?
+Answer: IN_PERSON, VIRTUAL, and HYBRID.
+Steps:
+1. Open event type dropdown.
+2. Choose one of the three supported types.
+3. Fill dependent fields like address as required.
+Keywords: event types, in person, virtual, hybrid
+
+--------------------------------------------------
+Intent: book_ticket
+Question: How do users book tickets in this platform?
+Answer: User selects an event, chooses ticket type, pays, and receives ticket confirmation.
+Steps:
+1. Open event details.
+2. Select ticket type and quantity.
+3. Proceed to payment.
+4. Complete payment.
+5. View ticket in My Tickets.
+Keywords: booking, ticket, payment
+
+--------------------------------------------------
+Intent: ticket_types
+Question: What ticket types are available in the system?
+Answer: FIRST_CLASS, SECOND_CLASS, and ECONOMY_CLASS.
+Steps:
+1. Open ticket configuration.
+2. Choose ticket class.
+3. Set price and quantity.
+4. Save settings.
+Keywords: first class, second class, economy class
+
+--------------------------------------------------
+Intent: set_ticket_price
+Question: How do I set ticket price for my event?
+Answer: Organizer can set price per ticket class from Ticket Settings.
+Steps:
+1. Open organizer event panel.
+2. Go to Ticket Settings.
+3. Set price for each class.
+4. Save changes.
+Keywords: ticket price, ticket settings
+
+--------------------------------------------------
+Intent: view_events
+Question: How can users view all available events?
+Answer: Users can browse all active events from the Events page.
+Steps:
+1. Log in as user.
+2. Open Events page.
+3. Browse active events.
+4. Open event card for details.
+Keywords: view events, user dashboard
+
+--------------------------------------------------
+Intent: edit_event
+Question: How do I edit my event after creating it?
+Answer: Open My Events, click Edit, update fields, and save.
+Steps:
+1. Go to Organizer Dashboard.
+2. Open My Events.
+3. Click Edit on selected event.
+4. Update fields.
+5. Save changes.
+Keywords: edit event, organizer events
+
+--------------------------------------------------
+Intent: forgot_password
+Question: How do I reset my password if I forgot it?
+Answer: Use Forgot Password from login page and reset via email link.
+Steps:
+1. Click Forgot Password on login page.
+2. Enter registered email.
+3. Open reset link from email.
+4. Set new password.
+5. Log in again.
+Keywords: forgot password, reset password
+
+--------------------------------------------------
+Intent: download_ticket
+Question: How can users download or view booked tickets?
+Answer: Open My Tickets, select booking, and download or view QR code.
+Steps:
+1. Log in and open My Tickets.
+2. Select booked ticket.
+3. View details and QR code.
+4. Download or save ticket.
+Keywords: my tickets, download ticket, qr code
+
+--------------------------------------------------
+Intent: user_roles
+Question: What are roles in the platform?
+Answer: Attendee books tickets, Organizer manages events, Admin controls platform.
+Steps:
+1. Attendee can browse and book.
+2. Organizer can create and manage events.
+3. Admin can monitor and manage users/platform.
+Keywords: roles, attendee, organizer, admin
+
+--------------------------------------------------
+Intent: deactivate_user
+Question: How do admins deactivate a user account?
+Answer: Admin can deactivate users from the user management panel.
+Steps:
+1. Open Admin User Management.
+2. Search for user account.
+3. Click Deactivate or Block.
+4. Confirm action.
+Keywords: admin, deactivate user, block user

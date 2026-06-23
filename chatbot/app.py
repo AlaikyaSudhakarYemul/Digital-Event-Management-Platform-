@@ -1,3 +1,6 @@
+# --- Modular Imports ---
+from services.user_service import user_sign_in, get_user_profile, update_user_profile, view_events, register_event
+from services.intent_recognizer import recognize_user_intent
 """
 DEMP Chatbot — FastAPI service backed by an open-source LLM (Ollama).
 
@@ -42,6 +45,10 @@ OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3.2")
 DEMP_API_URL = os.getenv("DEMP_API_URL", "http://localhost:8080")
 MAX_HISTORY = 10  # last N turns kept per session
+
+
+# Modularized user-service conversational logic
+from services.user_service_conversation import handle_user_service, update_user_service_state, reset_user_service_state
 
 app = FastAPI(title="DEMP Chatbot (LLM)", version="2.0.0")
 
@@ -406,6 +413,23 @@ async def chat(req: ChatRequest):
     if len(history) > MAX_HISTORY * 2:
         del history[: len(history) - MAX_HISTORY * 2]
 
+    # --- User-service conversational handler ---
+    from services.intent_recognizer import recognize_user_intent
+    intent = recognize_user_intent(req.message)
+    # If in the middle of a user-service flow, update state
+    if session_id in USER_SERVICE_STATE and USER_SERVICE_STATE[session_id].get("step"):
+        update_user_service_state(session_id, req.message)
+        reply = await handle_user_service(req, session_id)
+        if reply:
+            history.append({"role": "assistant", "content": reply})
+            return ChatResponse(reply=reply, session_id=session_id, source="user_service", model=None)
+    # If new user-service intent, start flow
+    elif intent in ("sign_in", "view_profile", "update_profile", "view_events", "register_event"):
+        reply = await handle_user_service(req, session_id)
+        if reply:
+            history.append({"role": "assistant", "content": reply})
+            return ChatResponse(reply=reply, session_id=session_id, source="user_service", model=None)
+
     # ------------------------------------------------------------------
     # Conversational "create event" wizard — runs the entire flow inside
     # the chat (instead of just returning the static how-to steps).
@@ -460,4 +484,5 @@ async def chat(req: ChatRequest):
 @app.delete("/chat/{session_id}")
 def reset_session(session_id: str):
     SESSIONS.pop(session_id, None)
+    reset_user_service_state(session_id)
     return {"status": "ok", "session_id": session_id}
