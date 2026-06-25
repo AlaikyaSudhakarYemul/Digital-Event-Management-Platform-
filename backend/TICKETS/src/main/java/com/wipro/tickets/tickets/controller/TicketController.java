@@ -2,6 +2,8 @@ package com.wipro.tickets.tickets.controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -13,11 +15,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wipro.tickets.tickets.dto.TicketDTO;
 import com.wipro.tickets.tickets.entity.Ticket;
+import com.wipro.tickets.tickets.entity.TicketStatus;
 import com.wipro.tickets.tickets.service.TicketService;
 
 @RestController
@@ -34,10 +38,19 @@ public class TicketController {
     }
 
     @PostMapping("/book")
-    public ResponseEntity<?> bookTicket(@RequestBody Ticket ticket) {
+    public ResponseEntity<?> bookTicket(@Valid @RequestBody Ticket ticket,
+                                        @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
         logger.info("Booking ticket for userId={}, eventId={}", ticket.getUserId(), ticket.getEventId());
-        TicketDTO booked = ticketService.bookTicket(ticket);
+        TicketDTO booked = ticketService.bookTicket(ticket, authorizationHeader);
         return new ResponseEntity<>(booked, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<?> createTicket(@Valid @RequestBody Ticket ticket,
+                                          @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
+        logger.info("Creating ticket for userId={}, eventId={}", ticket.getUserId(), ticket.getEventId());
+        TicketDTO created = ticketService.bookTicket(ticket, authorizationHeader);
+        return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
     @GetMapping("/{ticketId}")
@@ -50,6 +63,12 @@ public class TicketController {
     public ResponseEntity<?> getAllTickets() {
         logger.info("Fetching all tickets");
         return ResponseEntity.ok(ticketService.getAllTickets());
+    }
+
+    @GetMapping("/active")
+    public ResponseEntity<?> getActiveTickets() {
+        logger.info("Fetching active tickets");
+        return ResponseEntity.ok(ticketService.getActiveTickets());
     }
 
     @GetMapping("/user/{userId}")
@@ -71,6 +90,13 @@ public class TicketController {
         logger.info("Cancelling ticket with ID={}", ticketId);
         TicketDTO cancelled = ticketService.cancelTicket(ticketId);
         return ResponseEntity.ok(cancelled);
+    }
+
+    @PutMapping("/{ticketId}/status/{status}")
+    public ResponseEntity<?> updateTicketStatus(@PathVariable Long ticketId, @PathVariable TicketStatus status) {
+        logger.info("Updating ticket ID={} to status={}", ticketId, status);
+        TicketDTO updated = ticketService.updateTicketStatus(ticketId, status);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{ticketId}")

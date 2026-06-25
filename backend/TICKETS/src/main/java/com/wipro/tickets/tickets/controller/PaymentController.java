@@ -1,5 +1,7 @@
 package com.wipro.tickets.tickets.controller;
 
+import jakarta.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -32,8 +34,15 @@ public class PaymentController {
     }
 
     @PostMapping
-    public ResponseEntity<?> processPayment(@RequestBody Payment payment) {
+    public ResponseEntity<?> processPayment(@Valid @RequestBody Payment payment) {
         logger.info("Processing payment for ticketId={}", payment.getTicket().getTicketId());
+        PaymentDTO processed = paymentService.processPayment(payment);
+        return new ResponseEntity<>(processed, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/process")
+    public ResponseEntity<?> processPaymentAlias(@Valid @RequestBody Payment payment) {
+        logger.info("Processing payment (alias endpoint) for ticketId={}", payment.getTicket().getTicketId());
         PaymentDTO processed = paymentService.processPayment(payment);
         return new ResponseEntity<>(processed, HttpStatus.CREATED);
     }
@@ -60,5 +69,11 @@ public class PaymentController {
     public ResponseEntity<?> updatePaymentStatus(@PathVariable Long paymentId, @PathVariable PaymentStatus status) {
         logger.info("Updating payment ID={} to status={}", paymentId, status);
         return ResponseEntity.ok(paymentService.updatePaymentStatus(paymentId, status));
+    }
+
+    @PostMapping("/{paymentId}/refund")
+    public ResponseEntity<?> refundPayment(@PathVariable Long paymentId) {
+        logger.info("Refunding payment ID={}", paymentId);
+        return ResponseEntity.ok(paymentService.refundPayment(paymentId));
     }
 }

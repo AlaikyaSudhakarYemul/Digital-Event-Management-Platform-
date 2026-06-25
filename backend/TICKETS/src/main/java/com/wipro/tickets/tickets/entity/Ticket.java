@@ -12,7 +12,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,16 +37,20 @@ public class Ticket {
 
     // Reference to Event Service (by ID only - no direct FK across services)
     @Column(nullable = false)
+    @Min(value = 1, message = "eventId must be greater than 0")
     private int eventId;
 
     // Reference to User (from DEMP service)
     @Column(nullable = false)
+    @Min(value = 1, message = "userId must be greater than 0")
     private int userId;
 
     @Column(nullable = false)
+    @Min(value = 1, message = "quantity must be at least 1")
     private int quantity;
 
     @Column(nullable = false, precision = 10, scale = 2)
+    @DecimalMin(value = "0.01", message = "totalAmount must be greater than 0")
     private BigDecimal totalAmount;
 
     @Enumerated(EnumType.STRING)
@@ -62,5 +69,10 @@ public class Ticket {
         this.bookedAt = LocalDateTime.now();
         this.createdOn = LocalDate.now();
         this.isDeleted = false;
+    }
+
+    @PreUpdate
+    void onUpdate() {
+        this.updatedOn = LocalDate.now();
     }
 }

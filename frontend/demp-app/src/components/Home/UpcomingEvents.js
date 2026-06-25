@@ -1,21 +1,28 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { AuthContext } from '../../contexts/AuthContext';
  
-const UpcomingEvents = () => {
+const UpcomingEvents = ({ navigate, onBookNow }) => {
+  const { user } = useContext(AuthContext);
+  const role = (user?.role || '').toUpperCase();
+  const canManageEventsAndTickets = role === 'ADMIN' || role === 'ORGANIZER';
  
   const [searchTerm, setSearchTerm] = useState('');
   // Hardcoded events data
   const events = [
     {
+      eventId: 1,
       title: 'Tech Conference 2025',
       date: '2025-09-15',
       tags: ['Technology', 'Conference', 'Networking']
     },
     {
+      eventId: 2,
       title: 'Art & Music Festival',
       date: '2025-10-01',
       tags: ['Art', 'Music', 'Festival']
     },
     {
+      eventId: 3,
       title: 'Startup Pitch Night',
       date: '2025-09-25',
       tags: ['Startup', 'Pitch', 'Entrepreneurship']
@@ -63,16 +70,45 @@ const UpcomingEvents = () => {
             <button className="mt-2 px-4 py-2 border border-white text-white rounded-full hover:bg-white hover:text-purple-600 transition-colors">
               Learn More
             </button>
+            {canManageEventsAndTickets && (
+              <button
+                onClick={() => {
+                  if (navigate) {
+                    navigate(`/tickets?eventId=${event.eventId}`);
+                    return;
+                  }
+                  if (onBookNow) {
+                    onBookNow();
+                  }
+                }}
+                className="mt-2 ml-2 px-4 py-2 bg-cyan-400 text-slate-900 rounded-full hover:bg-cyan-300 transition-colors"
+              >
+                Book Now
+              </button>
+            )}
           </div>
         ))}
       </div>
  
-      <div className="mt-12">
-        <h3 className="text-xl font-semibold mb-4">Ready to get started?</h3>
-        <button className="bg-white text-purple-600 px-6 py-3 rounded-full hover:bg-purple-200 transition-colors">
-          Sign Up Now
-        </button>
-      </div>
+      {canManageEventsAndTickets && (
+        <div className="mt-12">
+          <h3 className="text-xl font-semibold mb-4">Ready to get started?</h3>
+          <button
+            onClick={() => {
+              if (navigate) {
+                navigate('/tickets');
+                return;
+              }
+              if (onBookNow) {
+                onBookNow();
+              }
+            }}
+            className="bg-white text-purple-600 px-6 py-3 rounded-full hover:bg-purple-200 transition-colors"
+          >
+            Sign Up Now
+          </button>
+        </div>
+      )}
     </section>
   );
 };

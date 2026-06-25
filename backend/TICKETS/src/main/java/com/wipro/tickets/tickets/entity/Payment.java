@@ -14,7 +14,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,9 +39,11 @@ public class Payment {
 
     @OneToOne
     @JoinColumn(name = "ticket_id", nullable = false)
+    @NotNull(message = "ticket is required")
     private Ticket ticket;
 
     @Column(nullable = false, precision = 10, scale = 2)
+    @DecimalMin(value = "0.01", message = "amount must be greater than 0")
     private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
@@ -56,5 +61,10 @@ public class Payment {
     @PrePersist
     void onCreate() {
         this.createdOn = LocalDate.now();
+    }
+
+    @PreUpdate
+    void onUpdate() {
+        this.updatedOn = LocalDate.now();
     }
 }

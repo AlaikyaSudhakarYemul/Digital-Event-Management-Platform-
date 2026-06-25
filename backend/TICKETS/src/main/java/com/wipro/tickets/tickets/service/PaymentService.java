@@ -17,4 +17,6 @@ public interface PaymentService {
     List<PaymentDTO> getAllPayments();
 
     PaymentDTO updatePaymentStatus(Long paymentId, PaymentStatus status);
+
+    PaymentDTO refundPayment(Long paymentId);
 }

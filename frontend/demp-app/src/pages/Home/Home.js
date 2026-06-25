@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import Navbar from '../../components/Common/Navbar';
 import HeroSection from '../../components/Home/HomeSection';
 import Footer from '../../components/Common/Footer';
@@ -22,12 +22,17 @@ const Home = () => {
       navigate('/CreateEvent');
     }
   };
+
+  const handleTicketPortalClick = () => {
+    navigate('/tickets');
+  };
  
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-pink-500 via-purple-600 to-indigo-900 overflow-hidden">
       <Navbar
         onSignUpClick={() => setShowPopup(true)}
         onCreateEventClick={handleCreateEventClick}
+        onTicketPortalClick={handleTicketPortalClick}
       />
 
       {showPopup && (
@@ -41,7 +46,7 @@ const Home = () => {
       <HowItWorks />
 
       {/* Upcoming Events Component */}
-      <UpcomingEvents navigate={navigate} />
+      <UpcomingEvents navigate={navigate} onBookNow={handleTicketPortalClick} />
 
       <Footer />
 

@@ -4,10 +4,11 @@ import java.util.List;
 
 import com.wipro.tickets.tickets.dto.TicketDTO;
 import com.wipro.tickets.tickets.entity.Ticket;
+import com.wipro.tickets.tickets.entity.TicketStatus;
 
 public interface TicketService {
 
-    TicketDTO bookTicket(Ticket ticket);
+    TicketDTO bookTicket(Ticket ticket, String authorizationHeader);
 
     TicketDTO getTicketById(Long ticketId);
 
@@ -18,6 +19,10 @@ public interface TicketService {
     List<TicketDTO> getTicketsByEventId(int eventId);
 
     TicketDTO cancelTicket(Long ticketId);
+
+    TicketDTO updateTicketStatus(Long ticketId, TicketStatus status);
+
+    List<TicketDTO> getActiveTickets();
 
     void deleteTicket(Long ticketId);
 }
