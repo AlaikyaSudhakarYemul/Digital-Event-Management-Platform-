@@ -22,7 +22,7 @@ import com.wipro.demp.entity.TicketType;
 import com.wipro.demp.service.TicketService;
 
 @RestController
-@RequestMapping(DempConstants.TICKETS_URL)
+@RequestMapping(DempConstants.API_URL + DempConstants.TICKETS_URL)
 @CrossOrigin(origins = DempConstants.FRONTEND_URL)
 public class TicketController {
 
