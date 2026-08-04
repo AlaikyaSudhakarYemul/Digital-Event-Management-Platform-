@@ -1,0 +1,57 @@
+what are the interview questions they can ask for the begineer or fresher from this project while showing the project
+
+Frontend (React) Answers
+1. What is React? Why did you use React?
+React is a JavaScript library for building UI components. We used React because the project has multiple role-based screens (Home, User Dashboard, Organizer Dashboard, Admin Dashboard) that need dynamic rendering without full page reloads. Entry point is index.js which renders <App /> inside <BrowserRouter> and <AuthProvider>.
+
+2. What is useState and useEffect?
+
+useState stores data that changes. Example in AdminDashboard.js: const [activeSection, setActiveSection] = useState('address') — stores which sidebar tab is active.
+useEffect runs code when component loads or when a value changes. Example in UserDashboard.js: fetches registered events when userData.id changes.
+
+3. What is React Router? How do you navigate?
+React Router maps URLs to components. In App.js:
+
+/ → Home
+/admin/login → AdminLogin
+/admin/dashboard → AdminDashboard (protected)
+/userdashboard → UserDashboard (protected)
+/events/:eventId → EventDetails
+Navigation happens via useNavigate(). Example in AdminLogin.js: navigate('/admin/dashboard') after successful login.
+
+4. What is AuthContext? Why use it?
+AuthContext in AuthContext.js stores the logged-in user globally so every component can access user, login(), and logout() without passing props through every component. The Navbar reads user.role from it to show or hide the "Create Event" button.
+
+5. What is localStorage? Why store the token there?
+localStorage keeps data in the browser even after page refresh. We store auth_token, adminToken, and user object so the user stays logged in. In authService.js: localStorage.setItem('auth_token', data.token) after login.
+
+6. What is onClick?
+onClick is an event handler that triggers a function when a button is clicked. Example in AdminDashboard.js:
+
+7. What is Tailwind CSS?
+Tailwind is a utility-first CSS framework. Instead of writing custom CSS, we use class names directly like bg-cyan-600, rounded, px-4 py-2. All admin dashboard buttons use Tailwind for styling.
+
+8. What is a Protected Route?
+A Protected Route checks if the user is logged in before allowing access. In App.js:
+If no auth_token in localStorage, the user is redirected to home instead of seeing the dashboard.
+
+9. What is useCallback and useMemo?
+
+useCallback prevents a function from being recreated on every render. Used in UserDashboard.js for handleLogout and handleContactUpdate.
+useMemo caches a computed value. Used in UpcomingEvents.js to build the pagination page window so it doesn't recalculate on every render.
+If no auth_token in localStorage, the user is redirected to home instead of seeing the dashboard.
+
+10. What is Formik and Yup?
+Formik manages form state and submission. Yup validates the form fields. Used in SignUp.js for the login/registration popup:
+
+Name must have only letters
+Password needs uppercase, lowercase, number, special character
+Contact must be 10 digits
+Confirm password must match password
+
+11. How does pagination work in UpcomingEvents?
+It calls GET /api/events/paginated?page=0&size=3. Backend returns a Page object with content, totalPages, first, last. Frontend shows First, Prev, page numbers, Next, Last buttons. Clicking a page sets pageIndex state which triggers a new API call.
+
+****12. How does the Chatbot work?
+The Chatbot.js component has a floating button. When opened, it shows an FAQ list and a text input. User messages are sent to http://127.0.0.1:8000/ask (Python FastAPI). The Python backend uses RAG — it embeds the question as a vector, searches ChromaDB for relevant documents, and passes them to Ollama LLM to generate an answer. FAQ questions are answered instantly from a local cache without calling the API.
+

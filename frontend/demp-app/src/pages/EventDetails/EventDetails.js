@@ -352,7 +352,7 @@ const EventDetails = () => {
     }
   };
 
-  const handleProceedToPayment = () => {
+  const   handleProceedToPayment = () => {
     if (!registrationInfo?.registrationId) {
       setRegisterMessage('Registration not found for this event. Please register first.');
       return;

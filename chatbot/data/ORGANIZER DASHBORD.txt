@@ -1,0 +1,58 @@
+ORGANIZER DASHBORD 
+
+Create Event Button
+Frontend UI component: CreateEvent.js
+Frontend button triggered from: OrganizerDashboard.js (Navbar or sidebar)
+
+Frontend API calls are triggered from: CreateEvent.js
+
+GET /api/speakers — loads all speakers for dropdown
+GET /api/admin/all — loads all addresses for dropdown
+POST /api/events/create — creates new event with form data
+
+What happens when you click Create Event:
+
+Frontend loads dropdown data from GET /api/speakers and GET /api/admin/all
+User fills form: Event Name, Description, Date, Time, Speaker, Address, Event Type, Max Attendees, Image (optional)
+On submit → handleSubmit() validates form
+Sends POST /api/events/create with JWT token
+Backend creates event, saves to DB
+On success → shows success popup → navigates to home page
+Backend controller handling these endpoints: EventController.java
+Backend service layer: EventServiceImpl.java
+DB repository: EventRepository.java
+
+Supporting Dropdowns
+Speakers Dropdown
+Frontend API call: GET /api/speakers
+Backend controller: SpeakerController.java
+DB repository: SpeakerRepository.java
+
+Addresses Dropdown
+Frontend API call: GET /api/admin/all
+Backend controller: AddressController.java
+DB repository: AddressRepository.java
+
+My Events Button / Tab
+Frontend UI component: OrganizerDashboard.js (activeTab === "events")
+
+Frontend API calls are triggered from: OrganizerDashboard.js
+
+GET /api/events/organizer/{organizerId} — loads all events created by the organizer (primary)
+GET /api/events/all — fallback to get all events and filter by organizerId
+API endpoints:
+
+GET /api/events/organizer/{organizerId} — fetches events for specific organizer
+GET /api/events/all — fallback endpoint to get all events
+What happens when you click My Events tab:
+
+Frontend fetches GET /api/events/organizer/{organizerId} with JWT token
+Displays table with columns: S.No., Event Name, Date, Time, Location
+User can search events by name or location (client-side filtering)
+"View Registrations" button on each row → calls viewRegistrations(eventId) → switches to Registrations tab
+Backend controller handling these endpoints: EventController.java
+
+@GetMapping("/organizer/{userId}") — calls eventService.findAllEventsByUserId(userId)
+Backend service layer: EventServiceImpl.java
+
+findAllEventsByUserId(userId) — retrieves all events where user = organizer

@@ -1,0 +1,115 @@
+DIGITAL EVENT MANAGEMENT PLATFORM 
+
+1. ADMIN
+2. ORGANIZER
+3. USER 
+
+Login to Admin Account:
+ 
+email and password 
+
+Important point: there is no separate backend “admin login” API. Admin and normal user both use the same backend login endpoint in UserController.java. The frontend admin page in AdminLogin.js is what decides that only users with role ADMIN can continue to the admin dashboard.
+
+If you want, I can draw the exact flow as:
+
+enter email/password
+frontend POST
+backend validate
+JWT return
+admin dashboard open
+
+Frontend side:
+
+The admin login screen UI is in AdminLogin.js.
+The form fields email and password are controlled with React useState.
+When you click Login, the function handleLogin() sends a request to http://localhost:8080/api/auth/login.
+After the response comes back, this frontend code checks data.user.role !== 'ADMIN'. If the role is not admin, it blocks access on the frontend.
+If the role is ADMIN, it saves the token with setAdminToken() from authService.js, stores user info in localStorage, and navigates to /admin/dashboard.
+
+So, in simple words, the admin page itself is “built” here:
+
+UI and submit logic: AdminLogin.js
+Token storage helper: authService.js
+
+Backend side:
+
+The login API is implemented in UserController.java.
+The method is login(@RequestBody Map<String, String> loginData).
+It reads the email and password from the request body.
+It calls userService.findByEmail(email) to load the user from the database.
+It checks the password using passwordEncoder.matches(password, user.getPassword()).
+If valid, it creates a JWT token using jwtUtil.generateToken(user.getEmail(), user.getRole()).
+Then it returns both the user object and token to the frontend.
+
+frontend → controller → service chain for every admin menu item.
+
+
+Those admin menu items are implemented by two layers:
+
+Frontend (React): builds the screen, buttons, forms, API calls
+Backend (Spring Boot): validates token/role, runs business logic, talks to database
+
+
+Main Admin Panel (UI Orchestrator)
+
+Frontend page that builds sidebar tabs (Address, Speaker, Users, Organizers, Events, Logout): AdminDashboard.js
+Admin login page that stores admin token and opens dashboard: AdminLogin.js
+
+Address
+
+Frontend UI component: AddressManagement.jsx
+Frontend API calls are triggered from: AdminDashboard.js
+GET /api/admin/all
+POST /api/admin/add
+PUT /api/admin/{id}
+DELETE /api/admin/{id}
+Backend controller handling these endpoints: AddressController.java
+Backend service layer: AddressServiceImpl.java
+DB repository: AddressRepository.java
+
+Speaker
+
+Frontend UI component: SpeakerManagement.jsx
+Frontend API calls from: AdminDashboard.js
+GET /api/speakers
+POST /api/speakers
+PUT /api/speakers/{id}
+DELETE /api/speakers/{id}
+Backend controller: SpeakerController.java
+Backend service: SpeakerServiceImpl.java
+DB repository: SpeakerRepository.java
+
+Users
+
+Frontend tab rendering and fetch: AdminDashboard.js
+GET /api/user/all
+Backend endpoint: UserController.java
+method getAllUsersForAdmin
+Backend service: UserServiceImpl.java
+DB repository: UserRepository.java
+
+Organizers
+
+Frontend tab rendering and fetch: AdminDashboard.js
+GET /api/user/organizers
+Backend endpoint: UserController.java
+method getAllOrganizersForAdmin (filters users where role is ORGANIZER)
+Service and repository are same as Users:
+UserServiceImpl.java
+UserRepository.java
+
+Events
+
+Frontend tab rendering and fetch: AdminDashboard.js
+GET /api/events/all
+Backend endpoint: EventController.java
+Backend service: EventServiceImpl.java
+DB repository: EventRepository.java
+
+Logout
+
+Frontend only in current admin panel: AdminDashboard.js
+Removes adminToken from localStorage
+Navigates to /admin/login
+No backend logout endpoint is called for admin logout in this flow.
+

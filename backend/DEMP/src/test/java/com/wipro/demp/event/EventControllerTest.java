@@ -6,6 +6,7 @@ import com.wipro.demp.controller.EventController;
 import com.wipro.demp.entity.Event;
 import com.wipro.demp.entity.EventStatus;
 import com.wipro.demp.service.EventService;
+import com.wipro.demp.service.RegistrationService;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -22,6 +23,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -37,6 +41,9 @@ public class EventControllerTest {
     
     @MockBean
     private EventService eventService;
+
+    @MockBean
+    private RegistrationService registrationService;
 
     private Event buildSampleEvent() {
         Event event = new Event();
@@ -70,6 +77,27 @@ public class EventControllerTest {
                         .content(jsonPayload))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.eventName").value("AI Summit"));
+    }
+
+    @Test
+    void createEventInvalidDataWhenServiceReturnsNull() throws Exception {
+        Mockito.when(eventService.createEvent(any())).thenReturn(null);
+
+        String jsonPayload = """
+                {
+                    "eventName": "Bad Event",
+                    "description": "Invalid Event",
+                    "date": "2025-12-15",
+                    "activeStatus": "ACTIVE",
+                    "createdOn": "2025-06-14"
+                }
+                """;
+
+        mockMvc.perform(post("/api/events/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonPayload))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Invalid event data."));
     }
 
     @Test
@@ -171,5 +199,54 @@ public class EventControllerTest {
                         .param("eventName", ""))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Invalid event name."));
+    }
+
+    @Test
+    void getPaginatedEventsInvalidPaginationParams() throws Exception {
+        mockMvc.perform(get("/api/events/paginated")
+                        .param("page", "-1")
+                        .param("size", "0"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Invalid pagination parameters."));
+    }
+
+    @Test
+    void getPaginatedEventsNoContent() throws Exception {
+        Page<Event> empty = new PageImpl<>(Collections.emptyList(), PageRequest.of(0, 3), 0);
+        Mockito.when(eventService.getPaginatedEvents(isNull(), any())).thenReturn(empty);
+
+        mockMvc.perform(get("/api/events/paginated")
+                        .param("page", "0")
+                        .param("size", "3"))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void getPaginatedEventsWithResults() throws Exception {
+        Page<Event> page = new PageImpl<>(List.of(buildSampleEvent()), PageRequest.of(0, 3), 1);
+        Mockito.when(eventService.getPaginatedEvents(eq("AI"), any())).thenReturn(page);
+
+        mockMvc.perform(get("/api/events/paginated")
+                        .param("page", "0")
+                        .param("size", "3")
+                        .param("eventName", "AI"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].eventName").value("AI Summit"));
+    }
+
+    @Test
+    void getEventsByOrganizerIdInvalid() throws Exception {
+        mockMvc.perform(get("/api/events/organizer/-2"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Invalid organizer ID."));
+    }
+
+    @Test
+    void getEventsByOrganizerIdValid() throws Exception {
+        Mockito.when(eventService.findAllEventsByUserId(10)).thenReturn(List.of(buildSampleEvent()));
+
+        mockMvc.perform(get("/api/events/organizer/10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].eventName").value("AI Summit"));
     }
 }

@@ -1,0 +1,185 @@
+USER DASHBORD
+
+Home Page Event Cards (Display)
+
+Frontend UI component: UpcomingEvents.js
+Frontend API calls triggered from: UpcomingEvents.js
+
+GET /api/events/paginated?page=0&size=3
+Backend controller: EventController.java
+Backend service: EventServiceImpl.java
+DB repository: EventRepository.java
+
+Event Details Page (After clicking Register on card)
+
+Frontend UI component: EventDetails.js
+Frontend API calls triggered from: EventDetails.js
+
+GET /api/events/{eventId}
+GET /api/registrations/user/{userId}
+GET /api/tickets/all
+Backend controller: EventController.java
+Backend service: EventServiceImpl.java
+DB repository: EventRepository.java
+
+Event Registration (Register for Event button)
+
+Frontend UI component: EventDetails.js
+Frontend API call helper: eventService.js
+Frontend API calls triggered from: EventDetails.js
+
+POST /api/registrations
+Backend controller: RegistrationController.java
+Backend service: RegistrationServiceImpl.java
+DB repository: RegistrationRepository.java
+
+Payment (After successful registration)
+
+Frontend UI component: RegistrationPay.jsx
+Frontend API calls triggered from: RegistrationPay.jsx
+
+POST /api/payments/orders
+POST /api/payments/verify
+POST /api/payments/cancel
+Backend controller: PaymentController.java
+DB repository: PaymentsRepository.java
+
+Payment Success
+Frontend UI component: PaymentSuccess.jsx
+Frontend API calls: None — only displays Order ID and Payment ID from route state
+
+Payment Failed
+Frontend UI component: PaymentFailed.jsx
+Frontend API calls: None — only displays Order ID and a Try Again link back to home
+
+Auth Token (Used across all above steps)
+
+Frontend token helper: authService.js
+Backend JWT validation: JwtFilter.java
+Backend JWT generator: JwtUtil.java
+Backend security rules: SecurityConfig.java
+
+Pay Now Button
+
+Frontend UI component: EventDetails.js
+Visible: Only after registration is successful
+Function called: handleProceedToPayment()
+Frontend API calls triggered from: RegistrationPay.jsx
+
+POST /api/payments/orders — creates Razorpay order
+POST /api/payments/verify — verifies payment signature after user pays
+POST /api/payments/cancel — called if user closes Razorpay modal without paying
+Backend controller: PaymentController.java
+DB repository: PaymentsRepository.java
+DB repository: OrdersRepository.java
+
+
+Buy Tickets Button
+
+Frontend UI component: EventDetails.js
+Visible: Only after registration is successful
+Shows: Buy Tickets (0/5) — tracks how many tickets you already have (max 5 per user per event)
+Function called: setShowTicketForm(true) — opens the ticket form
+Frontend API calls triggered from: EventDetails.js
+
+POST /api/tickets/create-multiple
+Backend controller: TicketController.java
+DB repository: TicketRepository.java
+
+Pay Later (Close popup without paying)\
+
+Frontend UI component: EventDetails.js
+Function called: handlePopupClose()
+Frontend API calls triggered from: EventDetails.js
+
+POST /api/payments/pending
+Backend controller: PaymentController.java
+What backend saves:
+
+status = PENDING
+method = PAY_LATER
+razorpayOrderId = PAY_LATER_ORDER_<timestamp>
+DB repository: PaymentsRepository.java
+
+////////buttons functionalies
+rontend UI component: AddressManagement.jsx
+Frontend API calls are triggered from: AdminDashboard.js
+GET /api/admin/all
+POST /api/admin/add
+PUT /api/admin/{id}
+DELETE /api/admin/{id}
+Backend controller handling these endpoints: AddressController.java
+Backend service layer: AddressServiceImpl.java
+DB repository: AddressRepository.java
+
+My Events Tab
+
+Frontend UI component: UserDashboard.js
+Frontend API calls triggered from: UserDashboard.js
+
+GET /api/registrations/user/{userId}
+What it shows: Table of all registered events with Event Name, Date, Time, Location
+Backend controller: RegistrationController.java
+Backend service: RegistrationServiceImpl.java
+DB repository: RegistrationRepository.java
+
+My Tickets Tab
+
+Frontend UI component: TicketDetails.js
+Frontend API calls triggered from: TicketDetails.js
+
+GET /api/tickets/all — fetches all tickets, filters by logged-in userId
+GET /api/events/{eventId} — fetches event details for selected ticket
+What it shows: All tickets for the user with ticket ID, event name, date, seat type, payment status + Download as PNG button
+Backend controller: TicketController.java
+Backend service: TicketServiceImpl.java
+DB repository: TicketRepository.java
+
+Settings Tab
+
+Frontend UI component: UserDashboard.js
+Frontend API call helper: authService.js
+
+Edit Mobile Number
+Frontend API calls triggered from: UserDashboard.js
+
+PUT /api/user/{userId}/contact
+What it does: Shows masked mobile number → Edit Mobile button → input field → Save/Cancel → updates contact in DB
+Backend controller: UserController.java
+Backend service: UserServiceImpl.java
+DB repository: UserRepository.java
+
+Change Password
+
+Frontend API calls triggered from: UserDashboard.js
+
+PUT /api/user/{userId}/password
+What it does: Enter current password + new password + confirm password → Save → on success logs user out automatically
+Backend controller: UserController.java
+Backend service: UserServiceImpl.java
+DB repository: UserRepository.java
+
+Profile Button
+
+Frontend UI component: UserDashboard.js
+Frontend API calls triggered from: authService.js
+
+GET /api/user/profile?userId={id}
+What it does: Opens profile modal showing Name, Email, Contact No loaded from backend
+Backend controller: UserController.java
+Backend service: UserServiceImpl.java
+DB repository: UserRepository.java
+
+Logout Button
+
+Frontend UI component: UserDashboard.js
+Frontend API calls triggered from: None — frontend only
+What it does:
+
+Removes all auth keys from localStorage (user, auth_token, authToken, token, adminToken etc.)
+Clears sessionStorage
+Clears cookies
+Calls window.location.replace('/') → goes to home page
+Backend: Not involved — no backend logout endpoint
+
+

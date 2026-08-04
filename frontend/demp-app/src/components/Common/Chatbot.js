@@ -1,12 +1,59 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const CHAT_URL = 'http://localhost:8000/ask';
+const CHAT_URL = process.env.REACT_APP_CHATBOT_URL || 'http://127.0.0.1:8000/ask';
 
-const QUICK_PROMPTS = [
-  'What is DEMP?',
-  'How do I create an event?',
-  'How do I book a ticket?',
-  'Tech stack?',
+// FAQ cache — clicking a suggestion returns the answer instantly, no API call
+const FAQ_SUGGESTIONS = [
+  {
+    label: 'What is DEMP?',
+    answer:
+      '**DEMP** (Digital Event Management Platform) is a full-stack microservices application that manages the complete event lifecycle — user registration, event creation, ticketing, payments, notifications, and analytics. It supports three roles: **Admin**, **Organizer**, and **User**.',
+  },
+  {
+    label: 'How do I book a ticket?',
+    answer:
+      'To book a ticket:\n1. Browse **Events** and select one.\n2. Click **Book Ticket** on the event page.\n3. Confirm and proceed to **Payment**.\n4. After payment, find your ticket in **My Tickets**.',
+  },
+  {
+    label: 'How do I create an event?',
+    answer:
+      'Creating an event requires the **Organizer** role:\n1. Log in as an Organizer.\n2. Go to **Organizer Dashboard → Create Event**.\n3. Fill in title, date, venue, capacity, and price.\n4. Click **Publish** to go live.',
+  },
+  {
+    label: 'What roles are available?',
+    answer:
+      'DEMP has three roles:\n- **Admin** — full platform control, user & event management, reports.\n- **Organizer** — create/manage events, track registrations & revenue.\n- **User** — browse events, book tickets, make payments.',
+  },
+  {
+    label: 'What is the tech stack?',
+    answer:
+      'DEMP uses:\n- **Frontend**: React\n- **Backend**: Java Spring Boot Microservices\n- **Database**: MySQL\n- **Gateway**: Spring Cloud Gateway (port 8080)\n- **Discovery**: Eureka Server (port 8761)\n- **Chatbot**: Python FastAPI + RAG + ChromaDB',
+  },
+  {
+    label: 'How do I register?',
+    answer:
+      'To register:\n1. Click **Sign Up** on the homepage.\n2. Enter your name, email, password, contact number, and role.\n3. Submit — you are logged in automatically.',
+  },
+  {
+    label: 'How do I view my tickets?',
+    answer:
+      'To view tickets:\n1. Log in as a **User**.\n2. Navigate to **My Tickets** in your dashboard.\n3. All confirmed bookings and tickets are listed there.',
+  },
+  {
+    label: 'How does the chatbot work?',
+    answer:
+      'EventMate uses **RAG** (Retrieval-Augmented Generation):\n1. Your question is embedded as a vector.\n2. Relevant DEMP document chunks are retrieved from **ChromaDB**.\n3. The **Ollama LLM** generates a contextual answer.\nFor common questions, a **cache layer** gives instant answers without any LLM call.',
+  },
+  {
+    label: 'What microservices are there?',
+    answer:
+      'DEMP has 10 microservices:\n- api-gateway (8080)\n- eureka-server (8761)\n- user-service (8084)\n- admin-service (8083)\n- event-service\n- registration-service\n- tickets-service\n- payment-service\n- notification-service\n- organizer-service',
+  },
+  {
+    label: 'How do I contact support?',
+    answer:
+      'For support:\n- Use **EventMate chatbot** for instant help.\n- Contact the platform **Admin** for account or access issues.\n- Reach out to the **Organizer** for event-specific queries.',
+  },
 ];
 
 // Tiny markdown -> HTML converter (bold, italic, lists, line breaks).
@@ -37,6 +84,7 @@ const Chatbot = () => {
     },
   ]);
   const scrollRef = useRef(null);
+  const [showSuggestions, setShowSuggestions] = useState(true);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -50,6 +98,15 @@ const Chatbot = () => {
     setMessages((m) => [...m, { from: 'user', text: message }]);
     setInput('');
     setLoading(true);
+    // Check FAQ cache first — instant response, no API call needed
+    const faqHit = FAQ_SUGGESTIONS.find(
+      (f) => f.label.toLowerCase() === message.toLowerCase()
+    );
+    if (faqHit) {
+      setMessages((m) => [...m, { from: 'bot', text: faqHit.answer }]);
+      setLoading(false);
+      return;
+    }
     try {
       // Forward the logged-in user's JWT and ID so the bot can act on
       // their behalf (e.g. create events) via the backend API.
@@ -69,16 +126,25 @@ const Chatbot = () => {
           // Optionally, you can add model_name and top_k if you want to expose them in UI
         }),
       });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      if (!res.ok) {
+        let errorDetails = '';
+        try {
+          errorDetails = await res.text();
+        } catch (_) {
+          // Keep fallback error when response body cannot be parsed.
+        }
+        throw new Error(`HTTP ${res.status}${errorDetails ? ` - ${errorDetails}` : ''}`);
+      }
       const data = await res.json();
       setMessages((m) => [...m, { from: 'bot', text: data.answer }]);
     } catch (err) {
+      const details = err?.message || 'Unknown error';
       setMessages((m) => [
         ...m,
         {
           from: 'bot',
           text:
-            "⚠️ I can't reach the chatbot service. Make sure it's running on port **8000** (`uvicorn rag_api:app --reload --port 8000` inside the `chatbot/` folder).",
+            `⚠️ Chatbot request failed: **${details}**.\n\nIf the frontend is running on another device, replace localhost with your machine IP in \`REACT_APP_CHATBOT_URL\` and restart the frontend. Default endpoint: \`${CHAT_URL}\`.`,
         },
       ]);
     } finally {
@@ -143,20 +209,37 @@ const Chatbot = () => {
             )}
           </div>
 
-          {/* Quick prompts */}
-          {messages.length <= 1 && (
-            <div className="px-3 pt-2 pb-1 flex flex-wrap gap-1.5 bg-white border-t border-gray-100">
-              {QUICK_PROMPTS.map((q) => (
-                <button
-                  key={q}
-                  onClick={() => send(q)}
-                  className="text-xs px-2 py-1 rounded-full bg-indigo-50 text-indigo-700 hover:bg-indigo-100"
-                >
-                  {q}
-                </button>
-              ))}
-            </div>
-          )}
+          {/* FAQ Suggestions panel */}
+          <div className="border-t border-gray-100 bg-white">
+            <button
+              onClick={() => setShowSuggestions((s) => !s)}
+              className="w-full flex items-center justify-between px-3 py-1.5 text-xs font-medium text-indigo-600 hover:bg-indigo-50 transition"
+            >
+              <span>💡 Suggested Questions</span>
+              <span className="text-gray-400">{showSuggestions ? '▲' : '▼'}</span>
+            </button>
+            {showSuggestions && (
+              <div className="px-2 pb-2 flex flex-wrap gap-1.5 max-h-28 overflow-y-auto">
+                {FAQ_SUGGESTIONS.map((f) => (
+                  <button
+                    key={f.label}
+                    disabled={loading}
+                    onClick={() => {
+                      if (loading) return;
+                      setMessages((m) => [
+                        ...m,
+                        { from: 'user', text: f.label },
+                        { from: 'bot', text: f.answer },
+                      ]);
+                    }}
+                    className="text-xs px-2 py-1 rounded-full bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-100 transition disabled:opacity-50"
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
 
           {/* Input */}
           <div className="p-2 border-t border-gray-200 bg-white flex gap-2">

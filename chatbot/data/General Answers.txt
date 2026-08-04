@@ -1,0 +1,21 @@
+General Answers
+1. Explain in 2 minutes:
+"EVENTRA is a full-stack Digital Event Management Platform. Users can browse and register for events. Organizers can create and manage events. Admins manage addresses, speakers, and users. The frontend is React with Tailwind CSS. The backend is Spring Boot with MySQL and JWT security. We also have a Python-based AI chatbot using RAG and ChromaDB. I worked on the registration flow, payment integration with Razorpay, admin panel, and the JWT authentication."
+
+2. Most challenging part:
+The JWT-based role authentication — ensuring that ADMIN, ORGANIZER, and USER each see only what they're supposed to, both in the frontend (role checks in Navbar and PrivateRoute) and in the backend (@PreAuthorize and SecurityConfig).
+
+3. What would you improve?
+
+Add refresh token so users don't get logged out frequently
+Add admin delete/ban user functionality
+Add email OTP for registration verification
+Full microservice split with Docker and Kubernetes
+
+4. What is CORS?
+Cross-Origin Resource Sharing. Browser blocks requests from localhost:3000 (React) to localhost:8080 (Spring) by default. We allowed it in SecurityConfig.java using CorsConfigurationSource with setAllowedOriginPatterns.
+
+5. Authentication vs Authorization:
+
+Authentication — verifying who you are. Login with email/password → JWT issued.
+Authorization — what you are allowed to do. JWT contains role → @PreAuthorize("hasRole('ADMIN')") checks if you can call that API.;

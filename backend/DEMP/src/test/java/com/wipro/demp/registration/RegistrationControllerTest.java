@@ -129,7 +129,8 @@ public class RegistrationControllerTest {
         when(registrationService.getRegistrationsByUserId(404)).thenReturn(Collections.emptyList());
 
         mockMvc.perform(get("/api/registrations/user/404"))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isOk())
+                .andExpect(content().json("[]"));
     }
 
     @Test
@@ -148,7 +149,8 @@ public class RegistrationControllerTest {
         when(registrationService.getRegistrationsByEventId(999)).thenReturn(Collections.emptyList());
 
         mockMvc.perform(get("/api/registrations/event/999"))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isOk())
+                .andExpect(content().json("[]"));
     }
 
     @Test

@@ -1,0 +1,85 @@
+1. What is the chatbot in your project? What does it do?
+
+"In our project EVENTRA, we have an AI chatbot called EventMate. It is a floating chat widget on every page of the frontend. Users can ask questions about the platform like how to register, how to book tickets, how to create an event, and get instant answers. It supports both quick FAQ answers and AI-generated answers using a local LLM
+
+2. What technology did you use to build the chatbot?
+
+Frontend — React (Chatbot.js component)
+Backend — Python FastAPI (app.py, rag_api.py)
+AI Model — Ollama (runs locally, model: llama3.2)
+Vector Database — ChromaDB (stores document embeddings)
+Embedding Model — SentenceTransformer (all-MiniLM-L6-v2)
+RAG Framework — LangChain for text splitting and retrieval
+
+3. What is RAG? Why did you use it?
+
+"RAG stands for Retrieval Augmented Generation. Instead of asking an LLM a question directly (which may give wrong or generic answers), we first search our own project documents for relevant content, then pass that content along with the question to the LLM. This way the LLM answers based on our actual project knowledge, not general training data. We used RAG so the chatbot gives accurate, project-specific answers about EVENTRA."
+
+4. How does the chatbot answer a question? Explain the flow.
+
+User types question
+       ↓
+Frontend Chatbot.js sends POST to http://127.0.0.1:8000/ask
+       ↓
+Backend checks FAQ cache first (instant answer if matched)
+       ↓
+If not in cache → convert question to vector using SentenceTransformer
+       ↓
+Search ChromaDB for most similar document chunks
+       ↓
+Pass: question + retrieved chunks → Ollama LLM (llama3.2)
+       ↓
+LLM generates answer
+       ↓
+Return JSON answer to frontend → displayed in chat
+
+5. What is ChromaDB?
+
+"ChromaDB is a vector database. It stores text data as mathematical vectors (numbers). When a user asks a question, we convert it to a vector and search ChromaDB to find the most similar stored document chunks. This is called semantic search — it finds relevant content based on meaning, not exact keywords."
+
+
+6. What is an embedding? What is SentenceTransformer?
+
+"An embedding is converting text into a list of numbers (a vector) that represents the meaning of that text. Similar sentences have similar vectors. We used the SentenceTransformer model all-MiniLM-L6-v2 from Hugging Face to generate these embeddings. The text files in textfiles are converted to embeddings and stored in ChromaDB."
+
+7. What is Ollama?
+
+"Ollama is a tool that lets you run LLM models locally on your machine without needing internet or paid APIs. We used llama3.2 model with Ollama. It runs on http://localhost:11434. The chatbot sends the question + retrieved documents to Ollama and gets back a generated answer."
+
+8.What is the knowledge base in your chatbot?
+
+"In knowledge_base.py, we have a manually written list of 30+ entries. Each entry has:
+
+intent — name like create_event, book_ticket
+keywords — phrases that trigger this entry
+answer — the response text
+This is injected as the system prompt to Ollama, so the LLM always knows about EVENTRA before answering. It's like giving the AI a textbook about your project."
+
+9. What is a FAQ cache? Why did you use it?
+
+"The FAQ cache in rag_api.py is a Python dictionary that stores common questions and their answers. When a user asks something that exactly matches a FAQ key like 'what is demp' or 'how do i book a ticket', the answer is returned instantly without calling the LLM at all. This makes the chatbot faster and works even when Ollama is not running."
+
+10. What is FastAPI? Why did you use it for the chatbot?
+
+"FastAPI is a Python web framework for building APIs quickly. We used it because it is simple, fast, and supports async requests well. Our chatbot backend runs on http://127.0.0.1:8000 with the /ask endpoint. Frontend React calls this endpoint with the user's question and gets back the answer as JSON."
+
+11. What are the text files in textfiles? Why are they there?
+
+"These text files contain deep documentation about EVENTRA — admin operations, analytics, payment flows, API examples, chatbot patterns etc. During setup, rag_embedding.py reads all these files, splits them into 1000-character chunks with 200-character overlap, converts each chunk to a vector using SentenceTransformer, and stores them all in ChromaDB. When a user asks a question, the closest chunks are retrieved and sent to the LLM."
+
+12. What is the difference between app.py and rag_api.py? ANS TABLE TEAMS LO VUNDHI 
+Frontend Chatbot.js connects to rag_api.py (port 8000). The app.py is the more advanced version with session and user-action support.
+
+13. How does CORS work in the chatbot?
+
+"Since React runs on localhost:3000 and FastAPI runs on localhost:8000, the browser would block the request by default. We added CORSMiddleware in both app.py and rag_api.py with allow_origins=["*"] to allow all origins during development."
+
+14.Can the chatbot do actions, not just answer questions?"
+
+"Yes. In app.py, the chatbot can detect intents like create_event or book_ticket using intent_recognizer.py. It can then call the Spring Boot backend APIs through user_service.py — for example, sign in a user, view events, or register for an event — making it a conversational agent, not just a Q&A bot."
+
+
+
+
+
+

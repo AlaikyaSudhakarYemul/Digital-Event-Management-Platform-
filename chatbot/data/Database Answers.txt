@@ -1,0 +1,62 @@
+Database Answers
+1. What database?
+MySQL. Connected via Spring Data JPA. Connection configured in application.properties in resources.
+
+2. What is a foreign key?
+In Registrations table: user_id references users.userId and event_id references events.eventId. This is created by @ManyToOne @JoinColumn(name="user_id").
+
+3. What is the custom JPA query?
+In RegistrationRepository.java:
+
+@Query("select case when count(r) > 0 then true else false end 
+       from Registrations r 
+       where r.user.userId = :userId 
+       and r.event.eventId = :eventId 
+       and r.isDeleted = false")
+boolean existsActiveRegistration(int userId, int eventId);This checks if a user is already registered for an event before allowing a new registration.
+
+4. save() vs saveAndFlush()?
+save() persists to DB but may delay actual SQL. saveAndFlush() immediately executes the SQL, used in registration to ensure the attendee count update is committed before proceeding.
+
+
+1. Flow when a user clicks Register on an event card:
+
+User clicks Register on event card in UpcomingEvents.js
+Navigates to /events/:eventId → EventDetails.js
+User clicks Register button → handleRegister() calls registerForEvent() from eventService.js
+POST /api/registrations with {user: {userId}, event: {eventId}}
+RegistrationController.createRegistration() validates and calls service
+RegistrationServiceImpl checks duplicate, checks event not full, saves, sends email
+Frontend shows success popup → user clicks Pay Now → RegistrationPay.jsx
+Razorpay payment modal opens → on success navigates to PaymentSuccess.jsx
+
+2. Admin login flow:
+
+Admin opens /admin/login → AdminLogin.js
+Enters email + password → handleLogin() calls POST /api/auth/login
+UserController.login() loads user by email, checks password with BCrypt
+Generates JWT with role ADMIN, returns {user, token}
+Frontend checks data.user.role !== 'ADMIN' — if not admin, shows error
+If admin: setAdminToken(data.token) stores in localStorage, navigates to /admin/dashboard
+
+3. How does payment work?
+
+Frontend calls POST /api/payments/orders with registrationId and amount
+Backend creates a Razorpay order and returns razorpayOrderId
+Frontend opens Razorpay checkout modal
+On payment: calls POST /api/payments/verify with Razorpay response
+Backend verifies signature → if valid, navigates to PaymentSuccess.jsx
+
+4. Email after registration?
+In RegistrationServiceImpl.createRegistration(), after saving to DB, JavaMailSender sends a plain text email to the user's email with event name, date, type, and address. Also calls notificationService.sendCalendarInvite(registration)
+5. Roles and permissions:
+
+USER — can register for events, make payments, view own tickets and registrations
+ORGANIZER — can create/manage events, view registrations for their events
+ADMIN — can manage addresses, speakers, view all users/organizers/events
+
+6. Eureka + API Gateway?
+Eureka Server is a service registry (port 8761) — all microservices register themselves. API Gateway (port 8080) routes requests to the right service. The monolith DEMP runs behind the gateway. Users only talk to port 8080.
+
+7. Is this a microservice?
+Partially. The microservices folder has separate service folders (user-service, event-service, payment-service etc.). The active running backend is the monolith DEMP project which contains all features combined. The microservices folder shows the intention to split them.

@@ -3,13 +3,16 @@ package com.wipro.demp.registration;
 
 
 import com.wipro.demp.entity.*;
-import com .wipro.demp.entity.RegistrationStatus;
+import com.wipro.demp.entity.RegistrationStatus;
 import com.wipro.demp.repository.*;
+import com.wipro.demp.service.AddressService;
+import com.wipro.demp.service.NotificationService;
 import com.wipro.demp.service.RegistrationServiceImpl;
 import com.wipro.demp.entity.Users;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+import org.springframework.mail.javamail.JavaMailSender;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -30,6 +33,15 @@ class RegistrationServiceImplTest {
     @Mock
     private EventRepository eventRepository;
 
+    @Mock
+    private AddressService addressService;
+
+    @Mock
+    private NotificationService notificationService;
+
+    @Mock
+    private JavaMailSender mailSender;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -44,6 +56,12 @@ class RegistrationServiceImplTest {
         Event event = new Event();
         event.setEventId(100);
         event.setEventName("TechConf");
+        event.setMaxAttendees(100);
+        event.setCurrentAttendees(0);
+        event.setActiveStatus(EventStatus.ACTIVE);
+        event.setDate(LocalDate.now().plusDays(1));
+
+        user.setEmail("alice@test.com");
 
         Registrations registration = new Registrations();
         registration.setUser(user);
@@ -51,13 +69,15 @@ class RegistrationServiceImplTest {
 
         when(userRepository.findById(1)).thenReturn(Optional.of(user));
         when(eventRepository.findById(100)).thenReturn(Optional.of(event));
-        when(registrationRepository.save(any(Registrations.class))).thenAnswer(i -> i.getArgument(0));
+        when(registrationRepository.existsActiveRegistration(1, 100)).thenReturn(false);
+        when(eventRepository.saveAndFlush(any(Event.class))).thenAnswer(i -> i.getArgument(0));
+        when(registrationRepository.saveAndFlush(any(Registrations.class))).thenAnswer(i -> i.getArgument(0));
 
         Registrations result = registrationService.createRegistration(registration);
 
         assertNotNull(result.getCreatedOn());
         assertEquals(RegistrationStatus.REGISTERED, result.getStatus());
-        verify(registrationRepository).save(any());
+        verify(registrationRepository).saveAndFlush(any());
     }
 
     @Test

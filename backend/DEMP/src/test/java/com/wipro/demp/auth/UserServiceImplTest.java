@@ -8,6 +8,9 @@ import com.wipro.demp.service.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
 
@@ -19,11 +22,17 @@ class UserServiceImplTest {
 
     private UserRepository userRepository;
     private UserServiceImpl userService;
+    private JavaMailSender mailSender;
+    private PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void setUp() {
         userRepository = Mockito.mock(UserRepository.class);
         userService = new UserServiceImpl(userRepository);
+        mailSender = Mockito.mock(JavaMailSender.class);
+        passwordEncoder = Mockito.mock(PasswordEncoder.class);
+        ReflectionTestUtils.setField(userService, "mailSender", mailSender);
+        ReflectionTestUtils.setField(userService, "passwordEncoder", passwordEncoder);
     }
 
     @Test
