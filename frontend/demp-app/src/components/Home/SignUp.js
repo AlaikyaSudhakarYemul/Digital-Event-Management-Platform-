@@ -139,7 +139,7 @@ const AuthPopup = ({ onClose, onLoginSuccess }) => {
           if (onLoginSuccess) onLoginSuccess();
         } else {
           const errorData = await response.json();
-          setApiError(errorData.message || 'Registration failed');
+          setApiError(errorData.message || errorData.error || 'Registration failed');
         }
       } catch (error) {
         setApiError('Network error');

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
  
 const SpeakerManagement = ({
   speakerForm,
@@ -10,6 +10,14 @@ const SpeakerManagement = ({
   editingSpeakerId,
   speakerMessage
 }) => {
+  const [deletingId, setDeletingId] = useState(null);
+
+  const handleDelete = async (speakerId) => {
+    setDeletingId(speakerId);
+    await handleSpeakerDelete(speakerId);
+    setDeletingId(null);
+  };
+
   return (
     <div>
       <h2 className="text-xl font-semibold mb-4">
@@ -39,7 +47,9 @@ const SpeakerManagement = ({
           {editingSpeakerId ? 'Update Speaker' : 'Add Speaker'}
         </button>
         {speakerMessage && (
-          <p className="text-center text-sm mt-2 text-yellow-400">{speakerMessage}</p>
+          <p className={`text-center text-sm mt-2 ${speakerMessage.includes('Error') ? 'text-red-400' : 'text-green-400'}`}>
+            {speakerMessage}
+          </p>
         )}
       </form>
  
@@ -56,15 +66,17 @@ const SpeakerManagement = ({
             <div className="space-x-2">
               <button
                 onClick={() => handleSpeakerEdit(spk)}
-                className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded"
+                className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded disabled:opacity-50"
+                disabled={deletingId !== null}
               >
                 Edit
               </button>
               <button
-                onClick={() => handleSpeakerDelete(spk.speakerId)}
-                className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+                onClick={() => handleDelete(spk.speakerId)}
+                className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded disabled:opacity-50"
+                disabled={deletingId !== null}
               >
-                Delete
+                {deletingId === spk.speakerId ? 'Deleting...' : 'Delete'}
               </button>
             </div>
           </li>

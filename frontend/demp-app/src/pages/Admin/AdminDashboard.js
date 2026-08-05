@@ -48,9 +48,16 @@ const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [organizers, setOrganizers] = useState([]);
   const [events, setEvents] = useState([]);
+
   const [adminDataMessage, setAdminDataMessage] = useState('');
   const [adminLoading, setAdminLoading] = useState(false);
   const navigate = useNavigate();
+
+  // Redirect to admin login if no admin token is present
+  useEffect(() => {
+    const token = localStorage.getItem('adminToken');
+    if (!token) { navigate('/admin/login'); }
+  }, [navigate]);
 
   const loadAdminSummaryData = async () => {
     setAdminLoading(true);
@@ -275,11 +282,18 @@ const AdminDashboard = () => {
   };
 
   const handleSpeakerDelete = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this speaker? This action cannot be undone.')) {
+      return;
+    }
+    
     try {
       await authorizedFetch(`http://localhost:8080/api/speakers/${id}`, { method: 'DELETE' });
+      setSpeakerMessage('Speaker deleted successfully!');
       const data = await authorizedFetch('http://localhost:8080/api/speakers');
       setSpeakers(data || []);
     } catch (e) {
+      const errorMsg = e.body?.message || e.message || 'Failed to delete speaker';
+      setSpeakerMessage(`Error: ${errorMsg}`);
       console.error('Speaker delete failed:', e);
     }
   };

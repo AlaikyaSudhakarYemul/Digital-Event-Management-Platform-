@@ -179,7 +179,13 @@ const EventDetails = () => {
     setListErr("");
     setNoContent(false);
     try {
-      const res = await fetch(listUrl, { headers: { "Content-Type": "application/json" } });
+      const token = getToken();
+      const headers = { "Content-Type": "application/json" };
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
+      const res = await fetch(listUrl, { headers });
 
       if (res.status === 204) {
         setNoContent(true);

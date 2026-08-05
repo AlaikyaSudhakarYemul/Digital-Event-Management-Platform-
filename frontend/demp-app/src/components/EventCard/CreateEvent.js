@@ -26,14 +26,23 @@ const EventCreatePage = () => {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/speakers')
-      .then(res => res.json())
-      .then(data => setSpeakers(data))
+    const token = localStorage.getItem('auth_token');
+    const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+
+    fetch('http://localhost:8080/api/speakers', { headers })
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then(data => setSpeakers(Array.isArray(data) ? data : []))
       .catch(err => console.error('Error fetching speakers:', err));
 
-    fetch('http://localhost:8080/api/admin/all')
-      .then(res => res.json())
-      .then(data => setAddresses(data))
+    fetch('http://localhost:8080/api/admin/all', { headers })
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then(data => setAddresses(Array.isArray(data) ? data : []))
       .catch(err => console.error('Error fetching addresses:', err));
   }, []);
 
