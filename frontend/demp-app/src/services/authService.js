@@ -79,11 +79,13 @@ export const signup = async (name, email, role, password, contactNo) => {
 
 // USER TOKEN
 export const getToken = () => {
-  return localStorage.getItem('auth_token');
+  return localStorage.getItem('auth_token') || localStorage.getItem('authToken') || localStorage.getItem('token');
 };
 
 export const removeToken = () => {
   localStorage.removeItem('auth_token');
+  localStorage.removeItem('authToken');
+  localStorage.removeItem('token');
   localStorage.removeItem('user');
 };
 
