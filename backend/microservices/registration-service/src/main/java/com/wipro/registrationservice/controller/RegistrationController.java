@@ -15,7 +15,7 @@ import com.wipro.registrationservice.service.RegistrationService;
 
 @RestController
 @RequestMapping("/api/registrations")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "http://127.0.0.1:3000", "http://192.168.1.37:3000"})
 public class RegistrationController {
 
     private static final Logger logger = LoggerFactory.getLogger(RegistrationController.class);
@@ -27,7 +27,7 @@ public class RegistrationController {
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping
-    public ResponseEntity<Registrations> createRegistration(@RequestBody Map<String, Integer> payload) {
+    public ResponseEntity<?> createRegistration(@RequestBody Map<String, Integer> payload) {
         Integer userId = payload.get("userId");
         Integer eventId = payload.get("eventId");
 
@@ -36,9 +36,14 @@ public class RegistrationController {
             return ResponseEntity.badRequest().body(null);
         }
 
-        Registrations saved = registrationService.createRegistration(userId, eventId);
-        logger.info("Registration created: {}", saved.getRegistrationId());
-        return new ResponseEntity<>(saved, HttpStatus.CREATED);
+        try {
+            Registrations saved = registrationService.createRegistration(userId, eventId);
+            logger.info("Registration created: {}", saved.getRegistrationId());
+            return new ResponseEntity<>(saved, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            logger.warn("Registration rejected for userId={}, eventId={}: {}", userId, eventId, e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")
