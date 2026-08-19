@@ -1,6 +1,6 @@
-com\wipro\organizerservice\client\RegistrationServiceClient.class
-com\wipro\organizerservice\client\EventServiceClient.class
-com\wipro\organizerservice\config\JwtFilter.class
-com\wipro\organizerservice\OrganizerServiceApplication.class
-com\wipro\organizerservice\config\SecurityConfig.class
-com\wipro\organizerservice\controller\OrganizerController.class
+com/wipro/organizerservice/OrganizerServiceApplication.class
+com/wipro/organizerservice/controller/OrganizerController.class
+com/wipro/organizerservice/client/RegistrationServiceClient.class
+com/wipro/organizerservice/client/EventServiceClient.class
+com/wipro/organizerservice/config/SecurityConfig.class
+com/wipro/organizerservice/config/JwtFilter.class

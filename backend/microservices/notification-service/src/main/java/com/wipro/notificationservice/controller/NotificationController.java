@@ -1,13 +1,16 @@
 package com.wipro.notificationservice.controller;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.wipro.notificationservice.dto.NotificationRequest;
 import com.wipro.notificationservice.service.NotificationService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/notifications")
-@CrossOrigin(origins = "http://localhost:3000")
 public class NotificationController {
 
     private final NotificationService notificationService;

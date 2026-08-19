@@ -6,6 +6,69 @@
     "configurations": [
         {
             "type": "java",
+            "name": "UserServiceApplication",
+            "request": "launch",
+            "mainClass": "com.wipro.userservice.UserServiceApplication",
+            "projectName": "user-service"
+        },
+        {
+            "type": "java",
+            "name": "TicketsServiceApplication",
+            "request": "launch",
+            "mainClass": "com.wipro.ticketsservice.TicketsServiceApplication",
+            "projectName": "tickets-service"
+        },
+        {
+            "type": "java",
+            "name": "RegistrationServiceApplication",
+            "request": "launch",
+            "mainClass": "com.wipro.registrationservice.RegistrationServiceApplication",
+            "projectName": "registration-service"
+        },
+        {
+            "type": "java",
+            "name": "PaymentServiceApplication",
+            "request": "launch",
+            "mainClass": "com.wipro.paymentservice.PaymentServiceApplication",
+            "projectName": "payment-service"
+        },
+        {
+            "type": "java",
+            "name": "OrganizerServiceApplication",
+            "request": "launch",
+            "mainClass": "com.wipro.organizerservice.OrganizerServiceApplication",
+            "projectName": "organizer-service"
+        },
+        {
+            "type": "java",
+            "name": "NotificationServiceApplication",
+            "request": "launch",
+            "mainClass": "com.wipro.notificationservice.NotificationServiceApplication",
+            "projectName": "notification-service"
+        },
+        {
+            "type": "java",
+            "name": "EventServiceApplication",
+            "request": "launch",
+            "mainClass": "com.wipro.eventservice.EventServiceApplication",
+            "projectName": "event-service"
+        },
+        {
+            "type": "java",
+            "name": "ApiGatewayApplication",
+            "request": "launch",
+            "mainClass": "com.wipro.apigateway.ApiGatewayApplication",
+            "projectName": "api-gateway"
+        },
+        {
+            "type": "java",
+            "name": "AdminServiceApplication",
+            "request": "launch",
+            "mainClass": "com.wipro.adminservice.AdminServiceApplication",
+            "projectName": "admin-service"
+        },
+        {
+            "type": "java",
             "name": "EurekaServerApplication",
             "request": "launch",
             "mainClass": "com.wipro.eurekaserver.EurekaServerApplication",

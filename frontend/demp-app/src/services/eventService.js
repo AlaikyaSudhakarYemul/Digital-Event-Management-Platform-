@@ -28,13 +28,20 @@ export const registerForEvent = async (eventId, user) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      user: { userId: user.userId },
-      event: { eventId: eventId }
+      userId: user.userId,
+      eventId: eventId
     }),
   });
   if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error || 'Failed to register for event');
+    const errorText = await response.text();
+    let message = errorText || 'Failed to register for event';
+    try {
+      const parsed = JSON.parse(errorText);
+      message = parsed.error || parsed.message || message;
+    } catch {
+      // not JSON, use raw text as-is
+    }
+    throw new Error(message);
   }
 
   const contentType = response.headers.get('content-type') || '';

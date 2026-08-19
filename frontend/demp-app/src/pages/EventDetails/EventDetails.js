@@ -75,8 +75,8 @@ const EventDetails = () => {
     if (!Array.isArray(registrations)) return null;
 
     return registrations.find((r) => {
-      const sameEvent = String(r?.event?.eventId) === String(eventId);
-      const notDeleted = !(r?.isDeleted || r?.deleted);
+      const sameEvent = String(r?.eventId ?? r?.event?.eventId) === String(eventId);
+      const notDeleted = !(r?.deleted || r?.isDeleted);
       return sameEvent && notDeleted;
     }) || null;
   }, [eventId, user?.userId]);

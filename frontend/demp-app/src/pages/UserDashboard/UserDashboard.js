@@ -67,16 +67,17 @@ const maskMobile = (val) => {
 };
 
 
-const normalizeRegistration = (reg) => ({
+const normalizeRegistration = (reg, event) => ({
   registrationId: reg.registrationId,
-  eventName: reg?.event?.eventName ?? "-",
-  date: reg?.event?.date ?? null,
-  time: reg?.event?.time ?? null,
+  eventId: reg.eventId,
+  eventName: event?.eventName ?? reg?.event?.eventName ?? "-",
+  date: event?.date ?? reg?.event?.date ?? null,
+  time: event?.time ?? reg?.event?.time ?? null,
   location: [
-    reg?.event?.address?.address,
-    reg?.event?.address?.state,
-    reg?.event?.address?.pincode,
-    reg?.event?.address?.country,
+    event?.address?.address ?? reg?.event?.address?.address,
+    event?.address?.state ?? reg?.event?.address?.state,
+    event?.address?.pincode ?? reg?.event?.address?.pincode,
+    event?.address?.country ?? reg?.event?.address?.country,
   ]
     .filter(Boolean)
     .join(", "),
@@ -236,7 +237,30 @@ const UserDashboard = () => {
 
         const raw = await response.json();
         const arr = Array.isArray(raw) ? raw : raw ? [raw] : [];
-        const normalized = arr.map(normalizeRegistration).filter(Boolean);
+        const activeRegistrations = arr.filter(
+          (r) => !(r?.deleted ?? r?.isDeleted ?? false)
+        );
+
+        // registration-service only returns flat { registrationId, eventId, ... } -
+        // event details (name/date/time/address) must be fetched from event-service.
+        const eventResults = await Promise.allSettled(
+          activeRegistrations.map((r) =>
+            fetch(`${API_BASE}/api/events/${encodeURIComponent(r.eventId)}`, {
+              headers: {
+                "Content-Type": "application/json",
+                ...(token ? { Authorization: `Bearer ${token}` } : {}),
+              },
+            }).then((res) => (res.ok ? res.json() : null))
+          )
+        );
+
+        const normalized = activeRegistrations
+          .map((r, idx) => {
+            const result = eventResults[idx];
+            const event = result?.status === "fulfilled" ? result.value : null;
+            return normalizeRegistration(r, event);
+          })
+          .filter(Boolean);
 
         if (!cancelled) {
           setRegisteredEvents(normalized);

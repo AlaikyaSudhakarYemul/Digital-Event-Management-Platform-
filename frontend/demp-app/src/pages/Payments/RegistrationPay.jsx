@@ -100,6 +100,13 @@ export default function RegistrationPay({ registrationId: propRegistrationId, ev
         throw new Error("Razorpay SDK unavailable.");
       }
 
+      let storedUser = {};
+      try {
+        storedUser = JSON.parse(localStorage.getItem("user")) || {};
+      } catch {
+        storedUser = {};
+      }
+
       const options = {
         key: data.keyId,
         amount: data.amountPaise,
@@ -107,6 +114,16 @@ export default function RegistrationPay({ registrationId: propRegistrationId, ev
         name: "Digital Event Management Platform",
         description: "Event Registration Payment",
         order_id: data.razorpayOrderId,
+        prefill: {
+          name: storedUser.userName || "",
+          email: storedUser.email || "",
+          contact: storedUser.contactNo || "",
+        },
+        readonly: {
+          name: true,
+          email: true,
+          contact: true,
+        },
         theme: { color: "#3399cc" },
         handler: async function (response) {
           try {

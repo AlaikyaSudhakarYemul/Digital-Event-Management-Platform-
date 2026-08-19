@@ -49,4 +49,7 @@ public class Ticket {
     private LocalDate updatedOn;
     private LocalDate deletedOn;
     private boolean isDeleted;
+
+    @Transient
+    private PaymentStatus paymentStatus;
 }
