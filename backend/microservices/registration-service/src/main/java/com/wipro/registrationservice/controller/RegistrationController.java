@@ -21,10 +21,6 @@ import com.wipro.registrationservice.service.RegistrationService;
 
 @RestController
 @RequestMapping("/api/registrations")
-<<<<<<< HEAD
-=======
-@CrossOrigin(origins = {"http://localhost:3000", "http://127.0.0.1:3000", "http://192.168.1.37:3000"})
->>>>>>> ec1b18ac4aa2a141dcda3e32cc633f2da5b39817
 public class RegistrationController {
 
     private static final Logger logger = LoggerFactory.getLogger(RegistrationController.class);
