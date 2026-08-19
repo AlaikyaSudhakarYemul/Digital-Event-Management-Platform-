@@ -55,19 +55,24 @@ const EventDetails = () => {
     return () => { cancelled = true; };
   }, [eventId]);
 
-  const syncExistingRegistration = useCallback(async () => {
-    const userId = user?.userId;
+  const syncExistingRegistration = useCallback(async (userOverride = null) => {
+    const userId = userOverride?.userId || userOverride?.id || user?.userId || user?.id;
     if (!userId || !eventId) return null;
 
     const token = getToken();
     if (!token) return null;
 
-    const res = await fetch(`${API_BASE}/api/registrations/user/${encodeURIComponent(userId)}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    let res;
+    try {
+      res = await fetch(`${API_BASE}/api/registrations/user/${encodeURIComponent(userId)}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } catch {
+      return null;
+    }
 
     if (!res.ok) return null;
 
@@ -76,10 +81,14 @@ const EventDetails = () => {
 
     return registrations.find((r) => {
       const sameEvent = String(r?.eventId ?? r?.event?.eventId) === String(eventId);
+<<<<<<< HEAD
       const notDeleted = !(r?.deleted || r?.isDeleted);
+=======
+      const notDeleted = !(r?.isDeleted || r?.deleted);
+>>>>>>> ec1b18ac4aa2a141dcda3e32cc633f2da5b39817
       return sameEvent && notDeleted;
     }) || null;
-  }, [eventId, user?.userId]);
+  }, [eventId, user?.id, user?.userId]);
 
   useEffect(() => {
     let cancelled = false;
@@ -301,31 +310,41 @@ const EventDetails = () => {
       return;
     }
 
-    if (!user) {
+    const currentUser = user || JSON.parse(localStorage.getItem('user') || 'null');
+
+    if (!currentUser) {
       setRegisterMessage('Please log in to register.');
       return;
     }
     setRegisterLoading(true);
     setRegisterMessage('');
     try {
-      const registration = await registerForEvent(eventId, user);
+      const existing = await syncExistingRegistration(currentUser);
+      if (existing) {
+        setRegistrationInfo(existing);
+        setIsRegistered(true);
+        setRegisterMessage('Already registered. You can continue with Pay Now.');
+        return;
+      }
+
+      const registration = await registerForEvent(eventId, currentUser);
       setRegistrationInfo(registration);
       setIsRegistered(true);
     } catch (e) {
-      const message = e?.message || 'Failed to register for event.';
+      const message = /failed to fetch/i.test(e?.message || '')
+        ? 'Unable to reach registration service. Please refresh and try again.'
+        : e?.message || 'Failed to register for event.';
 
-      if (/already registered/i.test(message)) {
-        try {
-          const existing = await syncExistingRegistration();
-          if (existing) {
-            setRegistrationInfo(existing);
-            setIsRegistered(true);
-            setRegisterMessage('Already registered. You can continue with Pay Now.');
-            return;
-          }
-        } catch (lookupError) {
-          console.error('Failed to sync existing registration after duplicate attempt:', lookupError);
+      try {
+        const existing = await syncExistingRegistration(currentUser);
+        if (existing) {
+          setRegistrationInfo(existing);
+          setIsRegistered(true);
+          setRegisterMessage('Already registered. You can continue with Pay Now.');
+          return;
         }
+      } catch (lookupError) {
+        console.error('Failed to sync existing registration after register attempt:', lookupError);
       }
 
       setRegisterMessage(message);

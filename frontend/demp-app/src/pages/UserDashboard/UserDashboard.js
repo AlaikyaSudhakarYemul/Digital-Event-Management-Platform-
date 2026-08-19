@@ -3,6 +3,7 @@ import TicketDetails from '../../components/TicketDetails/TicketDetails';
 import { useNavigate } from "react-router-dom";
 import {
   fetchUserProfile,
+  getToken,
   updateUserContactNo,
   updateUserPassword,
 } from "../../services/authService";
@@ -219,7 +220,7 @@ const UserDashboard = () => {
         const url = `${API_BASE}/api/registrations/user/${encodeURIComponent(
           userData.id
         )}`;
-        const token = localStorage.getItem("auth_token");
+        const token = getToken();
 
         const response = await fetch(url, {
           headers: {

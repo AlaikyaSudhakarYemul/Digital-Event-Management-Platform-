@@ -17,10 +17,11 @@ export const deleteEvent = async (eventId, token) => {
 };
 
 export const registerForEvent = async (eventId, user) => {
-  const token = localStorage.getItem('auth_token');
+  const token = localStorage.getItem('auth_token') || localStorage.getItem('authToken') || localStorage.getItem('token');
   if (!token) {
     throw new Error('User not authenticated');
   }
+<<<<<<< HEAD
   const response = await fetch('http://localhost:8080/api/registrations', {
     method: 'POST',
     headers: {
@@ -42,6 +43,32 @@ export const registerForEvent = async (eventId, user) => {
       // not JSON, use raw text as-is
     }
     throw new Error(message);
+=======
+  const userId = user?.userId || user?.id;
+  if (!userId) {
+    throw new Error('Please log in again before registering.');
+  }
+
+  let response;
+  try {
+    response = await fetch('http://localhost:8080/api/registrations', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId: userId,
+        eventId: eventId
+      }),
+    });
+  } catch {
+    throw new Error('Unable to reach registration service. Please refresh and try again.');
+  }
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(error || (response.status === 409 ? 'You are already registered for this event.' : 'Failed to register for event'));
+>>>>>>> ec1b18ac4aa2a141dcda3e32cc633f2da5b39817
   }
 
   const contentType = response.headers.get('content-type') || '';
