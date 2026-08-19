@@ -21,29 +21,6 @@ export const registerForEvent = async (eventId, user) => {
   if (!token) {
     throw new Error('User not authenticated');
   }
-<<<<<<< HEAD
-  const response = await fetch('http://localhost:8080/api/registrations', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      userId: user.userId,
-      eventId: eventId
-    }),
-  });
-  if (!response.ok) {
-    const errorText = await response.text();
-    let message = errorText || 'Failed to register for event';
-    try {
-      const parsed = JSON.parse(errorText);
-      message = parsed.error || parsed.message || message;
-    } catch {
-      // not JSON, use raw text as-is
-    }
-    throw new Error(message);
-=======
   const userId = user?.userId || user?.id;
   if (!userId) {
     throw new Error('Please log in again before registering.');
@@ -66,9 +43,15 @@ export const registerForEvent = async (eventId, user) => {
     throw new Error('Unable to reach registration service. Please refresh and try again.');
   }
   if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error || (response.status === 409 ? 'You are already registered for this event.' : 'Failed to register for event'));
->>>>>>> ec1b18ac4aa2a141dcda3e32cc633f2da5b39817
+    const errorText = await response.text();
+    let message = errorText || (response.status === 409 ? 'You are already registered for this event.' : 'Failed to register for event');
+    try {
+      const parsed = JSON.parse(errorText);
+      message = parsed.error || parsed.message || message;
+    } catch {
+      // not JSON, use raw text as-is
+    }
+    throw new Error(message);
   }
 
   const contentType = response.headers.get('content-type') || '';

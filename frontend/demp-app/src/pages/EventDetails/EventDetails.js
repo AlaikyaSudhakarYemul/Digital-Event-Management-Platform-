@@ -81,11 +81,7 @@ const EventDetails = () => {
 
     return registrations.find((r) => {
       const sameEvent = String(r?.eventId ?? r?.event?.eventId) === String(eventId);
-<<<<<<< HEAD
-      const notDeleted = !(r?.deleted || r?.isDeleted);
-=======
       const notDeleted = !(r?.isDeleted || r?.deleted);
->>>>>>> ec1b18ac4aa2a141dcda3e32cc633f2da5b39817
       return sameEvent && notDeleted;
     }) || null;
   }, [eventId, user?.id, user?.userId]);
